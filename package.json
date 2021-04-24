@@ -1,0 +1,29 @@
+{
+  "name": "Grace-Shopper-App",
+  "version": "1.0.0",
+  "description": "Grace Shopper app for Fullstack Academy -- Team 7",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start:dev": "nodemon ./server/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Grace-Shopper-Jalapenos/Grace-Shopper-App.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Grace-Shopper-Jalapenos/Grace-Shopper-App/issues"
+  },
+  "homepage": "https://github.com/Grace-Shopper-Jalapenos/Grace-Shopper-App#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "pg": "^8.6.0",
+    "sequelize": "^6.6.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  }
+}
