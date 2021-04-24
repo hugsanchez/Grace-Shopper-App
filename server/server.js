@@ -1,6 +1,7 @@
 const express = require("express");
 const path = require("path");
 const app = express();
+const {syncAndSeed, Products}= require('./db')
 
 app.use("/public", express.static(path.join(__dirname, "/public")));
 
@@ -13,6 +14,13 @@ app.get("/", async (req, res, next) => {
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`listening on port ${PORT}`);
-});
+
+
+const init= async()=>{
+  await syncAndSeed()
+  app.listen(PORT, ()=>{
+      console.log(`listening on port ${PORT}`)
+  })
+}
+
+init()
