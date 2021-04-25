@@ -3,12 +3,7 @@ const router = express.Router();
 
 const {
     syncAndSeed,
-    Users,
-    Products,
-    Artists,
-    Orders,
-    Reviews,
-    Categories,
+    model: { Products, Artists, Categories, Users, Orders, Reviews },
 } = require("../db");
 
 // All Reviews
