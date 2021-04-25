@@ -1,4 +1,6 @@
-module.exports = {
+const path = require("path");
+
+const webpackConfig = {
     entry: {
         path: path.join(__dirname, "./client/index.jsx"),
     },
@@ -9,9 +11,9 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.js$/,
+                test: /\.jsx?$/,
+                exclude: /(node_modules|bower_components)/,
                 loader: "babel-loader",
-                exclude: /node_modules/,
                 options: {
                     presets: ["@babel/preset-react"],
                 },
@@ -23,3 +25,5 @@ module.exports = {
         ],
     },
 };
+
+module.exports = webpackConfig;

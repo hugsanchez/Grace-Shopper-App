@@ -1,6 +1,6 @@
 const express = require("express");
-const path = require("path");
 const app = express();
+const path = require("path");
 
 // API Imports
 const userAPI = require("./api/users");
@@ -19,7 +19,12 @@ const {
     Categories,
 } = require("./db");
 
-app.use("/public", express.static(path.join(__dirname, "/public")));
+// Serve Static Folder
+app.use(express.static(path.join(__dirname, "../public")));
+
+// Server Request Parsing
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // API Routes
 app.use("/api/users", userAPI);
