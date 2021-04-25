@@ -9,14 +9,10 @@ const productsAPI = require("./api/products");
 const ordersAPI = require("./api/orders");
 const reviewsAPI = require("./api/reviews");
 
-// Database
+// Database Imports
 const {
     syncAndSeed,
-    Products,
-    Artists,
-    Orders,
-    Reviews,
-    Categories,
+    model: { Products, Artists, Categories, Users, Orders, Reviews },
 } = require("./db");
 
 // Serve Static Folder
