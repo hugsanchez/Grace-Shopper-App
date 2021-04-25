@@ -37,9 +37,9 @@ const syncAndSeed = async () => {
 
         // Generate Fake Products and Artists from the Met API
         let fakeProducts = [];
-        const NUMBER_OF_PRODUCTS = 10;
+        const NUMBER_OF_PRODUCTS = 20;
         for (let i = 1; i <= NUMBER_OF_PRODUCTS; i++) {
-            const randId = Math.floor(Math.random() * 60);
+            const randId = Math.floor(Math.random() * 10) + 1;
 
             const { data: product } = await axios.get(
                 `https://collectionapi.metmuseum.org/public/collection/v1/objects/${randId}`,
