@@ -11,7 +11,7 @@ const syncAndSeed = async () => {
 
         await db.sync({ force: true });
 
-        // Generate Fake Users (Not admins!)
+        // Generate Fake Users (not admins!)
         let fakeUsers = [];
         const NUMBER_OF_USERS = 10;
         for (let i = 1; i <= NUMBER_OF_USERS; i++) {
@@ -30,6 +30,14 @@ const syncAndSeed = async () => {
                 password,
             });
 
+            // console.log(`${i} users generated`);
+        }
+
+        // Generate Fake Products
+        let fakeProducts = [];
+        const NUMBER_OF_PRODUCTS = 10;
+        for (let i = 1; i <= NUMBER_OF_PRODUCTS; i++) {
+            // Create fake product details
             // console.log(`${i} users generated`);
         }
 

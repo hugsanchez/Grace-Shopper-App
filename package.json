@@ -21,6 +21,7 @@
     },
     "homepage": "https://github.com/Grace-Shopper-Jalapenos/Grace-Shopper-App#readme",
     "dependencies": {
+        "axios": "^0.21.1",
         "express": "^4.17.1",
         "faker": "^5.5.3",
         "pg": "^8.6.0",
