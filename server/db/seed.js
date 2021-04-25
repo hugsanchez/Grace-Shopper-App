@@ -2,29 +2,38 @@ const db = require("./db");
 const {
     model: { Products, Artists, Categories, Users, Orders, Reviews },
 } = require("./model");
+const faker = require("faker");
 
 const syncAndSeed = async () => {
     try {
         await db.authenticate();
-        console.log("database connected");
+        console.log("Database Connected");
+
         await db.sync({ force: true });
 
-        const categories = await Promise.all([
-            Categories.create({
-                name: "Classical",
-            }),
-        ]);
+        // Generate Fake Users (Not admins!)
+        let fakeUsers = [];
+        const NUMBER_OF_USERS = 10;
+        for (let i = 1; i <= NUMBER_OF_USERS; i++) {
+            // Create fake user details
+            const firstName = faker.name.firstName();
+            const lastName = faker.name.lastName();
+            const email = faker.internet.email();
+            const username = faker.internet.userName();
+            const password = faker.internet.password();
 
-        const products = await Promise.all([
-            Products.create({
-                name: "Mona Lisa",
-                description: "art",
-                price: 100000.0,
-                year: 1900,
-                imgURL: "#",
-            }),
-        ]);
+            fakeUsers.push({
+                firstName,
+                lastName,
+                email,
+                username,
+                password,
+            });
 
+            // console.log(`${i} users generated`);
+        }
+
+        // Custom Users
         const users = await Promise.all([
             Users.create({
                 firstName: "Craig",
@@ -40,6 +49,29 @@ const syncAndSeed = async () => {
                 username: "asgro",
                 password: "123abc!",
                 userType: "ADMIN",
+            }),
+        ]);
+
+        // Auto-generated Users
+        await Promise.all(
+            fakeUsers.map((user) => {
+                Users.create({ ...user });
+            }),
+        );
+
+        const categories = await Promise.all([
+            Categories.create({
+                name: "Classical",
+            }),
+        ]);
+
+        const products = await Promise.all([
+            Products.create({
+                name: "Mona Lisa",
+                description: "art",
+                price: 100000.0,
+                year: 1900,
+                imgURL: "#",
             }),
         ]);
 
