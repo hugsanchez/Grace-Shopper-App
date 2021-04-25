@@ -1,16 +1,14 @@
 import React from "react";
 import ReactDom from "react-dom";
-
-// Redux Imports
-// import { Provider } from "react-redux";
-// import store from "./store";
+import { Provider } from "react-redux";
+import store from "./store/store";
 
 // Component Imports
 import App from "./components/App.jsx";
 
 ReactDom.render(
-    // <Provider store={store}>
+  <Provider store={store}>
     <App />,
-    // </Provider>,
-    document.querySelector("#app"),
+  </Provider>,
+  document.querySelector("#app")
 );
