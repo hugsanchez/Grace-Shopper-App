@@ -7,7 +7,7 @@ export const getProduct = (product) => ({
     payload: product,
 });
 
-export const getSingleProduct = () => async (dispatch) => {
-    const singleProduct = await axios.get("/api/products/:id");
+export const getSingleProduct = (id) => async (dispatch) => {
+    const singleProduct = await axios.get(`/api/products/${id}`);
     dispatch(getProduct(singleProduct.data));
 }

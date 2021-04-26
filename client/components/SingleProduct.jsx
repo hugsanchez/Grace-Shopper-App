@@ -12,7 +12,8 @@ class SingleProduct extends Component {
         };
     }
     async componentDidMount() {
-        await this.props.getSingleProduct();
+        const id = this.props.match.params.id *1;
+        await this.props.getSingleProduct(id);
         await this.setState({ singleProduct: store.getState().singleProduct});
     }
 
@@ -23,9 +24,9 @@ class SingleProduct extends Component {
             <div>
                 <h1>{singleProduct.name}</h1>
                 <img src={singleProduct.imgUrl} width="150px" height="150px"/>
-                <h3>Year: {singleProduct.year}</h3>
+                <h3>Created On: {singleProduct.year}</h3>
                 <h3>Quantity Avaliable: {singleProduct.stock}</h3>
-                <h3>Price: {singleProduct.price}</h3>
+                <h3>Price: ${singleProduct.price}</h3>
                 <p>Description: {singleProduct.description}</p>
             </div>
         )
@@ -34,7 +35,7 @@ class SingleProduct extends Component {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        getSingleProduct: () => dispatch(getSingleProduct()),
+        getSingleProduct: (id) => dispatch(getSingleProduct(id)),
     };
 };
 
