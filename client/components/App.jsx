@@ -7,6 +7,7 @@ import { HashRouter as Router, Route, Link, Switch } from "react-router-dom";
 import Header from "./Header.jsx";
 import Homepage from "./Homepage/Homepage.jsx";
 import AllProducts from "./AllProducts.jsx";
+import SingleProduct from "./SingleProduct.jsx"
 
 class App extends Component {
     constructor(props) {
@@ -25,6 +26,11 @@ class App extends Component {
                                 exact
                                 path="/store"
                                 component={AllProducts}
+                            />
+                            <Route
+                                exact
+                                path="/product/:id"
+                                component={SingleProduct}
                             />
                         </Switch>
                     </main>
