@@ -5,7 +5,7 @@ import { HashRouter as Router, Route, Link, Switch } from "react-router-dom";
 
 // Component Imports
 import Header from "./Header.jsx";
-import Homepage from "./Homepage.jsx";
+import Homepage from "./Homepage/Homepage.jsx";
 import AllProducts from "./AllProducts.jsx";
 
 class App extends Component {
