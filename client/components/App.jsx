@@ -4,6 +4,9 @@ import AllProducts from "./AllProducts.jsx";
 // React Router Imports
 import { HashRouter as Router, Route, Link, Switch } from "react-router-dom";
 
+// Component Imports
+import Header from "./Header.jsx";
+
 class App extends Component {
     constructor(props) {
         super(props);
