@@ -1,29 +1,27 @@
-const { expect } = require('chai');
+const { expect } = require("chai");
 
-// const { syncAndSeed } = require('../server/db/seed');
+const app = require("supertest")(require("../server/server"));
 
-// const app = require('supertest')(require('../server/server'));
+const {
+    db,
+    model: { Products, Artists, Categories, Users, Orders, Reviews },
+} = require("../server/db");
 
-// describe('Routes', () => {
-//     //beforeEach (() => syncAndSeed());
-//     describe('GET /', () => {
-//         it('show info', async() => {
-//             const response = await app.get('/');
-//             expect(response.status).to.equal(200);
-//             expect(response.text).to.include('Grace Shopper Project');
-//         });
-//     });
+describe("Backend", () => {
+    describe("Product Model", () => {
+        let product;
 
-    // describe('GET /api/products', () => {
-    //     it('return products', async() => {
-    //         const response = await app.get('/api/products');
-    //         expect(response.status).to.equal(200);
-    //     });
-    // });
-//});
+        before(() => {
+            product = Products.build();
+        });
 
-describe('Testing', () => {
-    it('equals 2', ()=>{
-        expect(1 + 1).to.equal(2)
-    })
+        it("requires `name`", async () => {
+            try {
+                await product.validate();
+                throw new Error("Validation succeeded but should have failed");
+            } catch (err) {
+                expect(err.message).to.contain("name");
+            }
+        });
+    });
 });
