@@ -7,8 +7,6 @@ const {
     model: { Products, Artists, Categories, Users, Orders, Reviews },
 } = require("../server/db");
 
-console.log(db);
-
 describe("Backend", () => {
     describe("Product Model", () => {
         let product;
