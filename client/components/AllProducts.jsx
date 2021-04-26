@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { getAllProducts } from "../actionCreators/allProducts";
 import store from "../store/store";
+import '../../public/assets/style.css'
 
 class AllProducts extends Component {
   constructor() {
@@ -19,13 +20,13 @@ class AllProducts extends Component {
     const allProducts = this.state.allProducts;
     return (
       <div>
-        <ul>
+        <ul className='list-style'>
           {allProducts.map((product) => {
             return (
               <li key={product.id}>
                 Name: {product.name} --- Price: {product.price}
               </li>
-            );
+            )
           })}
         </ul>
       </div>
