@@ -11,22 +11,33 @@ class Header extends Component {
     render() {
         return (
             <header id="app-header">
-                <div id="header-logo">
-                    <NavLink to="/">AppName</NavLink>
+                <div id="header-logo" className="header-group">
+                    <NavLink to="/">
+                        <img src="/images/logo.png" alt="" id="main-logo" />
+                    </NavLink>
                 </div>
-                <div id="header-links">
+                <div id="main-header-links" className="header-group">
                     <NavLink to="/paintings" className="header-link">
                         Paintings
                     </NavLink>
                     <NavLink to="/sculptures" className="header-link">
                         Sculptures
                     </NavLink>
+                    <NavLink to="/artists" className="header-link">
+                        Artists
+                    </NavLink>
+                </div>
+                <div className="header-group">
+                    <NavLink to="/sign-in" className="header-link">
+                        Sign In
+                    </NavLink>
                     <NavLink
-                        to="/about-us"
-                        id="about-us"
+                        to="/cart"
+                        id="header-cart-link"
                         className="header-link"
                     >
-                        About Us
+                        Cart
+                        <img src="/images/cart.png" alt="" id="cart-img" />
                     </NavLink>
                 </div>
             </header>
