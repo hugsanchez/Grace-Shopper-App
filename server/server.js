@@ -3,11 +3,11 @@ const app = express();
 const path = require("path");
 
 // API Imports
-const userAPI = require("./api/users");
-const adminAPI = require("./api/admins");
-const productsAPI = require("./api/products");
-const ordersAPI = require("./api/orders");
-const reviewsAPI = require("./api/reviews");
+// const userAPI = require("./api/users");
+// const adminAPI = require("./api/admins");
+// const productsAPI = require("./api/products");
+// const ordersAPI = require("./api/orders");
+// const reviewsAPI = require("./api/reviews");
 
 // Database Imports
 const {
@@ -23,11 +23,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // API Routes
-app.use("/api/users", userAPI);
-app.use("/api/admins", adminAPI);
-app.use("/api/products", productsAPI);
-app.use("/api/orders", ordersAPI);
-app.use("/api/reviews", reviewsAPI);
+// app.use("/api/users", userAPI);
+// app.use("/api/admins", adminAPI);
+// app.use("/api/products", productsAPI);
+// app.use("/api/orders", ordersAPI);
+// app.use("/api/reviews", reviewsAPI);
 
 app.get("/", async (req, res, next) => {
     try {
