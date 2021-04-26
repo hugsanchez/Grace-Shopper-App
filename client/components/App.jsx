@@ -5,18 +5,24 @@ import AllProducts from "./AllProducts.jsx";
 import { HashRouter as Router, Route, Link, Switch } from "react-router-dom";
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-  render() {
-    return (
-      <div>
-        <h1>Welcome to Black Market Art</h1>
-        <AllProducts />
-      </div>
-    );
-  }
+    constructor(props) {
+        super(props);
+        this.state = {};
+    }
+    render() {
+        return (
+            <Router>
+                <React.Fragment>
+                    <Header />
+                    <main className="main-view">
+                        <Switch>
+                            <Route exact path="/" component={AllProducts} />
+                        </Switch>
+                    </main>
+                </React.Fragment>
+            </Router>
+        );
+    }
 }
 
 export default App;
