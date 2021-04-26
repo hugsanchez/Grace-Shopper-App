@@ -6,9 +6,6 @@ import "../../../public/assets/homepage.css";
 // Data Imports
 import CAROUSEL_DATA from "./carouselImageData";
 
-// Component Imports
-import CarouselImage from "./CarouselImage.jsx";
-
 class Homepage extends Component {
     constructor(props) {
         super(props);

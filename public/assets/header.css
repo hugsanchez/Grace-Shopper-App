@@ -3,7 +3,7 @@
     flex-direction: row;
     justify-content: space-between;
     align-content: center;
-    padding: 2vmin 14vmin;
+    padding: 2vmin 10vmin;
     background-color: rgb(45, 46, 44);
     z-index: 5;
     position: sticky;
@@ -57,6 +57,11 @@ h3 {
     flex-direction: column;
     justify-content: center;
     align-content: center;
+}
+
+.header-link:hover {
+    filter: brightness(0) saturate(100%) invert(87%) sepia(42%) saturate(255%)
+        hue-rotate(10deg) brightness(106%) contrast(96%);
 }
 
 #store-link {
