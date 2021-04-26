@@ -15,32 +15,55 @@ class Header extends Component {
         return (
             <header id="app-header">
                 <div id="header-logo" className="header-group">
-                    <NavLink to="/">
-                        <img src="/images/logo.png" alt="" id="main-logo" />
+                    <NavLink
+                        to="/"
+                        className="header-link"
+                        id="main-header-link"
+                    >
+                        <img
+                            src="/images/utils/brush.png"
+                            alt=""
+                            id="main-logo"
+                        />
+                        <h1 id="main-title">AppName</h1>
                     </NavLink>
                 </div>
                 <div id="main-header-links" className="header-group">
-                    <NavLink to="/paintings" className="header-link">
-                        Paintings
-                    </NavLink>
-                    <NavLink to="/sculptures" className="header-link">
-                        Sculptures
-                    </NavLink>
                     <NavLink to="/artists" className="header-link">
-                        Artists
+                        <h2>Artists</h2>
+                    </NavLink>
+                    <NavLink
+                        to="/store"
+                        className="header-link"
+                        id="store-link"
+                    >
+                        <h2>Store</h2>
                     </NavLink>
                 </div>
                 <div className="header-group">
                     <NavLink to="/sign-in" className="header-link">
-                        Sign In
+                        <h3>Sign In</h3>
                     </NavLink>
                     <NavLink
-                        to="/cart"
-                        id="header-cart-link"
+                        to="/sign-up"
                         className="header-link"
+                        id="register-link"
                     >
-                        Cart
-                        <img src="/images/cart.png" alt="" id="cart-img" />
+                        <h3>Register</h3>
+                    </NavLink>
+                    <NavLink to="#" className="header-link">
+                        <img
+                            src="images/utils/search.png"
+                            alt=""
+                            id="search-img"
+                        />
+                    </NavLink>
+                    <NavLink to="/cart" className="header-link">
+                        <img
+                            src="/images/utils/cart.png"
+                            alt=""
+                            id="cart-img"
+                        />
                     </NavLink>
                 </div>
             </header>

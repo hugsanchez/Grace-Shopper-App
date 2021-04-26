@@ -7,8 +7,12 @@ class CarouselImage extends Component {
     }
 
     render() {
-        const { fileSrc } = this.props;
-        return <article class="container"></article>;
+        const { src } = this.props;
+        return (
+            <article className="carousel-article">
+                <img src={`/images/artwork/${src}`} alt="" />
+            </article>
+        );
     }
 }
 

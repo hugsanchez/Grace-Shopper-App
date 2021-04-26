@@ -3,6 +3,12 @@ import React, { Component } from "react";
 // Style Import
 import "../../../public/assets/homepage.css";
 
+// Data Imports
+import CAROUSEL_DATA from "./carouselImageData";
+
+// Component Imports
+import CarouselImage from "./CarouselImage.jsx";
+
 class Homepage extends Component {
     constructor(props) {
         super(props);
@@ -12,7 +18,11 @@ class Homepage extends Component {
     render() {
         return (
             <div id="homepage-lander">
-                <div id="slideshow-container"></div>
+                {/* <div id="slideshow-container">
+                    {CAROUSEL_DATA.map((article) => (
+                        <CarouselImage {...article} key={article.src} />
+                    ))}
+                </div> */}
             </div>
         );
     }
