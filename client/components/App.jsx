@@ -1,11 +1,12 @@
 import React, { Component } from "react";
-import AllProducts from "./AllProducts.jsx";
 
 // React Router Imports
 import { HashRouter as Router, Route, Link, Switch } from "react-router-dom";
 
 // Component Imports
 import Header from "./Header.jsx";
+import Homepage from "./Homepage.jsx";
+import AllProducts from "./AllProducts.jsx";
 
 class App extends Component {
     constructor(props) {
@@ -19,7 +20,12 @@ class App extends Component {
                     <Header />
                     <main className="main-view">
                         <Switch>
-                            <Route exact path="/" component={AllProducts} />
+                            <Route exact path="/" component={Homepage} />
+                            <Route
+                                exact
+                                path="/paintings"
+                                component={AllProducts}
+                            />
                         </Switch>
                     </main>
                 </React.Fragment>
