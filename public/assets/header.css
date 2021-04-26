@@ -1,0 +1,69 @@
+#app-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-content: center;
+    padding: 2vmin 10vmin;
+    background-color: rgb(45, 46, 44);
+    z-index: 5;
+    position: sticky;
+    top: 0;
+    box-shadow: 0px -12px 9px 5px rgba(0, 0, 0, 0);
+    transition: 0.2s ease-in-out;
+}
+
+header img {
+    width: 3vmin;
+    height: 3vmin;
+}
+
+h2 {
+    font-size: 3vmin;
+    font-weight: 500;
+}
+
+h3 {
+    font-size: 2.3vmin;
+    font-weight: 500;
+}
+
+.header-group {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-content: center;
+}
+
+.header-group > * {
+    margin: 0vmin 1.1vmin;
+}
+
+#main-header-link {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-content: center;
+}
+
+#main-logo {
+    width: 6vmin;
+    height: 6vmin;
+}
+
+.header-link {
+    color: white;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+}
+
+.header-link:hover {
+    filter: brightness(0) saturate(100%) invert(87%) sepia(42%) saturate(255%)
+        hue-rotate(10deg) brightness(106%) contrast(96%);
+}
+
+#store-link {
+    margin-left: 3vmin;
+}

@@ -1,5 +1,14 @@
-/* Testing... */
+html {
+    font-family: "Raleway", "Roboto", "Lato", "Poppins", sans-serif;
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    z-index: -1;
+    /* color: white; */
+}
 
 .list-style {
-  border: black solid 3px;
+    border: black solid 3px;
 }
