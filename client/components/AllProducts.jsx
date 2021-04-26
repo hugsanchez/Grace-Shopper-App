@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { getAllProducts } from "../actionCreators/allProducts";
 import store from "../store/store";
+import { Link } from "react-router-dom";
 import "../../public/assets/style.css";
 
 class AllProducts extends Component {
@@ -26,7 +27,7 @@ class AllProducts extends Component {
                     {allProducts.map((product) => {
                         return (
                             <li key={product.id}>
-                                Name: {product.name} --- Price: {product.price}
+                                Name: <Link to={`/product/${product.id}`} >{product.name}</Link> --- Price: {product.price}
                             </li>
                         );
                     })}
