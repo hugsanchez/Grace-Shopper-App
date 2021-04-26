@@ -6,5 +6,6 @@ const { syncAndSeed } = require("./seed");
 
 module.exports = {
     syncAndSeed,
+    db,
     model: { Products, Artists, Categories, Users, Orders, Reviews },
 };
