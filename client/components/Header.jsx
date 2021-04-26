@@ -1,5 +1,8 @@
 import React, { Component } from "react";
 
+// Style Import
+import "../../public/assets/header.css";
+
 // React Router Links
 import { NavLink } from "react-router-dom";
 
