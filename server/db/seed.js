@@ -36,40 +36,65 @@ const syncAndSeed = async () => {
         }
 
         // Generate Fake Products and Artists from the Met API
-        let fakeProducts = [];
-        const NUMBER_OF_PRODUCTS = 20;
-        for (let i = 1; i <= NUMBER_OF_PRODUCTS; i++) {
-            const randId = Math.floor(Math.random() * 10) + 1;
+        let productsFake = Array(20).fill(' ');
+        let productPromise = [];
+        let randId = 437165;
 
-            const { data: product } = await axios.get(
-                `https://collectionapi.metmuseum.org/public/collection/v1/objects/${randId}`,
-            );
+       for(let i = 0; i < productsFake.length; i++) {
+            //const randId = Math.floor(Math.random() * (437185 - 437165 + 1) + 437165);
+            //const randId = Math.floor(Math.random() * 10) + 1;
+            const { data: productMet } = await axios.get(
+                `https://collectionapi.metmuseum.org/public/collection/v1/objects/${randId}`
+                );
+            ++randId;
+            productsFake[i] = new Products({
+                name: productMet.title,
+                description:productMet.objectName,
+                price: Math.floor(Math.random() * 10000),
+                year: productMet.objectEndDate,
+                stock: Math.floor(Math.random() * 10),
+                imgUrl: productMet.primaryImage || '#',
+            }).save();
+            productPromise.push(productsFake[i]);
+        };
 
-            // console.log product to see more properties!
-            const {
-                artistDisplayName,
-                title,
-                primaryImage,
-                objectEndDate,
-            } = product;
+        await Promise.all(productPromise);
+        // let fakeProducts = [];
+        // const NUMBER_OF_PRODUCTS = 20;
+        // for (let i = 1; i <= NUMBER_OF_PRODUCTS; i++) {
+        //     const randId = Math.floor(Math.random() * (437165 - 437175 + 1) + 437165);;
 
-            const name = title;
-            const artist = artistDisplayName || "Unknown";
-            const price = Math.floor(Math.random() * 10000);
-            const year = objectEndDate;
-            const imgUrl = primaryImage || "#";
-            const stock = Math.floor(Math.random() * 10);
+        //     const { data: product } = await axios.get(
+        //         `https://collectionapi.metmuseum.org/public/collection/v1/objects/${randId}`,
+        //     );
 
-            fakeProducts.push({
-                name,
-                description: "fake data",
-                price,
-                year,
-                stock,
-                imgUrl,
-            });
-            // console.log(`${i} products generated`);
-        }
+        //     // console.log product to see more properties!
+        //     const {
+        //         artistDisplayName,
+        //         title,
+        //         primaryImage,
+        //         objectEndDate,
+        //         objectName,
+        //     } = product;
+
+        //     const name = title;
+        //     const artist = artistDisplayName || "Unknown";
+        //     const price = Math.floor(Math.random() * 10000);
+        //     const year = objectEndDate;
+        //     const imgUrl = primaryImage || "#";
+        //     const stock = Math.floor(Math.random() * 10);
+        //     const description = objectName;
+
+        //     fakeProducts.push({
+        //         name,
+        //         description: "fake data",
+        //         price,
+        //         year,
+        //         stock,
+        //         imgUrl,
+        //     });
+        //     // console.log(`${i} products generated`);
+        // }
 
         // Custom Users
         const users = await Promise.all([
@@ -116,11 +141,11 @@ const syncAndSeed = async () => {
         ]);
 
         // Auto-generated Products
-        await Promise.all(
-            fakeProducts.map((product) => {
-                Products.create({ ...product });
-            }),
-        );
+        // await Promise.all(
+        //     fakeProducts.map((product) => {
+        //         Products.create({ ...product });
+        //     }),
+        // );
 
         const artists = await Promise.all([
             Artists.create({

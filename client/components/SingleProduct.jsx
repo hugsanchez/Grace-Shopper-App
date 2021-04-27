@@ -23,8 +23,8 @@ class SingleProduct extends Component {
         return(
             <div>
                 <h1>{singleProduct.name}</h1>
-                <img src={singleProduct.imgUrl} width="150px" height="150px"/>
-                <h3>Created On: {singleProduct.year}</h3>
+                <img src={singleProduct.imgUrl} width="450px" height="450px"/>
+                <h3>Acquired On: {singleProduct.year}</h3>
                 <h3>Quantity Avaliable: {singleProduct.stock}</h3>
                 <h3>Price: ${singleProduct.price}</h3>
                 <p>Description: {singleProduct.description}</p>
