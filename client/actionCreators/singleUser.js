@@ -7,7 +7,7 @@ export const getUser = (user) => ({
     payload: user,
 });
 
-export const getUser = (id) => async (dispatch) => {
+export const getSingleUser = (id) => async (dispatch) => {
     try {
         const { data: user } = await axios.get(`/api/users/${id}`);
         dispatch(getUser(user));

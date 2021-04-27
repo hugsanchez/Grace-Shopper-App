@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 // Redux imports
 import { connect } from "react-redux";
-import { addCampusToDatabase } from "../../../actionCreators/allUsers";
+import { addUser } from "../../../actionCreators/allUsers";
 
 // Styles Import
 import "../../../../public/assets/signup.css";
@@ -111,4 +111,10 @@ class SignUp extends Component {
     }
 }
 
-export default connect()(SignUp);
+function mapDispatchToProps(dispatch) {
+    return {
+        createUser: (user) => dispatch(addUser(user)),
+    };
+}
+
+export default connect(null, mapDispatchToProps)(SignUp);
