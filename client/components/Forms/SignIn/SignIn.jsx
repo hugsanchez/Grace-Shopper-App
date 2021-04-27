@@ -2,12 +2,16 @@ import React, { Component } from "react";
 
 // Redux Imports
 import { connect } from "react-redux";
+import { authUser } from "../../../store/actionCreators/singleUser";
 
 // React-Router Imports
 import { NavLink } from "react-router-dom";
 
-// Styles
+// Style Imports
 import "../../../../public/assets/signin.css";
+
+// Script Imports
+import signInValidator from "./signInValidator";
 
 class SignIn extends Component {
     constructor(props) {
@@ -18,7 +22,24 @@ class SignIn extends Component {
     }
 
     // Handles sign in submission/error checking
-    handleSubmit(ev) {}
+    handleSubmit(ev) {
+        ev.preventDefault();
+
+        // Determines if our input is valid, modifies DOM
+        const allValid = signUpValidator();
+
+        // This will send the data to a thunk to authorize the sign in
+        if (allValid) {
+            const { username, password } = this.state;
+            this.props.signIn({ username, password });
+
+            // Resets our state to blank
+            this.setState({
+                username: "",
+                password: "",
+            });
+        }
+    }
 
     // Modifies the state to reflect current text in input fields
     handleChange(ev) {
@@ -75,4 +96,10 @@ class SignIn extends Component {
     }
 }
 
-export default connect()(SignIn);
+function mapDispatchToProps(dispatch) {
+    return {
+        signIn: (user) => dispatch(authUser(user)),
+    };
+}
+
+export default connect(null, mapDispatchToProps)(SignIn);
