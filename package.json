@@ -24,9 +24,11 @@
     "homepage": "https://github.com/Grace-Shopper-Jalapenos/Grace-Shopper-App#readme",
     "dependencies": {
         "axios": "^0.21.1",
+        "bcrypt": "^5.0.1",
         "email-validator": "^2.0.4",
         "express": "^4.17.1",
         "faker": "^5.5.3",
+        "jsonwebtoken": "^8.5.1",
         "pg": "^8.6.0",
         "react": "^17.0.1",
         "react-dom": "^17.0.1",

@@ -1,5 +1,7 @@
 const { Sequelize, DataTypes } = require("sequelize");
 const db = require("../db");
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 
 const Users = db.define("users", {
     firstName: {
@@ -56,5 +58,10 @@ const Users = db.define("users", {
 });
 
 Users.isAdmin;
+
+//
+Users.addHook("beforeSave", async (user) => {
+    user.password = await bcrypt.hash(user.password, 10);
+});
 
 module.exports = Users;
