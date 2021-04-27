@@ -8,7 +8,7 @@ import Header from "./Header.jsx";
 import Homepage from "./Homepage/Homepage.jsx";
 import AllProducts from "./AllProducts.jsx";
 import SingleProduct from "./SingleProduct.jsx";
-import SignUp from "./SignUp.jsx";
+import { SignUp } from "./Forms";
 
 class App extends Component {
     constructor(props) {

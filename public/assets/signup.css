@@ -6,7 +6,7 @@
 
 .form-container {
     background-color: darkcyan;
-    min-width: 30vh;
+    min-width: 40vh;
     max-width: 40vh;
     min-height: 20vh;
     border-radius: 0.5rem;
@@ -18,7 +18,7 @@
     color: white;
 }
 
-.sign-up-form {
+#sign-up-form {
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;

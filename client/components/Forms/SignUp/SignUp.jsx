@@ -1,7 +1,15 @@
 import React, { Component } from "react";
 
+// Redux imports
+import { connect } from "react-redux";
+// import { addCampusToDatabase } from "../../store/campus";
+
 // Styles Import
-import "../../public/assets/signup.css";
+import "../../../../public/assets/signup.css";
+
+// Script Imports
+import resetSignUpFormStyles from "./resetSignUpFormStyles";
+import signUpValidator from "./signUpValidator";
 
 class SignUp extends Component {
     constructor(props) {
@@ -10,6 +18,7 @@ class SignUp extends Component {
             email: "",
             username: "",
             password: "",
+            confirmPassword: "",
         };
 
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -18,6 +27,13 @@ class SignUp extends Component {
 
     handleSubmit(ev) {
         ev.preventDefault();
+
+        // Determines if our input is valid, modifies DOM
+        const allValid = signUpValidator();
+
+        // This will send the data to a thunk to create the user in a POST route
+        if (allValid) {
+        }
     }
 
     // Modifies the state to reflect current text in input fields
@@ -28,13 +44,13 @@ class SignUp extends Component {
     }
 
     render() {
-        const { email, username, password } = this.state;
+        const { email, username, password, confirmPassword } = this.state;
 
         return (
             <div className="primary-screen">
                 <div className="form-container">
                     <h2>Sign Up</h2>
-                    <form className="sign-up-form" onSubmit={this.handleSubmit}>
+                    <form id="sign-up-form" onSubmit={this.handleSubmit}>
                         <div className="form-control">
                             <label htmlFor="email">Email</label>
                             <input
@@ -62,11 +78,25 @@ class SignUp extends Component {
                         <div className="form-control">
                             <label htmlFor="password">Password</label>
                             <input
-                                value={username}
+                                value={password}
                                 onChange={this.handleChange}
                                 id="password-input"
                                 name="password"
-                                type="text"
+                                type="password"
+                                placeholder="Enter password"
+                            />
+                            <small>Error message</small>
+                        </div>
+                        <div className="form-control">
+                            <label htmlFor="confirmPassword">
+                                Confirm Password
+                            </label>
+                            <input
+                                value={confirmPassword}
+                                onChange={this.handleChange}
+                                id="confirmPassword-input"
+                                name="confirmPassword"
+                                type="password"
                                 placeholder="Enter password"
                             />
                             <small>Error message</small>
@@ -81,4 +111,4 @@ class SignUp extends Component {
     }
 }
 
-export default SignUp;
+export default connect()(SignUp);

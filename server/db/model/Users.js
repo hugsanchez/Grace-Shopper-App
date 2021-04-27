@@ -28,6 +28,7 @@ const Users = db.define("users", {
         allowNull: false,
         validate: {
             notEmpty: true,
+            len: [3, 30],
         },
     },
     password: {
@@ -35,6 +36,7 @@ const Users = db.define("users", {
         allowNull: false,
         validate: {
             notEmpty: true,
+            len: [8, 128],
         },
     },
     userType: {
