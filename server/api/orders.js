@@ -28,4 +28,17 @@ router.get("/:id", async (req, res, next) => {
     }
 });
 
+//add single product to cart
+router.put("/cart/:id", async(req, res, next)=>{
+    try{
+        const currProduct= await Products.findByPk(req.params.id)
+        // await currProduct.update({stock: stock-1})
+        // make sure to update the current quantity so that multiple users cant buy the same item if it is in someone else's cart
+        console.log('add this to cart', currProduct)
+        res.send(currProduct)
+    }catch(err){
+        next(err)
+    }
+})
+
 module.exports = router;
