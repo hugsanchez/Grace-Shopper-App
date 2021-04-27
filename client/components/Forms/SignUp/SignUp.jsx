@@ -4,6 +4,9 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { addSingleUser } from "../../../store/actionCreators/allUsers";
 
+// React-Router
+import { NavLink } from "react-router-dom";
+
 // Styles Import
 import "../../../../public/assets/signup.css";
 
@@ -39,10 +42,10 @@ class SignUp extends Component {
 
             // Resets our state to blank
             this.setState({
-                name: "",
-                address: "",
-                description: "",
-                imgUrl: "",
+                email: "",
+                username: "",
+                password: "",
+                confirmPassword: "",
             });
         }
     }
@@ -116,6 +119,12 @@ class SignUp extends Component {
                             Submit
                         </button>
                     </form>
+                    <p id="sign-up-prompt">
+                        Already have an account?{" "}
+                        <span>
+                            <NavLink to="/sign-in">Sign In</NavLink>
+                        </span>
+                    </p>
                 </div>
             </div>
         );
