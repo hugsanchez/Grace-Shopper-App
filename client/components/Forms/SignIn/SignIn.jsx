@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import axios from "axios";
 
 // Redux Imports
 import { connect } from "react-redux";
@@ -19,10 +20,29 @@ class SignIn extends Component {
         this.state = { username: "", password: "" };
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.signIn = this.signIn.bind(this);
+    }
+
+    async signIn({ username, password }) {
+        try {
+            // Create a token with the username and password
+            const { data: token } = await axios.post("/api/auth", {
+                username,
+                password,
+            });
+
+            // Store token in the user's local storage
+            window.localStorage.setItem("token", token);
+
+            console.log(token);
+            // dispatch(signIn({ username, password }));
+        } catch (err) {
+            console.error(err);
+        }
     }
 
     // Handles sign in submission/error checking
-    handleSubmit(ev) {
+    async handleSubmit(ev) {
         ev.preventDefault();
 
         // Determines if our input is valid, modifies DOM
@@ -31,7 +51,8 @@ class SignIn extends Component {
         // This will send the data to a thunk to authorize the sign in
         if (allValid) {
             const { username, password } = this.state;
-            this.props.signIn({ username, password });
+
+            await this.signIn({ username, password });
 
             // Resets our state to blank
             this.setState({

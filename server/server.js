@@ -33,7 +33,7 @@ app.use("/api/admins", adminAPI);
 app.use("/api/products", productsAPI);
 app.use("/api/orders", ordersAPI);
 app.use("/api/reviews", reviewsAPI);
-app.use("/api/reviews", authAPI);
+app.use("/api/auth", authAPI);
 
 app.get("/", async (req, res, next) => {
     try {

@@ -89,6 +89,8 @@ Users.authenticate = async ({ username, password }) => {
             },
         });
 
+        console.log(process.env.JWT);
+
         if (user && (await bcrypt.compare(password, user.password))) {
             return jwt.sign({ id: user.id }, process.env.JWT);
         } else {
@@ -102,12 +104,6 @@ Users.authenticate = async ({ username, password }) => {
 };
 
 // Add hooks to hash passwords if we need to
-Users.addHook("beforeCreate", async (user) => {
-    if (user.changed("password")) {
-        user.password = await bcrypt.hash(user.password, 3);
-    }
-});
-
 Users.addHook("beforeSave", async (user) => {
     if (user.changed("password")) {
         user.password = await bcrypt.hash(user.password, 10);
