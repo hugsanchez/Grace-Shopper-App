@@ -31,12 +31,12 @@ router.post("/", async (req, res, next) => {
         const { email, username, password } = req.body;
 
         const newUser = await Users.create({
-            firstname: "Testing Data CHANGE ME",
+            firstName: "Testing Data CHANGE ME",
             lastName: "Testing Data CHANGE ME",
             email,
             username,
             password,
-            userType: "User",
+            userType: "USER",
         });
 
         res.status(201).send(newUser);

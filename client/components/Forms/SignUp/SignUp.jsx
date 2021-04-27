@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 // Redux imports
 import { connect } from "react-redux";
-import { addUser } from "../../../actionCreators/allUsers";
+import { addSingleUser } from "../../../actionCreators/allUsers";
 
 // Styles Import
 import "../../../../public/assets/signup.css";
@@ -33,6 +33,16 @@ class SignUp extends Component {
 
         // This will send the data to a thunk to create the user in a POST route
         if (allValid) {
+            const { email, username, password } = this.state;
+            this.props.createUser({ email, username, password });
+
+            // Resets our state to blank
+            this.setState({
+                name: "",
+                address: "",
+                description: "",
+                imgUrl: "",
+            });
         }
     }
 
@@ -113,7 +123,7 @@ class SignUp extends Component {
 
 function mapDispatchToProps(dispatch) {
     return {
-        createUser: (user) => dispatch(addUser(user)),
+        createUser: (user) => dispatch(addSingleUser(user)),
     };
 }
 

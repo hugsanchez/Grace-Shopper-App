@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const path = require("path");
+const morgan = require("morgan");
 
 // API Imports
 const userAPI = require("./api/users");
@@ -21,6 +22,9 @@ app.use(express.static(path.join(__dirname, "../public")));
 // Server Request Parsing
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Middleware Logging
+app.use(morgan("dev"));
 
 // API Routes
 app.use("/api/users", userAPI);

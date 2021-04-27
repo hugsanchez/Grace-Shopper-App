@@ -24,10 +24,10 @@ export const getAllUsers = () => async (dispatch) => {
 };
 
 // POST request to add user
-export const addSingleUser = () => async (dispatch) => {
+export const addSingleUser = (user) => async (dispatch) => {
     try {
-        const { data: allUsers } = await axios.post("/api/users");
-        dispatch(getUsers(allUsers));
+        const { data: newUser } = await axios.post("/api/users", user);
+        dispatch(getUsers(newUser));
     } catch (err) {
         console.error(err);
     }
