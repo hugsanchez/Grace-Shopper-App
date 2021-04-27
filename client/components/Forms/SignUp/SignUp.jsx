@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 // Redux imports
 import { connect } from "react-redux";
-import { addSingleUser } from "../../../actionCreators/allUsers";
+import { addSingleUser } from "../../../store/actionCreators/allUsers";
 
 // Styles Import
 import "../../../../public/assets/signup.css";

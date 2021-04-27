@@ -1,20 +1,28 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
-import { getAllProducts } from "../actionCreators/allProducts";
-import store from "../store/store";
-import { Link } from "react-router-dom";
-import "../../public/assets/style.css";
-import {addItemToCart} from "../actionCreators/shoppingCart"
 
+// React-Redux Imports
+import { connect } from "react-redux";
+
+// Redux Imports
+import { getAllProducts } from "../store/actionCreators/allProducts";
+import { addItemToCart } from "../store/actionCreators/shoppingCart";
+
+import store from "../store/store";
+
+// React-Router Imports
+import { Link } from "react-router-dom";
+
+// Style Imports
+import "../../public/assets/style.css";
 
 class AllProducts extends Component {
     constructor(props) {
         super(props);
         this.state = {
             allProducts: [],
-            cart: []
+            cart: [],
         };
-        this.addToCart= this.addToCart.bind(this)
+        this.addToCart = this.addToCart.bind(this);
     }
 
     async componentDidMount() {
@@ -23,15 +31,15 @@ class AllProducts extends Component {
         await this.setState({ allProducts: store.getState().allProducts });
     }
 
-    async addToCart(currProductId){
-        await this.props.addItemToCart(currProductId)
-        const currProduct= await store.getState()
-        console.log('currProduct component', currProduct)
+    async addToCart(currProductId) {
+        await this.props.addItemToCart(currProductId);
+        const currProduct = await store.getState();
+        console.log("currProduct component", currProduct);
         await this.setState({
             ...this.state,
-            cart:[...this.state.cart, currProduct]
-        })
-        await console.log(this.state.cart)
+            cart: [...this.state.cart, currProduct],
+        });
+        await console.log(this.state.cart);
     }
 
     render() {
@@ -43,17 +51,25 @@ class AllProducts extends Component {
                     {allProducts.map((product) => {
                         return (
                             <li key={product.id}>
-                                Name: <Link to={`/product/${product.id}`} >{product.name}</Link> --- Price: {product.price}
-                                <button onClick={()=>{this.addToCart(product.id)}}>Add to Cart</button>
+                                Name:{" "}
+                                <Link to={`/product/${product.id}`}>
+                                    {product.name}
+                                </Link>{" "}
+                                --- Price: {product.price}
+                                <button
+                                    onClick={() => {
+                                        this.addToCart(product.id);
+                                    }}
+                                >
+                                    Add to Cart
+                                </button>
                             </li>
                         );
                     })}
                 </ul>
-                <div id='cart-summary'>
+                <div id="cart-summary">
                     <h2>Cart Summary</h2>
-                    <ul>
-                        
-                    </ul>
+                    <ul></ul>
                     <h3>Total</h3>
                     <button>Proceed to Checkout</button>
                 </div>
@@ -65,7 +81,7 @@ class AllProducts extends Component {
 const mapDispatchToProps = (dispatch) => {
     return {
         getAllProducts: () => dispatch(getAllProducts()),
-        addItemToCart: (id)=> dispatch(addItemToCart(id))
+        addItemToCart: (id) => dispatch(addItemToCart(id)),
     };
 };
 
