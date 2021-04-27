@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 
 // Redux Imports
+import { connect } from "react-redux";
 
 // React-Router Imports
 import { NavLink } from "react-router-dom";
@@ -74,4 +75,4 @@ class SignIn extends Component {
     }
 }
 
-export default SignIn;
+export default connect()(SignIn);
