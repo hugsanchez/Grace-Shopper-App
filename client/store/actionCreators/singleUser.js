@@ -2,18 +2,25 @@ import axios from "axios";
 
 export const GET_USER = "GET_USER";
 export const SIGN_IN = "SIGN_IN";
+export const LOG_OUT = "LOG_OUT";
 
 export const getUser = (user) => ({
     type: GET_USER,
     payload: user,
 });
 
-export const signIn = ({ username, password }) => ({
+// signs in a user
+export const signIn = (user) => ({
     type: SIGN_IN,
-    username,
-    password,
+    user,
 });
 
+// Remove a user from the redux store for signing in
+export const logOut = (user) => ({
+    type: SIGN_IN,
+});
+
+// Simply just gets information about any user
 export const getSingleUser = (id) => async (dispatch) => {
     try {
         const { data: user } = await axios.get(`/api/users/${id}`);
@@ -23,28 +30,29 @@ export const getSingleUser = (id) => async (dispatch) => {
     }
 };
 
+// Uses the clients token to attempt access at a user's data
 export const attemptTokenLogin = () => async (dispatch) => {
     try {
         const token = window.localStorage.getItem("token");
 
         if (token) {
-            const response = await axios.get("/api/auth", {
+            const { data: user } = await axios.get("/api/auth", {
                 headers: {
                     authorization: token,
                 },
-            }).data;
+            });
 
-            // dispatch(signIn({ response, hi: "hi" }));
-
-            // testing
-            // window.localStorage.removeItem("token");
+            if (user) {
+                dispatch(signIn(user));
+            }
         }
     } catch (err) {
         console.error(err);
     }
 };
 
-export const logOut = () => async (dispatch) => {
+// Logs out
+export const logOutUser = () => async (dispatch) => {
     try {
         window.localStorage.removeItem("token");
     } catch (err) {

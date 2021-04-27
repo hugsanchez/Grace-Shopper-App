@@ -8,7 +8,7 @@ const {
 
 router.post("/", async (req, res, next) => {
     try {
-        res.send({ token: await Users.authenticate(req.body) });
+        res.status(201).send({ token: await Users.authenticate(req.body) });
     } catch (err) {
         next(err);
     }
@@ -16,7 +16,9 @@ router.post("/", async (req, res, next) => {
 
 router.get("/", async (req, res, next) => {
     try {
-        res.send(await Users.findByToken(req.headers.authorization));
+        const user = await Users.findByToken(req.headers.authorization);
+
+        res.send(user);
     } catch (ex) {
         next(err);
     }

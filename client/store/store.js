@@ -8,6 +8,7 @@ import { singleProductReducer } from "./reducers/singleProductReducer";
 import { allUsersReducer } from "./reducers/allUsersReducer";
 import { singleUserReducer } from "./reducers/singleUserReducer";
 import { cartReducer } from "./reducers/cartReducer";
+import { signInReducer } from "./reducers/signInReducer";
 
 // Combiend Reducer
 const primaryReducer = combineReducers({
@@ -16,6 +17,7 @@ const primaryReducer = combineReducers({
     allUsers: allUsersReducer,
     singleUser: singleUserReducer,
     cart: cartReducer,
+    signedIn: signInReducer,
 });
 
 // Redux Middleware
