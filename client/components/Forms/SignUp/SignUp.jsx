@@ -31,6 +31,7 @@ class SignUp extends Component {
         // Determines if our input is valid, modifies DOM
         const allValid = signUpValidator();
 
+        console.log(allValid);
         // This will send the data to a thunk to create the user in a POST route
         if (allValid) {
             const { email, username, password } = this.state;
