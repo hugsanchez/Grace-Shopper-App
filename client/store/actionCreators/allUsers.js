@@ -27,7 +27,7 @@ export const getAllUsers = () => async (dispatch) => {
 export const addSingleUser = (user) => async (dispatch) => {
     try {
         const { data: newUser } = await axios.post("/api/users", user);
-        dispatch(getUsers(newUser));
+        dispatch(addUser(newUser));
     } catch (err) {
         console.error(err);
     }

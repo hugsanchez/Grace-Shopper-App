@@ -2,7 +2,10 @@ import React, { Component } from "react";
 
 // Redux imports
 import { connect } from "react-redux";
-import { addSingleUser } from "../../../actionCreators/allUsers";
+import { addSingleUser } from "../../../store/actionCreators/allUsers";
+
+// React-Router
+import { NavLink } from "react-router-dom";
 
 // Styles Import
 import "../../../../public/assets/signup.css";
@@ -31,6 +34,7 @@ class SignUp extends Component {
         // Determines if our input is valid, modifies DOM
         const allValid = signUpValidator();
 
+        console.log(allValid);
         // This will send the data to a thunk to create the user in a POST route
         if (allValid) {
             const { email, username, password } = this.state;
@@ -38,10 +42,10 @@ class SignUp extends Component {
 
             // Resets our state to blank
             this.setState({
-                name: "",
-                address: "",
-                description: "",
-                imgUrl: "",
+                email: "",
+                username: "",
+                password: "",
+                confirmPassword: "",
             });
         }
     }
@@ -115,6 +119,12 @@ class SignUp extends Component {
                             Submit
                         </button>
                     </form>
+                    <p id="sign-up-prompt">
+                        Already have an account?{" "}
+                        <span>
+                            <NavLink to="/sign-in">Sign In</NavLink>
+                        </span>
+                    </p>
                 </div>
             </div>
         );
