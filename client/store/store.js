@@ -1,16 +1,26 @@
-import { createStore, applyMiddleware } from "redux";
+import { createStore, applyMiddleware, combineReducers } from "redux";
 import thunk from "redux-thunk";
-import { combineReducers } from "redux";
+import { createLogger } from "redux-logger";
+
 import { allProductsReducer } from "../reducers/allProductsReducer";
+
 import { singleProductReducer } from "../reducers/singleProductReducer"; 
+import { allUsersReducer } from "../reducers/allUsersReducer";
+import { singleUserReducer } from "../reducers/singleUserReducer";
 import {cartReducer} from "../reducers/cartReducer"
 
+// Combiend Reducer
 const primaryReducer = combineReducers({
   allProducts: allProductsReducer,
   singleProduct: singleProductReducer,
+  allUsers: allUsersReducer,
+  singleUser: singleUserReducer,
   cart: cartReducer
 });
 
-const store = createStore(primaryReducer, applyMiddleware(thunk));
+// Redux Middleware
+const middleware = applyMiddleware(thunk, createLogger({ collapsed: true }));
 
+// Redux Store
+const store = createStore(primaryReducer, middleware);
 export default store;

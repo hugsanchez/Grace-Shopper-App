@@ -7,7 +7,8 @@ import { HashRouter as Router, Route, Link, Switch } from "react-router-dom";
 import Header from "./Header.jsx";
 import Homepage from "./Homepage/Homepage.jsx";
 import AllProducts from "./AllProducts.jsx";
-import SingleProduct from "./SingleProduct.jsx"
+import { SignUp } from "./Forms";
+import SingleProduct from "./SingleProduct.jsx";
 import Cart from "./Cart.jsx"
 
 class App extends Component {
@@ -34,6 +35,7 @@ class App extends Component {
                                 path="/product/:id"
                                 component={SingleProduct}
                             />
+                            <Route exact path="/sign-up" component={SignUp} />
                         </Switch>
                     </main>
                 </React.Fragment>

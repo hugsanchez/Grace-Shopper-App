@@ -78,14 +78,14 @@ const syncAndSeed = async () => {
                 lastName: "Ferreira",
                 email: "cf@gmail.com",
                 username: "cferreira",
-                password: "123",
+                password: "12345678",
             }),
             Users.create({
                 firstName: "Anthony",
                 lastName: "Sgro",
                 email: "as@gmail.com",
                 username: "asgro",
-                password: "123abc!",
+                password: "12345678",
                 userType: "ADMIN",
             }),
         ]);

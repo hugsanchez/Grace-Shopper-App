@@ -26,4 +26,23 @@ router.get("/:id", async (req, res, next) => {
     }
 });
 
+router.post("/", async (req, res, next) => {
+    try {
+        const { email, username, password } = req.body;
+
+        const newUser = await Users.create({
+            firstName: "Testing Data CHANGE ME",
+            lastName: "Testing Data CHANGE ME",
+            email,
+            username,
+            password,
+            userType: "USER",
+        });
+
+        res.status(201).send(newUser);
+    } catch (err) {
+        next(err);
+    }
+});
+
 module.exports = router;
