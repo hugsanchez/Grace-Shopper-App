@@ -1,4 +1,4 @@
-function signUpValidator() {
+function signInValidator() {
     // Get references to the DOM
     const form = document.getElementById("sign-up-form");
     const username = document.getElementById("username-input");
@@ -56,4 +56,4 @@ function signUpValidator() {
     return allValid;
 }
 
-export default signUpValidator;
+export default signInValidator;

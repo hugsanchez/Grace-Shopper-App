@@ -26,7 +26,7 @@ class SignIn extends Component {
         ev.preventDefault();
 
         // Determines if our input is valid, modifies DOM
-        const allValid = signUpValidator();
+        const allValid = signInValidator();
 
         // This will send the data to a thunk to authorize the sign in
         if (allValid) {
