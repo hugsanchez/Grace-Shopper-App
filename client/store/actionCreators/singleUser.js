@@ -23,21 +23,31 @@ export const getSingleUser = (id) => async (dispatch) => {
     }
 };
 
-export const authUser = ({ username, password }) => async (dispatch) => {
+export const attemptTokenLogin = () => async (dispatch) => {
     try {
+        const token = window.localStorage.getItem("token");
+
+        if (token) {
+            const response = await axios.get("/api/auth", {
+                headers: {
+                    authorization: token,
+                },
+            }).data;
+
+            // dispatch(signIn({ response, hi: "hi" }));
+
+            // testing
+            // window.localStorage.removeItem("token");
+        }
     } catch (err) {
         console.error(err);
     }
 };
 
-const attemptTokenLogin = async () => {
-    const token = window.localStorage.getItem("token");
-    if (token) {
-        const response = await axios.get("/api/auth", {
-            headers: {
-                authorization: token,
-            },
-        });
-        this.setState({ auth: response.data });
+export const logOut = () => async (dispatch) => {
+    try {
+        window.localStorage.removeItem("token");
+    } catch (err) {
+        console.error(err);
     }
 };

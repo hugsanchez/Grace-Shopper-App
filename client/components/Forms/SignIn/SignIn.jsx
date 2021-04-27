@@ -3,7 +3,7 @@ import axios from "axios";
 
 // Redux Imports
 import { connect } from "react-redux";
-import { authUser } from "../../../store/actionCreators/singleUser";
+import { attemptTokenLogin } from "../../../store/actionCreators/singleUser";
 
 // React-Router Imports
 import { NavLink } from "react-router-dom";
@@ -20,13 +20,15 @@ class SignIn extends Component {
         this.state = { username: "", password: "" };
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
-        this.signIn = this.signIn.bind(this);
+        this.authenticate = this.authenticate.bind(this);
     }
 
-    async signIn({ username, password }) {
+    async authenticate({ username, password }) {
         try {
             // Create a token with the username and password
-            const { data: token } = await axios.post("/api/auth", {
+            const {
+                data: { token },
+            } = await axios.post("/api/auth", {
                 username,
                 password,
             });
@@ -34,7 +36,10 @@ class SignIn extends Component {
             // Store token in the user's local storage
             window.localStorage.setItem("token", token);
 
-            console.log(token);
+            if (token) {
+                this.props.attemptLogin();
+            }
+
             // dispatch(signIn({ username, password }));
         } catch (err) {
             console.error(err);
@@ -52,7 +57,7 @@ class SignIn extends Component {
         if (allValid) {
             const { username, password } = this.state;
 
-            await this.signIn({ username, password });
+            await this.authenticate({ username, password });
 
             // Resets our state to blank
             this.setState({
@@ -119,7 +124,7 @@ class SignIn extends Component {
 
 function mapDispatchToProps(dispatch) {
     return {
-        signIn: (user) => dispatch(authUser(user)),
+        attemptLogin: () => dispatch(attemptTokenLogin()),
     };
 }
 

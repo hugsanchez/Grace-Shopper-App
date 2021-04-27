@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 const { Sequelize, DataTypes } = require("sequelize");
 const db = require("../db");
 const jwt = require("jsonwebtoken");
@@ -63,10 +65,11 @@ Users.isAdmin;
 Users.findByToken = async (token) => {
     try {
         // JWT verifies token with ciphered version (using environment variable) and returns userId
-        const { userId } = jwt.verify(token, process.env.JWT);
+        const { id } = await jwt.verify(token, process.env.JWT);
 
         // Now we can get the User ID
-        const user = await Users.findByPk(userId);
+        const user = await Users.findByPk(id);
+
         if (user) {
             return user;
         } else {
@@ -89,9 +92,8 @@ Users.authenticate = async ({ username, password }) => {
             },
         });
 
-        console.log(process.env.JWT);
-
         if (user && (await bcrypt.compare(password, user.password))) {
+            // if password matches, sign a token that contains the id to match later
             return jwt.sign({ id: user.id }, process.env.JWT);
         } else {
             const error = Error("Bad credentials");
