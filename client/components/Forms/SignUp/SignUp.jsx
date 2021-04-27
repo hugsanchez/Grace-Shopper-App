@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 // Redux imports
 import { connect } from "react-redux";
-// import { addCampusToDatabase } from "../../store/campus";
+import { addCampusToDatabase } from "../../../actionCreators/allUsers";
 
 // Styles Import
 import "../../../../public/assets/signup.css";
