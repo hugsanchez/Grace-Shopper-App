@@ -4,23 +4,26 @@ const app = require("supertest")(require("../server/server"));
 
 const {
     db,
-    model: { Products, Artists, Categories, Users, Orders, Reviews },
+    model: { Products },
 } = require("../server/db");
 
 describe("Backend", () => {
     describe("Product Model", () => {
         let product;
 
-        before(() => {
+        beforeEach(() => {
             product = Products.build();
         });
 
-        it("requires `name`", async () => {
+        it("requires all fields", async () => {
             try {
                 await product.validate();
                 throw new Error("Validation succeeded but should have failed");
             } catch (err) {
                 expect(err.message).to.contain("name");
+                expect(err.message).to.contain("description");
+                expect(err.message).to.contain("price");
+                expect(err.message).to.contain("year");
             }
         });
     });
