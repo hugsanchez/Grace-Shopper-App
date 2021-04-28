@@ -1,5 +1,4 @@
-const express = require("express");
-const app = express();
+const app = require('./app');
 // const path = require("path");
 // const morgan = require("morgan");
 
@@ -11,11 +10,11 @@ const app = express();
 // const reviewsAPI = require("./api/reviews");
 // const authAPI = require("./api/auth");
 
-// // Database Imports
-// const {
-//     syncAndSeed,
-//     model: { Products, Artists, Categories, Users, Orders, Reviews },
-// } = require("./db");
+// Database Imports
+const {
+    syncAndSeed,
+    model: { Products, Artists, Categories, Users, Orders, Reviews },
+} = require("./db");
 
 // // Serve Static Folder
 // app.use(express.static(path.join(__dirname, "../public")));
@@ -45,7 +44,7 @@ const app = express();
 // module.exports = app;
 
 
-const PORT = process.env.PORT || 3004;
+const PORT = process.env.PORT || 3000;
 
 
 const init = async () => {

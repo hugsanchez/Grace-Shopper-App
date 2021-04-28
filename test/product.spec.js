@@ -48,13 +48,12 @@ describe('Routes', () => {
     describe('GET /', () => {
         beforeEach(async () => {
             await db.sync({ force: true });
-            //await syncAndSeed();
+            //await syncAndSeed()
           });
      
         it('testing get route', async() => {
             const response = await app.get('/api/products');
             expect(response.status).to.equal(200);
-           // expect(response.body.length).to.equal(products.length)
         })
         it('compare axios and get', async() => {
             const response = await app.get('/api/products');
