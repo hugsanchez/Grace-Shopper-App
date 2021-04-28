@@ -34,13 +34,13 @@ describe("Backend", () => {
 });
 
 describe('Routes', () => {
+    // beforeEach(async function() {
+    //     await syncAndSeed();
+    //   })
     beforeEach(async () => {
         await db.sync({ force: true });
       });
     describe('GET /', () => {
-        beforeEach(async function() {
-            await syncAndSeed();
-          })
 
         it('testing get route', async() => {
             const response = await app.get('/api/products');
