@@ -13,6 +13,7 @@ import "../../../../public/assets/signin.css";
 
 // Script Imports
 import signInValidator, { showError, showSuccess } from "./signInValidator";
+import authenticate from "../authenticate";
 
 class SignIn extends Component {
     constructor(props) {
@@ -20,28 +21,7 @@ class SignIn extends Component {
         this.state = { username: "", password: "" };
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
-        this.authenticate = this.authenticate.bind(this);
-    }
-
-    async authenticate({ username, password }) {
-        await axios
-            // Create a token with the username and password
-            .post("/api/auth", {
-                username,
-                password,
-            })
-            // Store token in the user's local storage
-            .then(({ data: { token } }) => {
-                // Set new token
-                if (token) {
-                    window.localStorage.setItem("token", token);
-                    this.props.attemptLogin();
-                }
-            })
-            // If bad credentials, throw
-            .catch((err) => {
-                throw err;
-            });
+        // this.authenticate = this.authenticate.bind(this);
     }
 
     // Handles sign in submission/error checking
@@ -59,9 +39,10 @@ class SignIn extends Component {
             const usernameLabel = document.getElementById("username-input");
             const passwordLabel = document.getElementById("password-input");
 
-            await this.authenticate({ username, password })
+            // Create a JWT token from username and password
+            await authenticate({ username, password })
+                .then(async () => this.props.attemptLogin())
                 .then(() => {
-                    // If good login credentials, reset state. Page should upload to show success.
                     this.setState({
                         username: "",
                         password: "",

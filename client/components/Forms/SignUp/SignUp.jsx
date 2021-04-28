@@ -53,6 +53,7 @@ class SignUp extends Component {
             });
     }
 
+    // Handles sign up submission/error checking
     async handleSubmit(ev) {
         ev.preventDefault();
 
@@ -87,8 +88,14 @@ class SignUp extends Component {
                 .catch((err) => {
                     switch (err.message) {
                         case "Request failed with status code 409":
-                            showError(emailLabel, "Email already exists");
-                            showError(usernameLabel, "Username already exists");
+                            showError(
+                                emailLabel,
+                                "Email or Username already exists",
+                            );
+                            showError(
+                                usernameLabel,
+                                "Email or Username already exists",
+                            );
                     }
                 });
         }
