@@ -60,9 +60,11 @@ function signUpValidator() {
         if (isEqual) {
             showSuccess(input1);
             showSuccess(input2);
+            return true;
         } else {
             showError(input1, `Passwords must match`);
             showError(input2, `Passwords must match`);
+            return false;
         }
     }
 
@@ -70,7 +72,6 @@ function signUpValidator() {
     checkLength(username, 3, 30);
     checkLength(password, 8, 128);
     checkLength(confirmPassword, 8, 128);
-    checkEqual(password, confirmPassword);
 
     let allValid = true;
 
@@ -80,6 +81,11 @@ function signUpValidator() {
             allValid = false;
         }
     });
+
+    if (allValid === true) {
+        const equal = checkEqual(password, confirmPassword);
+        return equal;
+    }
 
     return allValid;
 }
