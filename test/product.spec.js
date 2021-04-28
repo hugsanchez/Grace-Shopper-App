@@ -1,7 +1,7 @@
 const { expect } = require("chai");
 
 
-const { syncAndSeed } = require('../server/db/seed');
+const { syncAndSeed } = require('../server/db');
 
 const _app = require('../server/app')
 const app = require("supertest")(_app);
@@ -46,6 +46,10 @@ describe("Backend", () => {
 
 describe('Routes', () => {
     describe('GET /', () => {
+        beforeEach(async () => {
+            await db.sync({ force: true });
+            //await syncAndSeed();
+          });
      
         it('testing get route', async() => {
             const response = await app.get('/api/products');
