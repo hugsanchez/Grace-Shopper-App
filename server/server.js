@@ -9,6 +9,7 @@ const adminAPI = require("./api/admins");
 const productsAPI = require("./api/products");
 const ordersAPI = require("./api/orders");
 const reviewsAPI = require("./api/reviews");
+const authAPI = require("./api/auth");
 
 // Database Imports
 const {
@@ -32,6 +33,7 @@ app.use("/api/admins", adminAPI);
 app.use("/api/products", productsAPI);
 app.use("/api/orders", ordersAPI);
 app.use("/api/reviews", reviewsAPI);
+app.use("/api/auth", authAPI);
 
 app.get("/", async (req, res, next) => {
     try {
