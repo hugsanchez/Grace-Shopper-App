@@ -8,7 +8,7 @@ const axios = require("axios");
 
 const syncAndSeed = async () => {
     try {
-       // await db.authenticate();
+        await db.authenticate();
         console.log("Database Connected");
 
         await db.sync({ force: true });
