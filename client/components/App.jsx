@@ -57,7 +57,6 @@ class App extends Component {
 function mapDispatchToProps(dispatch) {
     return {
         attemptLogin: () => dispatch(attemptTokenLogin()),
-        loadAllUsers: () => dispatch(getAllUsers()),
     };
 }
 
