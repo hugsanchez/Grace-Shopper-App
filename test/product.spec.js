@@ -5,6 +5,8 @@ const { syncAndSeed } = require('../server/db/seed');
 const app = require("supertest")(require("../server/server"));
 
 const axios = require('axios');
+beforeEach(() => syncAndSeed());
+
 
 const {
     db,
@@ -34,9 +36,6 @@ describe("Backend", () => {
 });
 
 describe('Routes', () => {
-    // beforeEach(async function() {
-    //     await syncAndSeed();
-    //   })
     beforeEach(async () => {
         await db.sync({ force: true });
       });
