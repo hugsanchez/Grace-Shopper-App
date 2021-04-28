@@ -34,6 +34,9 @@ describe("Backend", () => {
 });
 
 describe('Routes', () => {
+    beforeEach(async () => {
+        await db.sync({ force: true });
+      });
     describe('GET /', () => {
         beforeEach(async function() {
             await syncAndSeed();
