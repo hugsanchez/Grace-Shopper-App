@@ -91,9 +91,8 @@ Users.authenticate = async ({ username, password }) => {
                 username,
             },
         });
-
+        // if password matches, sign a token that contains the id to match later
         if (user && (await bcrypt.compare(password, user.password))) {
-            // if password matches, sign a token that contains the id to match later
             return jwt.sign({ id: user.id }, process.env.JWT);
         } else {
             const error = Error("Bad credentials");
@@ -101,7 +100,7 @@ Users.authenticate = async ({ username, password }) => {
             throw error;
         }
     } catch (err) {
-        console.error(err);
+        throw err;
     }
 };
 

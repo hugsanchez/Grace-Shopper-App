@@ -12,7 +12,7 @@ import { NavLink } from "react-router-dom";
 import "../../../../public/assets/signin.css";
 
 // Script Imports
-import signInValidator from "./signInValidator";
+import signInValidator, { showError, showSuccess } from "./signInValidator";
 
 class SignIn extends Component {
     constructor(props) {
@@ -24,24 +24,24 @@ class SignIn extends Component {
     }
 
     async authenticate({ username, password }) {
-        try {
+        await axios
             // Create a token with the username and password
-            const {
-                data: { token },
-            } = await axios.post("/api/auth", {
+            .post("/api/auth", {
                 username,
                 password,
-            });
-
+            })
             // Store token in the user's local storage
-            window.localStorage.setItem("token", token);
+            .then(({ data: { token } }) => {
+                window.localStorage.setItem("token", token);
 
-            if (token) {
-                this.props.attemptLogin();
-            }
-        } catch (err) {
-            console.error(err);
-        }
+                if (token) {
+                    this.props.attemptLogin();
+                }
+            })
+            // If bad credentials, throw
+            .catch((err) => {
+                throw err;
+            });
     }
 
     // Handles sign in submission/error checking
@@ -55,13 +55,23 @@ class SignIn extends Component {
         if (allValid) {
             const { username, password } = this.state;
 
-            await this.authenticate({ username, password });
+            // References to our inputs for DOM manipulation
+            const usernameLabel = document.getElementById("username-input");
+            const passwordLabel = document.getElementById("password-input");
 
-            // Resets our state to blank
-            this.setState({
-                username: "",
-                password: "",
-            });
+            await this.authenticate({ username, password })
+                .then(() => {
+                    // If good login credentials, reset state. Page should upload to show success.
+                    this.setState({
+                        username: "",
+                        password: "",
+                    });
+                })
+                .catch((err) => {
+                    // If bad login credentials, give user feedback and reset password
+                    showError(usernameLabel, "Incorrect email/password");
+                    showError(passwordLabel, "Incorrect email/password");
+                });
         }
     }
 
