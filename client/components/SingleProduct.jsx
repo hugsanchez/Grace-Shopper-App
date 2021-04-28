@@ -7,6 +7,9 @@ import { connect } from "react-redux";
 import { getSingleProduct } from "../store/actionCreators/singleProduct";
 import store from "../store/store";
 
+// import "../../public/assets/singleProduct.css";
+
+
 class SingleProduct extends Component {
     constructor(props) {
         super(props);
@@ -24,9 +27,9 @@ class SingleProduct extends Component {
         const singleProduct = this.state.singleProduct;
 
         return (
-            <div>
+            <div className='singleProduct'>
                 <h1>{singleProduct.name}</h1>
-                <img src={singleProduct.imgUrl} width="450px" height="450px" />
+                <img className='test' src={singleProduct.imgUrl} width="450px" height="450px" />
                 <h3>Acquired On: {singleProduct.year}</h3>
                 <h3>Quantity Avaliable: {singleProduct.stock}</h3>
                 <h3>Price: ${singleProduct.price}</h3>

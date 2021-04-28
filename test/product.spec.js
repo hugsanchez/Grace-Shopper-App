@@ -2,6 +2,8 @@ const { expect } = require("chai");
 
 const app = require("supertest")(require("../server/server"));
 
+const axios = require('axios');
+
 const {
     db,
     model: { Products },
@@ -28,3 +30,14 @@ describe("Backend", () => {
         });
     });
 });
+
+describe('Routes', () => {
+    describe('GET /', () => {
+        it('testing get route', async() => {
+            const response = await app.get('/api/products');
+            const products = await Products.findAll();
+            expect(response.status).to.equal(200);
+            expect(response.body.length).to.equal(products.length)
+        })
+    })
+})
