@@ -3,6 +3,7 @@ import React, { Component } from "react";
 // Redux Imports
 import { connect } from "react-redux";
 import { attemptTokenLogin } from "../store/actionCreators/singleUser";
+import { getAllUsers } from "../store/actionCreators/allUsers";
 
 // React Router Imports
 import { HashRouter as Router, Route, Link, Switch } from "react-router-dom";
@@ -57,6 +58,7 @@ class App extends Component {
 function mapDispatchToProps(dispatch) {
     return {
         attemptLogin: () => dispatch(attemptTokenLogin()),
+        loadAllUsers: () => dispatch(getAllUsers()),
     };
 }
 

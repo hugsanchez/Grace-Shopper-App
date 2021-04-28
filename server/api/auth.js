@@ -17,13 +17,13 @@ router.post("/", async (req, res, next) => {
 });
 
 router.get("/", async (req, res, next) => {
-    try {
-        const user = await Users.findByToken(req.headers.authorization);
-
-        res.send(user);
-    } catch (ex) {
-        next(err);
-    }
+    await Users.findByToken(req.headers.authorization)
+        .then((user) => {
+            res.send(user);
+        })
+        .catch((err) => {
+            res.sendStatus(err.status);
+        });
 });
 
 module.exports = router;

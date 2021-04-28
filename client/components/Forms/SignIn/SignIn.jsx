@@ -32,6 +32,7 @@ class SignIn extends Component {
             })
             // Store token in the user's local storage
             .then(({ data: { token } }) => {
+                // Remove the
                 window.localStorage.setItem("token", token);
 
                 if (token) {
