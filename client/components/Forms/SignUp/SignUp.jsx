@@ -14,7 +14,7 @@ import "../../../../public/assets/signup.css";
 
 // Script Imports
 import resetSignUpFormStyles from "./resetSignUpFormStyles";
-import signUpValidator from "./signUpValidator";
+import signUpValidator, { showError } from "./signUpValidator";
 
 class SignUp extends Component {
     constructor(props) {
@@ -33,24 +33,24 @@ class SignUp extends Component {
 
     // Authenticates the user right after they sign up
     async authenticate({ username, password }) {
-        try {
+        await axios
             // Create a token with the username and password
-            const {
-                data: { token },
-            } = await axios.post("/api/auth", {
+            .post("/api/auth", {
                 username,
                 password,
-            });
-
+            })
             // Store token in the user's local storage
-            window.localStorage.setItem("token", token);
-
-            if (token) {
-                this.props.attemptLogin();
-            }
-        } catch (err) {
-            console.error(err);
-        }
+            .then(({ data: { token } }) => {
+                // Set new token
+                if (token) {
+                    window.localStorage.setItem("token", token);
+                    this.props.attemptLogin();
+                }
+            })
+            // If bad credentials, throw
+            .catch((err) => {
+                throw err;
+            });
     }
 
     async handleSubmit(ev) {
@@ -63,19 +63,35 @@ class SignUp extends Component {
         if (allValid) {
             const { email, username, password } = this.state;
 
+            // References to our inputs for DOM manipulation
+            const emailLabel = document.getElementById("email-input");
+            const usernameLabel = document.getElementById("username-input");
+
             // Creates the user in the database
-            await this.props.createUser({ email, username, password });
+            await this.props
+                .createUser({ email, username, password })
+                .then(async () => {
+                    // Authenticates user
+                    this.authenticate({ username, password });
+                })
 
-            // Authenticates the user and signs them in
-            await this.authenticate({ username, password });
-
-            // Resets our state to blank
-            this.setState({
-                email: "",
-                username: "",
-                password: "",
-                confirmPassword: "",
-            });
+                .then(() => {
+                    // Resets our state to blank
+                    this.setState({
+                        email: "",
+                        username: "",
+                        password: "",
+                        confirmPassword: "",
+                    });
+                })
+                // Error handling
+                .catch((err) => {
+                    switch (err.message) {
+                        case "Request failed with status code 409":
+                            showError(emailLabel, "Email already exists");
+                            showError(usernameLabel, "Username already exists");
+                    }
+                });
         }
     }
 

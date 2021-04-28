@@ -1,5 +1,19 @@
 const { validate } = require("email-validator");
 
+// Show input error message
+function showError(input, message) {
+    const formControl = input.parentElement;
+    formControl.className = "form-control attn error";
+    const small = formControl.querySelector("small");
+    small.innerText = message;
+}
+
+//Show success outline
+function showSuccess(input) {
+    const formControl = input.parentElement;
+    formControl.className = "form-control attn success";
+}
+
 function signUpValidator() {
     // Get references to the DOM
     const form = document.getElementById("sign-up-form");
@@ -7,20 +21,6 @@ function signUpValidator() {
     const username = document.getElementById("username-input");
     const password = document.getElementById("password-input");
     const confirmPassword = document.getElementById("confirmPassword-input");
-
-    // Show input error message
-    function showError(input, message) {
-        const formControl = input.parentElement;
-        formControl.className = "form-control attn error";
-        const small = formControl.querySelector("small");
-        small.innerText = message;
-    }
-
-    //Show success outline
-    function showSuccess(input) {
-        const formControl = input.parentElement;
-        formControl.className = "form-control attn success";
-    }
 
     // Get field name
     function getFieldName(input) {
@@ -70,6 +70,7 @@ function signUpValidator() {
     checkLength(username, 3, 30);
     checkLength(password, 8, 128);
     checkLength(confirmPassword, 8, 128);
+    checkEqual(password, confirmPassword);
 
     let allValid = true;
 
@@ -84,3 +85,4 @@ function signUpValidator() {
 }
 
 export default signUpValidator;
+export { showError, showSuccess };

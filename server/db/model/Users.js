@@ -91,6 +91,7 @@ Users.authenticate = async ({ username, password }) => {
                 username,
             },
         });
+
         // if password matches, sign a token that contains the id to match later
         if (user && (await bcrypt.compare(password, user.password))) {
             return jwt.sign({ id: user.id }, process.env.JWT);

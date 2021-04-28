@@ -12,7 +12,7 @@ router.post("/", async (req, res, next) => {
             res.status(201).send({ token });
         })
         .catch((err) => {
-            res.sendStatus(err.status);
+            next(err);
         });
 });
 
@@ -22,7 +22,7 @@ router.get("/", async (req, res, next) => {
             res.send(user);
         })
         .catch((err) => {
-            res.sendStatus(err.status);
+            next(err);
         });
 });
 

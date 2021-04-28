@@ -32,10 +32,9 @@ class SignIn extends Component {
             })
             // Store token in the user's local storage
             .then(({ data: { token } }) => {
-                // Remove the
-                window.localStorage.setItem("token", token);
-
+                // Set new token
                 if (token) {
+                    window.localStorage.setItem("token", token);
                     this.props.attemptLogin();
                 }
             })
