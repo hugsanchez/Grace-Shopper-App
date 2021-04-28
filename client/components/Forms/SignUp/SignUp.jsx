@@ -74,7 +74,6 @@ class SignUp extends Component {
                     // Authenticates user
                     this.authenticate({ username, password });
                 })
-
                 .then(() => {
                     // Resets our state to blank
                     this.setState({
