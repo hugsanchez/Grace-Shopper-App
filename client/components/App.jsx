@@ -1,5 +1,9 @@
 import React, { Component } from "react";
 
+// Redux Imports
+import { connect } from "react-redux";
+import { attemptTokenLogin } from "../store/actionCreators/singleUser";
+
 // React Router Imports
 import { HashRouter as Router, Route, Link, Switch } from "react-router-dom";
 
@@ -16,6 +20,12 @@ class App extends Component {
         super(props);
         this.state = {};
     }
+
+    async componentDidMount() {
+        // Search for a token in localStorage so users will stay signed in on refresh
+        await this.props.attemptLogin();
+    }
+
     render() {
         return (
             <Router>
@@ -44,5 +54,10 @@ class App extends Component {
         );
     }
 }
+function mapDispatchToProps(dispatch) {
+    return {
+        attemptLogin: () => dispatch(attemptTokenLogin()),
+    };
+}
 
-export default App;
+export default connect(null, mapDispatchToProps)(App);

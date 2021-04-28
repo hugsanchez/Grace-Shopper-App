@@ -3,6 +3,10 @@ import React, { Component } from "react";
 // Style Import
 import "../../public/assets/header.css";
 
+// Redux Imports
+import { connect } from "react-redux";
+import { logOutUser } from "../store/actionCreators/singleUser";
+
 // React Router Links
 import { NavLink } from "react-router-dom";
 
@@ -12,6 +16,8 @@ class Header extends Component {
         this.state = {};
     }
     render() {
+        const { user, isSignedIn } = this.props.loginStatus;
+
         return (
             <header id="app-header">
                 <div id="header-logo" className="header-group">
@@ -41,23 +47,33 @@ class Header extends Component {
                     </NavLink>
                 </div>
                 <div className="header-group">
-                    <NavLink to="/sign-in" className="header-link">
-                        <h3>Sign In</h3>
-                    </NavLink>
-                    <NavLink
-                        to="/sign-up"
-                        className="header-link"
-                        id="register-link"
-                    >
-                        <h3>Register</h3>
-                    </NavLink>
-                    <NavLink to="#" className="header-link">
-                        <img
-                            src="images/utils/search.png"
-                            alt=""
-                            id="search-img"
-                        />
-                    </NavLink>
+                    {isSignedIn ? (
+                        // If signed in, display welcome, else, display sign-in
+                        <React.Fragment>
+                            <NavLink
+                                to={`/user/${user.id}`}
+                                className="header-link"
+                            >
+                                <h3>{user.username}</h3>
+                            </NavLink>
+                            <NavLink
+                                to="/sign-in"
+                                className="header-link"
+                                onClick={this.props.logout}
+                            >
+                                <h3>Logout</h3>
+                            </NavLink>
+                        </React.Fragment>
+                    ) : (
+                        <React.Fragment>
+                            <NavLink to={"#"} className="header-link">
+                                <h3>Guest</h3>
+                            </NavLink>
+                            <NavLink to="/sign-in" className="header-link">
+                                <h3>Sign In</h3>
+                            </NavLink>
+                        </React.Fragment>
+                    )}
                     <NavLink to="/cart" className="header-link">
                         <img
                             src="/images/utils/cart.png"
@@ -71,4 +87,16 @@ class Header extends Component {
     }
 }
 
-export default Header;
+function mapStateToProps(state) {
+    return {
+        loginStatus: state.signedIn,
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        logout: () => dispatch(logOutUser()),
+    };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

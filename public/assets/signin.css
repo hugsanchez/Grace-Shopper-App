@@ -94,3 +94,7 @@ input {
     transform: translateY(0px) scale(0.98, 0.98);
     transition: all 0.1s;
 }
+
+#already-signed-in {
+    font-size: large;
+}

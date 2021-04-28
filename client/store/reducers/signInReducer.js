@@ -1,10 +1,12 @@
 import { SIGN_IN, LOG_OUT } from "../actionCreators/singleUser";
 
-export const signInReducer = (state = {}, action) => {
+const initialState = { user: null, isSignedIn: false };
+
+export const signInReducer = (state = initialState, action) => {
     if (action.type === SIGN_IN) {
-        return (state = { ...action.user });
+        return (state = { user: action.user, isSignedIn: true });
     } else if (action.type === LOG_OUT) {
-        return (state = {});
+        return (state = initialState);
     } else {
         return state;
     }

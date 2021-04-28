@@ -16,8 +16,8 @@ export const signIn = (user) => ({
 });
 
 // Remove a user from the redux store for signing in
-export const logOut = (user) => ({
-    type: SIGN_IN,
+export const logOut = () => ({
+    type: LOG_OUT,
 });
 
 // Simply just gets information about any user
@@ -51,10 +51,11 @@ export const attemptTokenLogin = () => async (dispatch) => {
     }
 };
 
-// Logs out
+// Logs out (only a thunk bc we might add to it)
 export const logOutUser = () => async (dispatch) => {
     try {
         window.localStorage.removeItem("token");
+        dispatch(logOut());
     } catch (err) {
         console.error(err);
     }

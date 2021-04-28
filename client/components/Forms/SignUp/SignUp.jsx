@@ -1,8 +1,10 @@
 import React, { Component } from "react";
+import axios from "axios";
 
 // Redux imports
 import { connect } from "react-redux";
 import { addSingleUser } from "../../../store/actionCreators/allUsers";
+import { attemptTokenLogin } from "../../../store/actionCreators/singleUser";
 
 // React-Router
 import { NavLink } from "react-router-dom";
@@ -26,9 +28,32 @@ class SignUp extends Component {
 
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.authenticate = this.authenticate.bind(this);
     }
 
-    handleSubmit(ev) {
+    // Authenticates the user right after they sign up
+    async authenticate({ username, password }) {
+        try {
+            // Create a token with the username and password
+            const {
+                data: { token },
+            } = await axios.post("/api/auth", {
+                username,
+                password,
+            });
+
+            // Store token in the user's local storage
+            window.localStorage.setItem("token", token);
+
+            if (token) {
+                this.props.attemptLogin();
+            }
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
+    async handleSubmit(ev) {
         ev.preventDefault();
 
         // Determines if our input is valid, modifies DOM
@@ -37,7 +62,12 @@ class SignUp extends Component {
         // This will send the data to a thunk to create the user in a POST route
         if (allValid) {
             const { email, username, password } = this.state;
-            this.props.createUser({ email, username, password });
+
+            // Creates the user in the database
+            await this.props.createUser({ email, username, password });
+
+            // Authenticates the user and signs them in
+            await this.authenticate({ username, password });
 
             // Resets our state to blank
             this.setState({
@@ -58,82 +88,104 @@ class SignUp extends Component {
 
     render() {
         const { email, username, password, confirmPassword } = this.state;
+        const { user, isSignedIn } = this.props.loginStatus;
 
         return (
             <div className="primary-screen">
                 <div className="form-container">
                     <h2>Sign Up</h2>
-                    <form id="sign-up-form" onSubmit={this.handleSubmit}>
-                        <div className="form-control">
-                            <label htmlFor="email">Email</label>
-                            <input
-                                value={email}
-                                onChange={this.handleChange}
-                                id="email-input"
-                                name="email"
-                                type="text"
-                                placeholder="Enter email"
-                            />
-                            <small>Error message</small>
-                        </div>
-                        <div className="form-control">
-                            <label htmlFor="username">Username</label>
-                            <input
-                                value={username}
-                                onChange={this.handleChange}
-                                id="username-input"
-                                name="username"
-                                type="text"
-                                placeholder="Enter username"
-                            />
-                            <small>Error message</small>
-                        </div>
-                        <div className="form-control">
-                            <label htmlFor="password">Password</label>
-                            <input
-                                value={password}
-                                onChange={this.handleChange}
-                                id="password-input"
-                                name="password"
-                                type="password"
-                                placeholder="Enter password"
-                            />
-                            <small>Error message</small>
-                        </div>
-                        <div className="form-control">
-                            <label htmlFor="confirmPassword">
-                                Confirm Password
-                            </label>
-                            <input
-                                value={confirmPassword}
-                                onChange={this.handleChange}
-                                id="confirmPassword-input"
-                                name="confirmPassword"
-                                type="password"
-                                placeholder="Enter password"
-                            />
-                            <small>Error message</small>
-                        </div>
-                        <button type="submit" className="submit-btn">
-                            Submit
-                        </button>
-                    </form>
-                    <p id="sign-up-prompt">
-                        Already have an account?{" "}
-                        <span>
-                            <NavLink to="/sign-in">Sign In</NavLink>
-                        </span>
-                    </p>
+                    {isSignedIn ? (
+                        <React.Fragment>
+                            <p id="already-signed-in">Success!</p>
+                            <NavLink to={`/user/${user.id}`}>
+                                Go to Profile
+                            </NavLink>
+                        </React.Fragment>
+                    ) : (
+                        <React.Fragment>
+                            <form
+                                id="sign-up-form"
+                                onSubmit={this.handleSubmit}
+                            >
+                                <div className="form-control">
+                                    <label htmlFor="email">Email</label>
+                                    <input
+                                        value={email}
+                                        onChange={this.handleChange}
+                                        id="email-input"
+                                        name="email"
+                                        type="text"
+                                        placeholder="Enter email"
+                                    />
+                                    <small>Error message</small>
+                                </div>
+                                <div className="form-control">
+                                    <label htmlFor="username">Username</label>
+                                    <input
+                                        value={username}
+                                        onChange={this.handleChange}
+                                        id="username-input"
+                                        name="username"
+                                        type="text"
+                                        placeholder="Enter username"
+                                    />
+                                    <small>Error message</small>
+                                </div>
+                                <div className="form-control">
+                                    <label htmlFor="password">Password</label>
+                                    <input
+                                        value={password}
+                                        onChange={this.handleChange}
+                                        id="password-input"
+                                        name="password"
+                                        type="password"
+                                        placeholder="Enter password"
+                                    />
+                                    <small>Error message</small>
+                                </div>
+                                <div className="form-control">
+                                    <label htmlFor="confirmPassword">
+                                        Confirm Password
+                                    </label>
+                                    <input
+                                        value={confirmPassword}
+                                        onChange={this.handleChange}
+                                        id="confirmPassword-input"
+                                        name="confirmPassword"
+                                        type="password"
+                                        placeholder="Enter password"
+                                    />
+                                    <small>Error message</small>
+                                </div>
+                                <button type="submit" className="submit-btn">
+                                    Submit
+                                </button>
+                            </form>
+                            <p id="sign-up-prompt">
+                                Already have an account?{" "}
+                                <span>
+                                    <NavLink to="/sign-in">Sign In</NavLink>
+                                </span>
+                            </p>
+                        </React.Fragment>
+                    )}
                 </div>
             </div>
         );
     }
 }
 
-function mapDispatchToProps(dispatch) {
+function mapStateToProps(state) {
     return {
-        createUser: (user) => dispatch(addSingleUser(user)),
+        loginStatus: state.signedIn,
     };
 }
 
-export default connect(null, mapDispatchToProps)(SignUp);
+function mapDispatchToProps(dispatch) {
+    return {
+        createUser: (user) => dispatch(addSingleUser(user)),
+        attemptLogin: () => dispatch(attemptTokenLogin()),
+    };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignUp);
