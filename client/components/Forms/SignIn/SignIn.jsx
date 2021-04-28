@@ -39,8 +39,6 @@ class SignIn extends Component {
             if (token) {
                 this.props.attemptLogin();
             }
-
-            // dispatch(signIn({ username, password }));
         } catch (err) {
             console.error(err);
         }
@@ -76,50 +74,71 @@ class SignIn extends Component {
 
     render() {
         const { username, password } = this.state;
+        const { user, isSignedIn } = this.props.loginStatus;
 
         return (
             <div className="primary-screen">
                 <div className="form-container">
                     <h2>Sign In</h2>
-                    <form id="sign-up-form" onSubmit={this.handleSubmit}>
-                        <div className="form-control">
-                            <label htmlFor="username">Username</label>
-                            <input
-                                value={username}
-                                onChange={this.handleChange}
-                                id="username-input"
-                                name="username"
-                                type="text"
-                                placeholder="Enter username"
-                            />
-                            <small>Error message</small>
-                        </div>
-                        <div className="form-control">
-                            <label htmlFor="password">Password</label>
-                            <input
-                                value={password}
-                                onChange={this.handleChange}
-                                id="password-input"
-                                name="password"
-                                type="password"
-                                placeholder="Enter password"
-                            />
-                            <small>Error message</small>
-                        </div>
-                        <button type="submit" className="submit-btn">
-                            Submit
-                        </button>
-                    </form>
-                    <p id="sign-up-prompt">
-                        New here?{" "}
-                        <span>
-                            <NavLink to="/sign-up">Sign Up</NavLink>
-                        </span>
-                    </p>
+                    {isSignedIn ? (
+                        <React.Fragment>
+                            <p id="already-signed-in">You are signed in!</p>
+                            <NavLink to={`/user/${user.id}`}>
+                                Go to Profile
+                            </NavLink>
+                        </React.Fragment>
+                    ) : (
+                        <React.Fragment>
+                            <form
+                                id="sign-up-form"
+                                onSubmit={this.handleSubmit}
+                            >
+                                <div className="form-control">
+                                    <label htmlFor="username">Username</label>
+                                    <input
+                                        value={username}
+                                        onChange={this.handleChange}
+                                        id="username-input"
+                                        name="username"
+                                        type="text"
+                                        placeholder="Enter username"
+                                    />
+                                    <small>Error message</small>
+                                </div>
+                                <div className="form-control">
+                                    <label htmlFor="password">Password</label>
+                                    <input
+                                        value={password}
+                                        onChange={this.handleChange}
+                                        id="password-input"
+                                        name="password"
+                                        type="password"
+                                        placeholder="Enter password"
+                                    />
+                                    <small>Error message</small>
+                                </div>
+                                <button type="submit" className="submit-btn">
+                                    Submit
+                                </button>
+                            </form>
+                            <p id="sign-up-prompt">
+                                New here?{" "}
+                                <span>
+                                    <NavLink to="/sign-up">Sign Up</NavLink>
+                                </span>
+                            </p>
+                        </React.Fragment>
+                    )}
                 </div>
             </div>
         );
     }
+}
+
+function mapStateToProps(state) {
+    return {
+        loginStatus: state.signedIn,
+    };
 }
 
 function mapDispatchToProps(dispatch) {
@@ -128,4 +147,4 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default connect(null, mapDispatchToProps)(SignIn);
+export default connect(mapStateToProps, mapDispatchToProps)(SignIn);
