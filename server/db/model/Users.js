@@ -5,7 +5,7 @@ const db = require("../db");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
-const Users = db.define("users", {
+const Users = db.define('users', {
     firstName: {
         type: DataTypes.STRING,
         allowNull: false,
