@@ -5,7 +5,7 @@ const { syncAndSeed } = require('../server/db/seed');
 const app = require("supertest")(require("../server/server"));
 
 const axios = require('axios');
-beforeEach(() => syncAndSeed());
+beforeEach(async() => await syncAndSeed());
 
 
 const {
@@ -40,7 +40,10 @@ describe('Routes', () => {
         await db.sync({ force: true });
       });
     describe('GET /', () => {
-
+        beforeEach(async () => {
+            await db.sync({ force: true });
+          });
+          
         it('testing get route', async() => {
             const response = await app.get('/api/products');
             const products = await Products.findAll();
