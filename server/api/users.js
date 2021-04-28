@@ -41,6 +41,7 @@ router.post("/", async (req, res, next) => {
 
         res.status(201).send(newUser);
     } catch (err) {
+        console.error(err);
         next(err);
     }
 });

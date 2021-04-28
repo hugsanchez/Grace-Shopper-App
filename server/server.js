@@ -43,6 +43,12 @@ app.get("/", async (req, res, next) => {
     }
 });
 
+// Error handling middleware
+app.use((err, req, res, next) => {
+    res.status(err.status || 500);
+    res.send(err.message || "Internal server error");
+});
+
 const PORT = process.env.PORT || 3000;
 
 const init = async () => {
