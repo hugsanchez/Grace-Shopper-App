@@ -1,5 +1,7 @@
 const { expect } = require("chai");
 
+const { syncAndSeed } = require('../server/db/seed');
+
 const app = require("supertest")(require("../server/server"));
 
 const axios = require('axios');
@@ -33,6 +35,10 @@ describe("Backend", () => {
 
 describe('Routes', () => {
     describe('GET /', () => {
+        beforeEach(async function() {
+            await syncAndSeed();
+          })
+
         it('testing get route', async() => {
             const response = await app.get('/api/products');
             const products = await Products.findAll();
