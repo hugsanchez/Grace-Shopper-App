@@ -171,15 +171,15 @@ router.put("/:id", async (req, res, next) => {
     }
 });
 
-router.delete("/:id", (req, res, next) => {
+router.delete("/:id", async (req, res, next) => {
     try {
         const { id } = req.params;
-        const product = Products.findOne({ where: { id } });
+        const product = await Products.findOne({ where: { id } });
 
         // If id did not correspond to a product, throw error
         if (!product) throw notFound("Product not found");
 
-        Products.destroy({
+        await Products.destroy({
             where: { id },
         });
 
