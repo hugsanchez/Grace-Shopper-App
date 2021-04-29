@@ -1,4 +1,6 @@
 const { Sequelize, DataTypes } = require("sequelize");
+
+// DB Imports
 const db = require("../db");
 
 const Reviews = db.define("reviews", {

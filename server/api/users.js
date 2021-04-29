@@ -23,6 +23,14 @@ router.get("/:id", async (req, res, next) => {
     try {
         const { id } = req.params;
         const user = await Users.findOneIncludes(id);
+
+        // If no user, 404
+        if (!user) {
+            const error = Error("User not found");
+            error.status = 404;
+            throw error;
+        }
+
         res.send(user);
     } catch (err) {
         next(err);
@@ -114,7 +122,7 @@ router.delete("/:id", (req, res, next) => {
             where: { id },
         });
 
-        res.sendState(204);
+        res.sendStatus(204);
     } catch (err) {
         next(err);
     }
