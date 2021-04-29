@@ -16,48 +16,40 @@ import SingleProduct from "./SingleProduct.jsx";
 import Cart from "./Cart.jsx";
 
 class App extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {};
-    }
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
 
-    async componentDidMount() {
-        // Search for a token in localStorage so users will stay signed in on refresh
-        await this.props.attemptLogin();
-    }
+  async componentDidMount() {
+    // Search for a token in localStorage so users will stay signed in on refresh
+    await this.props.attemptLogin();
+  }
 
-    render() {
-        return (
-            <Router>
-                <React.Fragment>
-                    <Header />
-                    <main className="main-view">
-                        <Switch>
-                            <Route exact path="/" component={Homepage} />
-                            <Route exact path="/cart" component={Cart} />
-                            <Route
-                                exact
-                                path="/store"
-                                component={AllProducts}
-                            />
-                            <Route
-                                exact
-                                path="/product/:id"
-                                component={SingleProduct}
-                            />
-                            <Route exact path="/sign-up" component={SignUp} />
-                            <Route exact path="/sign-in" component={SignIn} />
-                        </Switch>
-                    </main>
-                </React.Fragment>
-            </Router>
-        );
-    }
+  render() {
+    return (
+      <Router>
+        <React.Fragment>
+          <Header />
+          <main className="main-view">
+            <Switch>
+              <Route exact path="/" component={Homepage} />
+              <Route exact path="/cart" component={Cart} />
+              <Route exact path="/store" component={AllProducts} />
+              <Route exact path="/product/:id" component={SingleProduct} />
+              <Route exact path="/sign-up" component={SignUp} />
+              <Route exact path="/sign-in" component={SignIn} />
+            </Switch>
+          </main>
+        </React.Fragment>
+      </Router>
+    );
+  }
 }
 function mapDispatchToProps(dispatch) {
-    return {
-        attemptLogin: () => dispatch(attemptTokenLogin()),
-    };
+  return {
+    attemptLogin: () => dispatch(attemptTokenLogin()),
+  };
 }
 
 export default connect(null, mapDispatchToProps)(App);
