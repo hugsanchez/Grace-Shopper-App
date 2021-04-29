@@ -6,7 +6,15 @@ const { notFound, badSyntax } = require("./errors");
 
 const {
     syncAndSeed,
-    model: { Products, Artists, Categories, Users, Orders, Reviews },
+    model: {
+        Products,
+        Artists,
+        Categories,
+        Users,
+        Orders,
+        Reviews,
+        ProductsOrders,
+    },
 } = require("../db");
 
 // All Orders
@@ -48,25 +56,57 @@ router.get("/:id", async (req, res, next) => {
 // Create Order
 router.post("/", async (req, res, next) => {
     try {
-        // API
-        // Products: [ { id: #, quantity: # }, { id: another #, quantity: # }, ...]
+        // API {
+        //     products: [ { id: #, quantity: # }, { id: another #, quantity: # }, ...],
+        //     userId: #,
+        // }
         const { products, userId } = req.body;
 
+        // Error handling
         if (!products.length) {
             throw badSyntax("Orders must have at least one product");
         }
         if (!userId) throw badSyntax("Orders must have an associated user");
 
-        // Loop through products
-        products.forEach((product) => {
-            const { id } = product;
-            // const product = await Products.findById(id);
-            if (!product) throw notFound(`Product with id #${id} not found`);
+        // Create the order and initialize product orders
+        const newOrder = Orders.create({ userId });
+        let productOrders = [];
 
-            const productOrderItem = {
-                // productId:
-            };
-        });
+        // Loop through products to create product orders
+        for (const { id, quantity } of products) {
+            const product = await Products.findById(id);
+
+            // If no product, destroy the order and tell user why it failed
+            if (!product) {
+                await Orders.destroy({ where: { id: newOrder.id } });
+                throw notFound(`Product with id #${id} not found`);
+            }
+
+            // Same with quantity
+            if (!quantity) {
+                await Orders.destroy({ where: { id: newOrder.id } });
+                throw badSyntax(
+                    `Client did not supply quantity of product #${id}`,
+                );
+            }
+
+            // Push this to our product-orders array
+            productOrders.push({
+                productId: id,
+                orderId: newOrder.id,
+                quantity,
+            });
+        }
+
+        // If we've made it this far, we can create the product orders
+        await Promise.all(
+            productOrders.map((productOrder) => {
+                ProductsOrders.create({ ...productOrder });
+            }),
+        );
+
+        // Send the new order
+        res.status(201).send(newOrder);
     } catch (err) {
         next(err);
     }

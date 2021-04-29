@@ -35,5 +35,13 @@ Products.belongsTo(Categories);
 // --------------------------
 
 module.exports = {
-    model: { Products, Artists, Categories, Users, Orders, Reviews },
+    model: {
+        Products,
+        Artists,
+        Categories,
+        Users,
+        Orders,
+        Reviews,
+        ProductsOrders,
+    },
 };

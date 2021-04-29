@@ -12,24 +12,12 @@ const ProductsOrders = db.define("products_orders", {
     },
     productId: {
         type: DataTypes.INTEGER,
-        allowNull: false,
-        validate: {
-            notEmpty: true,
-        },
     },
     orderId: {
         type: DataTypes.INTEGER,
-        allowNull: false,
-        validate: {
-            notEmpty: true,
-        },
     },
     quantity: {
         type: DataTypes.INTEGER,
-        allowNull: false,
-        validate: {
-            notEmpty: true,
-        },
     },
 });
 
