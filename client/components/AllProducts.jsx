@@ -7,6 +7,7 @@ import { connect } from "react-redux";
 import { getAllProducts } from "../store/actionCreators/allProducts";
 import { addItemToCart } from "../store/actionCreators/shoppingCart";
 
+
 import store from "../store/store";
 
 // React-Router Imports
@@ -31,15 +32,39 @@ class AllProducts extends Component {
         await this.setState({ allProducts: store.getState().allProducts });
     }
 
-    async addToCart(currProductId) {
-        await this.props.addItemToCart(currProductId);
-        const currProduct = await store.getState();
+    async addToCart(event) {
+        // console.log(event)
+        // console.log('props',this.props)
+        await this.props.addItemToCart(event.id);
+        const currProduct = await store.getState().cart;
         console.log("currProduct component", currProduct);
-        await this.setState({
-            ...this.state,
-            cart: [...this.state.cart, currProduct],
-        });
-        await console.log(this.state.cart);
+        // // let cartArr= this.state.cart
+        // if(this.state.cart.length===0){
+        //     currProduct.quantity=1
+        //     await this.setState({
+        //         ...this.state,
+        //         cart: [...this.state.cart, currProduct],
+        //     });
+        // }else{
+        //     for(let val of this.state.cart){
+        //         // console.log('val && curr product',val, currProduct)
+        //         if(val.item.id===currProduct.item.id){
+        //             val.quantity++
+        //             return
+        //         }
+
+        //     }
+        //     await this.setState({
+        //         ...this.state,
+        //         cart: [...this.state.cart, currProduct],
+        //     });
+            
+        // }
+        // await this.setState({
+        //     ...this.state,
+        //     cart: [...this.state.cart, currProduct],
+        // });
+        // await console.log('cart cart',this.state.cart);
     }
 
     render() {
@@ -58,7 +83,7 @@ class AllProducts extends Component {
                                 --- Price: {product.price}
                                 <button
                                     onClick={() => {
-                                        this.addToCart(product.id);
+                                        this.addToCart(product);
                                     }}
                                 >
                                     Add to Cart
@@ -69,7 +94,12 @@ class AllProducts extends Component {
                 </ul>
                 <div id="cart-summary">
                     <h2>Cart Summary</h2>
-                    <ul></ul>
+                    <ul>
+                        {this.props.cart.map((curr)=>{
+                            console.log('currr',curr)
+                            return <li>{curr.name}</li>
+                        })}
+                    </ul>
                     <h3>Total</h3>
                     <button>Proceed to Checkout</button>
                 </div>
@@ -81,8 +111,14 @@ class AllProducts extends Component {
 const mapDispatchToProps = (dispatch) => {
     return {
         getAllProducts: () => dispatch(getAllProducts()),
-        addItemToCart: (id) => dispatch(addItemToCart(id)),
+        addItemToCart: (currProductId) => dispatch(addItemToCart(currProductId)),
     };
 };
 
-export default connect(null, mapDispatchToProps)(AllProducts);
+const mapStateToProps= (state)=>{
+    return{
+        cart: state.cart.cart
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(AllProducts);
