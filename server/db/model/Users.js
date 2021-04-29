@@ -1,9 +1,17 @@
 require("dotenv").config();
-
 const { Sequelize, DataTypes } = require("sequelize");
-const db = require("../db");
+
+// Authorization imports
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+
+// DB Imports
+const db = require("../db");
+const Products = require("./Products");
+const Orders = require("./Orders");
+const Artists = require("./Artists");
+const Reviews = require("./Reviews");
+const Categories = require("./Categories");
 
 const Users = db.define("users", {
     firstName: {
@@ -111,5 +119,55 @@ Users.addHook("beforeSave", async (user) => {
         user.password = await bcrypt.hash(user.password, 10);
     }
 });
+
+Users.findOneIncludes = async (id) => {
+    try {
+        const user = await Users.findOne({
+            where: { id },
+            include: [
+                {
+                    model: Orders,
+                    include: [
+                        {
+                            model: Products,
+                            include: [
+                                { model: Artists },
+                                { model: Categories },
+                            ],
+                        },
+                    ],
+                },
+            ],
+        });
+
+        return user;
+    } catch (err) {
+        console.error(err);
+    }
+};
+
+Users.findAllIncludes = async () => {
+    try {
+        const users = await Users.findAll({
+            include: [
+                {
+                    model: Orders,
+                    include: [
+                        {
+                            model: Products,
+                            include: [
+                                { model: Artists },
+                                { model: Categories },
+                            ],
+                        },
+                    ],
+                },
+            ],
+        });
+        return users;
+    } catch (err) {
+        console.error(err);
+    }
+};
 
 module.exports = Users;

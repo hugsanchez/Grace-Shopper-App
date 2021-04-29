@@ -4,6 +4,7 @@ const Categories = require("./Categories");
 const Users = require("./Users");
 const Orders = require("./Orders");
 const Reviews = require("./Reviews");
+const ProductsOrders = require("./ProductsOrders");
 
 // ------ Associations ------
 Users.hasMany(Orders);
@@ -15,8 +16,16 @@ Reviews.belongsTo(Users);
 Artists.hasMany(Products);
 Products.belongsTo(Artists);
 
-Products.hasMany(Orders);
-Orders.belongsTo(Products);
+Products.belongsToMany(Orders, {
+    through: ProductsOrders,
+    foreignKey: "productId",
+    otherKey: "orderId",
+});
+Orders.belongsToMany(Products, {
+    through: ProductsOrders,
+    foreignKey: "orderId",
+    otherKey: "productId",
+});
 
 Products.hasMany(Reviews);
 Reviews.belongsTo(Products);
@@ -26,5 +35,13 @@ Products.belongsTo(Categories);
 // --------------------------
 
 module.exports = {
-    model: { Products, Artists, Categories, Users, Orders, Reviews },
+    model: {
+        Products,
+        Artists,
+        Categories,
+        Users,
+        Orders,
+        Reviews,
+        ProductsOrders,
+    },
 };
