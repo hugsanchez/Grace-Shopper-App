@@ -7,21 +7,23 @@ const {
 } = require("../db");
 
 router.post("/", async (req, res, next) => {
-    try {
-        res.status(201).send({ token: await Users.authenticate(req.body) });
-    } catch (err) {
-        next(err);
-    }
+    await Users.authenticate(req.body)
+        .then((token) => {
+            res.status(201).send({ token });
+        })
+        .catch((err) => {
+            next(err);
+        });
 });
 
 router.get("/", async (req, res, next) => {
-    try {
-        const user = await Users.findByToken(req.headers.authorization);
-
-        res.send(user);
-    } catch (ex) {
-        next(err);
-    }
+    await Users.findByToken(req.headers.authorization)
+        .then((user) => {
+            res.send(user);
+        })
+        .catch((err) => {
+            next(err);
+        });
 });
 
 module.exports = router;

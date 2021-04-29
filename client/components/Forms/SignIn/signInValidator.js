@@ -1,22 +1,22 @@
+// Shows error outline
+function showError(input, message) {
+    const formControl = input.parentElement;
+    formControl.className = "form-control attn error";
+    const small = formControl.querySelector("small");
+    small.innerText = message;
+}
+
+//Show success outline
+function showSuccess(input) {
+    const formControl = input.parentElement;
+    formControl.className = "form-control attn success";
+}
+
 function signInValidator() {
     // Get references to the DOM
     const form = document.getElementById("sign-up-form");
     const username = document.getElementById("username-input");
     const password = document.getElementById("password-input");
-
-    // Show input error message
-    function showError(input, message) {
-        const formControl = input.parentElement;
-        formControl.className = "form-control attn error";
-        const small = formControl.querySelector("small");
-        small.innerText = message;
-    }
-
-    //Show success outline
-    function showSuccess(input) {
-        const formControl = input.parentElement;
-        formControl.className = "form-control attn success";
-    }
 
     // Get field name
     function getFieldName(input) {
@@ -57,3 +57,4 @@ function signInValidator() {
 }
 
 export default signInValidator;
+export { showError, showSuccess };

@@ -23,6 +23,7 @@ const Users = db.define("users", {
     email: {
         type: DataTypes.STRING,
         allowNull: false,
+        unique: true,
         validate: {
             isEmail: true,
         },
@@ -30,6 +31,7 @@ const Users = db.define("users", {
     username: {
         type: DataTypes.STRING,
         allowNull: false,
+        unique: true,
         validate: {
             notEmpty: true,
             len: [3, 30],
@@ -63,24 +65,22 @@ Users.isAdmin;
 
 // Finds a user by token
 Users.findByToken = async (token) => {
-    try {
-        // JWT verifies token with ciphered version (using environment variable) and returns userId
-        const { id } = await jwt.verify(token, process.env.JWT);
+    // JWT verifies token with ciphered version (using environment variable) and returns userId
+    const { id } = jwt.verify(token, process.env.JWT);
 
-        // Now we can get the User ID
-        const user = await Users.findByPk(id);
+    // Now we can get the User ID
+    return await Users.findByPk(id)
+        .then((user) => {
+            if (user) return user;
 
-        if (user) {
-            return user;
-        } else {
-            // If no user, then throw an error
+            // If no user, client is trying to access a user that doesn't exist
             const error = Error("This user does not exist");
             error.status = 401;
             throw error;
-        }
-    } catch (ex) {
-        console.error(ex);
-    }
+        })
+        .catch((err) => {
+            throw err;
+        });
 };
 
 // Authenticates a user with a username and password
@@ -92,8 +92,8 @@ Users.authenticate = async ({ username, password }) => {
             },
         });
 
+        // if password matches, sign a token that contains the id to match later
         if (user && (await bcrypt.compare(password, user.password))) {
-            // if password matches, sign a token that contains the id to match later
             return jwt.sign({ id: user.id }, process.env.JWT);
         } else {
             const error = Error("Bad credentials");
@@ -101,7 +101,7 @@ Users.authenticate = async ({ username, password }) => {
             throw error;
         }
     } catch (err) {
-        console.error(err);
+        throw err;
     }
 };
 

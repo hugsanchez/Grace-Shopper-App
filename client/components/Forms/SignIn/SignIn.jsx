@@ -12,7 +12,8 @@ import { NavLink } from "react-router-dom";
 import "../../../../public/assets/signin.css";
 
 // Script Imports
-import signInValidator from "./signInValidator";
+import signInValidator, { showError, showSuccess } from "./signInValidator";
+import authenticate from "../authenticate";
 
 class SignIn extends Component {
     constructor(props) {
@@ -20,28 +21,7 @@ class SignIn extends Component {
         this.state = { username: "", password: "" };
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
-        this.authenticate = this.authenticate.bind(this);
-    }
-
-    async authenticate({ username, password }) {
-        try {
-            // Create a token with the username and password
-            const {
-                data: { token },
-            } = await axios.post("/api/auth", {
-                username,
-                password,
-            });
-
-            // Store token in the user's local storage
-            window.localStorage.setItem("token", token);
-
-            if (token) {
-                this.props.attemptLogin();
-            }
-        } catch (err) {
-            console.error(err);
-        }
+        // this.authenticate = this.authenticate.bind(this);
     }
 
     // Handles sign in submission/error checking
@@ -55,13 +35,24 @@ class SignIn extends Component {
         if (allValid) {
             const { username, password } = this.state;
 
-            await this.authenticate({ username, password });
+            // References to our inputs for DOM manipulation
+            const usernameLabel = document.getElementById("username-input");
+            const passwordLabel = document.getElementById("password-input");
 
-            // Resets our state to blank
-            this.setState({
-                username: "",
-                password: "",
-            });
+            // Create a JWT token from username and password
+            await authenticate({ username, password })
+                .then(async () => this.props.attemptLogin())
+                .then(() => {
+                    this.setState({
+                        username: "",
+                        password: "",
+                    });
+                })
+                .catch((err) => {
+                    // If bad login credentials, give user feedback and reset password
+                    showError(usernameLabel, "Incorrect email/password");
+                    showError(passwordLabel, "Incorrect email/password");
+                });
         }
     }
 

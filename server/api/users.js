@@ -41,7 +41,20 @@ router.post("/", async (req, res, next) => {
 
         res.status(201).send(newUser);
     } catch (err) {
-        next(err);
+        const { errors } = err;
+        if (errors) {
+            errors.forEach((error) => {
+                const newError = Error();
+                switch (error.type) {
+                    case "unique violation":
+                        newError.status = 409;
+                        newError.message = error.message;
+                }
+                next(newError);
+            });
+        } else {
+            next(err);
+        }
     }
 });
 
