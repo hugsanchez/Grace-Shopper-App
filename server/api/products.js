@@ -140,6 +140,7 @@ router.put("/:id", async (req, res, next) => {
 
             await product.setArtist(artist);
         }
+
         // Find associated category and set it
         if (categoryId) {
             const category = await Categories.findByPk(categoryId);
