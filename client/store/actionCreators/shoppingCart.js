@@ -4,11 +4,19 @@ export const ADD_TO_CART = "ADD_TO_CART";
 export const REMOVE_FROM_CART = "REMOVE_FROM_CART";
 export const ADJUST_QUANTITY ="ADJUST_QUANTITY";
 
-export const addToCart= (itemId)=>{
-    console.log('this is working action creator')
-    return{
-        type: ADD_TO_CART,
-        payload: itemId
+// export const addToCart= (currProductId)=>{
+//     console.log('this is working action creator', currProductId)
+//     return{
+//         type: ADD_TO_CART,
+//         payload: currProductId
+//     }
+// }
+
+export const addItemToCart=(productId)=>{
+    return async(dispatch)=>{
+        const response= (await axios.put(`/api/orders/cart/${productId}`)).data
+        // console.log('response add to cart action', response)
+        dispatch({type: ADD_TO_CART, payload: response})
     }
 }
 
@@ -32,10 +40,11 @@ export const adjustQuantity= (itemId, quantity)=>{
 }
 
 
-export const addItemToCart = (currProductId) => async (dispatch) => {
-    const currProduct = (await axios.put(`/api/orders/cart/${currProductId}`)).data;
-    dispatch(addToCart(currProductId));
-  };
+// export const addItemToCart = (currProductId) => async (dispatch) => {
+//     const currProduct = (await axios.put(`/api/orders/cart/${currProductId}`)).data;
+//     console.log('thunk curr product found', currProductId)
+//     dispatch(addToCart(currProductId));
+//   };
 
 
 
