@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import { getSingleProduct } from "../store/actionCreators/singleProduct";
 import axios from "axios";
 
 class EditProduct extends Component {
@@ -38,7 +40,8 @@ class EditProduct extends Component {
   async submitHanlder(e) {
     e.preventDefault();
     let updatedProduct = this.state;
-    ///NEED TO CREATE BACKEND ROUTE
+    await axios.put(`/api/products/${this.props.props.id}`, { updatedProduct });
+    await this.props.getSingleProduct(this.props.props.id);
   }
 
   render() {
@@ -63,10 +66,20 @@ class EditProduct extends Component {
           <br />
           <label>Price: </label>
           <input type="text" name="price" value={price} onChange={onChange} />
+          <br />
+          <button type="submit" onClick={submitHanlder}>
+            Save Edits
+          </button>
         </form>
       </div>
     );
   }
 }
 
-export default EditProduct;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getSingleProduct: (id) => dispatch(getSingleProduct(id)),
+  };
+};
+
+export default connect(null, mapDispatchToProps)(EditProduct);
