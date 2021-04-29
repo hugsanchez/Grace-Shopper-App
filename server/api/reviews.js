@@ -75,7 +75,7 @@ router.post("/", async (req, res, next) => {
 
 router.put("/:id", async (req, res, next) => {
     try {
-        const { id } = req.params.id;
+        const { id } = req.params;
 
         // Reviews can only update detail. Must delete to reassign User or Product
         const { detail } = req.body;

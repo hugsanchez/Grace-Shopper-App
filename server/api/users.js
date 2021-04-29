@@ -39,6 +39,10 @@ router.post("/", async (req, res, next) => {
     try {
         const { email, username, password } = req.body;
 
+        if (!email) throw badSyntax("User needs an email property");
+        if (!username) throw badSyntax("User needs a username property");
+        if (!password) throw badSyntax("User needs a password property");
+
         const newUser = await Users.create({
             firstName: "Testing Data CHANGE ME",
             lastName: "Testing Data CHANGE ME",
@@ -68,7 +72,7 @@ router.post("/", async (req, res, next) => {
 
 router.put("/:id", async (req, res, next) => {
     try {
-        const { id } = req.params.id;
+        const { id } = req.params;
 
         // User info update
         const { firstName, lastName, username, email } = req.body;

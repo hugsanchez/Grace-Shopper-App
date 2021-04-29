@@ -15,8 +15,16 @@ Reviews.belongsTo(Users);
 Artists.hasMany(Products);
 Products.belongsTo(Artists);
 
-Products.hasMany(Orders);
-Orders.belongsTo(Products);
+Products.belongsToMany(Orders, {
+    through: "product_orders",
+    foreignKey: "productId",
+    otherKey: "orderId",
+});
+Orders.belongsToMany(Products, {
+    through: "product_orders",
+    foreignKey: "orderId",
+    otherKey: "productId",
+});
 
 Products.hasMany(Reviews);
 Reviews.belongsTo(Products);
