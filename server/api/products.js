@@ -33,6 +33,7 @@ router.get("/:id", async (req, res, next) => {
     try {
         const product = await Products.findOne({
             where: { id: req.params.id },
+            include:[Reviews]
         });
         res.send(product);
     } catch (err) {
