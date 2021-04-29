@@ -13,6 +13,23 @@ body {
   border: black solid 3px;
 }
 
+#allProductsPage {
+  width: 100%;
+}
+
+#storePage {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  width: 100%;
+}
+
+#listOfAllProducts {
+  list-style-type: none;
+  text-align: center;
+  width: 33%;
+}
+
 #cart-summary {
   border: black solid 3px;
 }
