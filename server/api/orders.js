@@ -23,7 +23,15 @@ router.get("/", async (req, res, next) => {
         const orders = await Orders.findAll({
             include: [
                 Users,
-                { model: Products, include: [Artists, Categories] },
+                {
+                    model: Products,
+                    required: false,
+                    attributes: ["id", "name"],
+                    through: {
+                        model: ProductsOrders,
+                        attributes: ["quantity"],
+                    },
+                },
             ],
         });
 
@@ -41,7 +49,15 @@ router.get("/:id", async (req, res, next) => {
             where: { id },
             include: [
                 Users,
-                { model: Products, include: [Artists, Categories] },
+                {
+                    model: Products,
+                    required: false,
+                    attributes: ["id", "name"],
+                    through: {
+                        model: ProductsOrders,
+                        attributes: ["quantity"],
+                    },
+                },
             ],
         });
 
@@ -60,6 +76,7 @@ router.post("/", async (req, res, next) => {
         //     products: [ { id: #, quantity: # }, { id: another #, quantity: # }, ...],
         //     userId: #,
         // }
+
         const { products, userId } = req.body;
 
         // Error handling
@@ -110,6 +127,34 @@ router.post("/", async (req, res, next) => {
     } catch (err) {
         next(err);
     }
+});
+
+// INCOMPLETE RIGHT NOW
+router.put("/:id", async (req, res, next) => {
+    try {
+        // We are not ready for the put route, so sending a 503 Service Unavailable response now
+        res.sendStatus(503);
+    } catch (err) {
+        next(err);
+    }
+});
+
+// Delete
+router.delete("/:id", async (req, res, next) => {
+    const { id } = req.params;
+    const order = await Orders.findByPk(id);
+
+    // If id did not correspond to a order, throw error
+    if (!order) throw notFound("Order not found");
+
+    // Find and remove all associations
+    const products = await order.getProducts();
+    order.removeProducts(products);
+
+    // Delete order
+    await Orders.destroy({ where: { id } });
+
+    res.sendStatus(200);
 });
 
 //add single product to cart
