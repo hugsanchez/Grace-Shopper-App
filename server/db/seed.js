@@ -13,89 +13,6 @@ const syncAndSeed = async () => {
 
         await db.sync({ force: true });
 
-        // Generate Fake Users (not admins!)
-        let fakeUsers = [];
-        const NUMBER_OF_USERS = 10;
-        for (let i = 1; i <= NUMBER_OF_USERS; i++) {
-            // Create fake user details
-            const firstName = faker.name.firstName();
-            const lastName = faker.name.lastName();
-            const email = faker.internet.email();
-            const username = faker.internet.userName();
-            const password = faker.internet.password();
-
-            fakeUsers.push({
-                firstName,
-                lastName,
-                email,
-                username,
-                password,
-            });
-
-            // console.log(`${i} users generated`);
-        }
-
-        // Generate Fake Products and Artists from the Met API
-        let productsFake = Array(20).fill(' ');
-        let productPromise = [];
-        let randId = 437165;
-
-       for(let i = 0; i < productsFake.length; i++) {
-            //const randId = Math.floor(Math.random() * (437185 - 437165 + 1) + 437165);
-            //const randId = Math.floor(Math.random() * 10) + 1;
-            const { data: productMet } = await axios.get(
-                `https://collectionapi.metmuseum.org/public/collection/v1/objects/${randId}`
-                );
-            ++randId;
-            productsFake[i] = new Products({
-                name: productMet.title,
-                description:productMet.objectName,
-                price: Math.floor(Math.random() * 10000),
-                year: productMet.objectEndDate,
-                stock: Math.floor(Math.random() * 10),
-                imgUrl: productMet.primaryImage || '#',
-            }).save();
-            productPromise.push(productsFake[i]);
-        };
-
-        await Promise.all(productPromise);
-        // let fakeProducts = [];
-        // const NUMBER_OF_PRODUCTS = 20;
-        // for (let i = 1; i <= NUMBER_OF_PRODUCTS; i++) {
-        //     const randId = Math.floor(Math.random() * (437165 - 437175 + 1) + 437165);;
-
-        //     const { data: product } = await axios.get(
-        //         `https://collectionapi.metmuseum.org/public/collection/v1/objects/${randId}`,
-        //     );
-
-        //     // console.log product to see more properties!
-        //     const {
-        //         artistDisplayName,
-        //         title,
-        //         primaryImage,
-        //         objectEndDate,
-        //         objectName,
-        //     } = product;
-
-        //     const name = title;
-        //     const artist = artistDisplayName || "Unknown";
-        //     const price = Math.floor(Math.random() * 10000);
-        //     const year = objectEndDate;
-        //     const imgUrl = primaryImage || "#";
-        //     const stock = Math.floor(Math.random() * 10);
-        //     const description = objectName;
-
-        //     fakeProducts.push({
-        //         name,
-        //         description: "fake data",
-        //         price,
-        //         year,
-        //         stock,
-        //         imgUrl,
-        //     });
-        //     // console.log(`${i} products generated`);
-        // }
-
         // Custom Users
         const users = await Promise.all([
             Users.create({
@@ -113,14 +30,82 @@ const syncAndSeed = async () => {
                 password: "12345678",
                 userType: "ADMIN",
             }),
+            Users.create({
+                firstName: "Hugo",
+                lastName: "Sanchez",
+                email: "hugsan@gmail.com",
+                username: "hugsan",
+                password: "12345678",
+                userType: "GUEST",
+            })
         ]);
 
+        // Generate Fake Users (not admins!)
+        let fakeUsers = Array(10).fill(' ');
+        let userPromise = [];
+        // let fakeUsers = [];
+        // const NUMBER_OF_USERS = 10;
+        for (let i = 0; i < fakeUsers.length; i++) {
+            fakeUsers[i] = new Users({
+                firstName: faker.name.firstName(),
+                lastName: faker.name.lastName(),
+                email: faker.internet.email(),
+                username: faker.internet.userName(),
+                password: faker.internet.password(),
+            }).save();
+            userPromise.push(fakeUsers[i]);
+        };
+        await Promise.all(userPromise);
+        //     // Create fake user details
+        //     const firstName = faker.name.firstName();
+        //     const lastName = faker.name.lastName();
+        //     const email = faker.internet.email();
+        //     const username = faker.internet.userName();
+        //     const password = faker.internet.password();
+
+        //     fakeUsers.push({
+        //         firstName,
+        //         lastName,
+        //         email,
+        //         username,
+        //         password,
+        //     });
+
+        //     // console.log(`${i} users generated`);
+        // }
+
+        // Generate Fake Products and Artists from the Met API
+        let productsFake = Array(20).fill(' ');
+        let productPromise = [];
+        let randId = 437165;
+
+       for(let i = 0; i < productsFake.length; i++) {
+          
+            const { data: productMet } = await axios.get(
+                `https://collectionapi.metmuseum.org/public/collection/v1/objects/${randId}`
+                );
+            ++randId;
+            productsFake[i] = new Products({
+                name: productMet.title,
+                description: faker.commerce.productDescription(),
+                price: Math.floor(Math.random() * 10000),
+                year: productMet.objectEndDate,
+                stock: Math.floor(Math.random() * 10),
+                imgUrl: productMet.primaryImage || '#',
+            }).save();
+            productPromise.push(productsFake[i]);
+        };
+
+        await Promise.all(productPromise);
+
+ 
+
         // Auto-generated Users
-        await Promise.all(
-            fakeUsers.map((user) => {
-                Users.create({ ...user });
-            }),
-        );
+        // const otherUsers = await Promise.all(
+        //     fakeUsers.map((user) => {
+        //         Users.create({ ...user });
+        //     }),
+        // );
 
         // Custom Categories
         const categories = await Promise.all([
@@ -163,13 +148,39 @@ const syncAndSeed = async () => {
         const review = await Promise.all([
             Reviews.create({
                 detail: "I loved the Mona Lisa, 10/10 would go again!",
-                userId: 1,
-                productId: 1,
+                userId: 7,
+                productId: 21,
+             }),
+            Reviews.create({
+                detail: 'Looks good I guess...',
+                userId: 4,
+                productId: 12
             }),
+            Reviews.create({
+                detail: 'Its a fake, do NOT BUY!!!',
+                userId: 3,
+                productId: 11,
+            }),
+            Reviews.create({
+                detail: "I hate the Mona Lisa >:(",
+                userId: 5,
+                productId: 21,
+             }),
+            Reviews.create({
+                detail: 'Looks great!',
+                userId: 10,
+                productId: 21,
+            }),
+            Reviews.create({
+                detail: 'Do NOT BUY!!!',
+                userId: 3,
+                productId: 21,
+            })
         ]);
 
+
         const [monaLisa] = products;
-        const [craig] = users;
+        //const [craig] = users;
         const [leonardoDaVinci] = artists;
         const [classical] = categories;
 
