@@ -86,7 +86,7 @@ router.post("/", async (req, res, next) => {
         if (!userId) throw badSyntax("Orders must have an associated user");
 
         // Create the order and initialize product orders
-        const newOrder = Orders.create({ userId });
+        const newOrder = await Orders.create({ userId });
         let productOrders = [];
 
         // Loop through products to create product orders

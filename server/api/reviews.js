@@ -108,15 +108,15 @@ router.put("/:id", async (req, res, next) => {
 });
 
 // Deletes a review
-router.delete("/:id", (req, res, next) => {
+router.delete("/:id", async (req, res, next) => {
     try {
         const { id } = req.params;
-        const review = Reviews.findOne({ where: { id } });
+        const review = await Reviews.findOne({ where: { id } });
 
         // If id did not correspond to a user, throw error
         if (!review) throw notFound("Review not found");
 
-        Reviews.destroy({
+        await Reviews.destroy({
             where: { id },
         });
 
