@@ -1,6 +1,9 @@
 const express = require("express");
 const router = express.Router();
 
+// Errors
+const { notFound, badSyntax } = require("./errors");
+
 const {
     syncAndSeed,
     model: { Products, Artists, Categories, Users, Orders, Reviews },
@@ -10,7 +13,7 @@ const {
 router.get("/", async (req, res, next) => {
     try {
         const reviews = await Reviews.findAll({
-            include: [{ model: Products }, { model: Users }],
+            include: [Products, Users],
         });
 
         res.send(reviews);
@@ -25,15 +28,11 @@ router.get("/:id", async (req, res, next) => {
         const { id } = req.params;
         const review = await Reviews.findOne({
             where: { id },
-            include: [{ model: Products }, { model: Users }],
+            include: [Products, Users],
         });
 
         // If no user, 404
-        if (!review) {
-            const error = Error("Review not found");
-            error.status = 404;
-            throw error;
-        }
+        if (!review) throw notFound("Review not found");
 
         res.send(review);
     } catch (err) {
@@ -47,14 +46,9 @@ router.post("/", async (req, res, next) => {
         const { detail, productId, userId } = req.body;
 
         // Error handling for correct syntax
-        if (!detail) {
-            const error = Error("Reviews need a 'detail' property");
-            error.status = 400;
-            throw error;
-        } else if (!productId || !userId) {
-            const error = Error("Reviews need a productId and a userId");
-            error.status = 400;
-            throw error;
+        if (!detail) throw badSyntax("Reviews need a 'detail' property");
+        if (!productId || !userId) {
+            throw badSyntax("Reviews need a productId and a userId");
         }
 
         // Find associated product and user
@@ -62,19 +56,9 @@ router.post("/", async (req, res, next) => {
         const user = await Users.findByPk(userId);
 
         // Error handling if product or user don't exist
-        if (!product && !user) {
-            const error = Error("Both Product and User not found");
-            error.status = 404;
-            throw error;
-        } else if (!product) {
-            const error = Error("Product not found");
-            error.status = 404;
-            throw error;
-        } else if (!user) {
-            const error = Error("User not found");
-            error.status = 404;
-            throw error;
-        }
+        if (!product && !user) throw notFound("Product and User not found");
+        if (!product) throw notFound("Product not found");
+        if (!user) throw notFound("User not found");
 
         // Make a new review
         const newReview = await Reviews.create({
@@ -100,18 +84,10 @@ router.put("/:id", async (req, res, next) => {
         let review = await Reviews.findOne({ where: { id } });
 
         // If no user, 404
-        if (!review) {
-            const error = Error("Review not found");
-            error.status = 404;
-            throw error;
-        }
+        if (!review) throw notFound("Review not found");
 
         // If no detail, incorrect syntax
-        if (!detail) {
-            const error = Error("Review detail cannot be empty.");
-            error.status = 400;
-            throw error;
-        }
+        if (!detail) throw badSyntax("Review detail cannot be empty");
 
         review.detail = detail;
         await review.save();
@@ -122,7 +98,7 @@ router.put("/:id", async (req, res, next) => {
         // Finds user again with the same format as GET
         const updatedReview = await Reviews.findOne({
             where: { id },
-            include: [{ model: Products }, { model: Users }],
+            include: [Products, Users],
         });
 
         res.status(200).send(updatedReview);
@@ -135,14 +111,10 @@ router.put("/:id", async (req, res, next) => {
 router.delete("/:id", (req, res, next) => {
     try {
         const { id } = req.params;
-        const review = Users.findOne({ where: { id } });
+        const review = Reviews.findOne({ where: { id } });
 
         // If id did not correspond to a user, throw error
-        if (!review) {
-            const error = Error("Review not found");
-            error.status = 404;
-            throw error;
-        }
+        if (!review) throw notFound("Review not found");
 
         Reviews.destroy({
             where: { id },

@@ -1,6 +1,9 @@
 const express = require("express");
 const router = express.Router();
 
+// Errors
+const { notFound, badSyntax, conflict } = require("./errors");
+
 const {
     syncAndSeed,
     db,
@@ -11,7 +14,6 @@ const {
 router.get("/", async (req, res, next) => {
     try {
         const users = await Users.findAllIncludes();
-
         res.send(users);
     } catch (err) {
         next(err);
@@ -25,11 +27,7 @@ router.get("/:id", async (req, res, next) => {
         const user = await Users.findOneIncludes(id);
 
         // If no user, 404
-        if (!user) {
-            const error = Error("User not found");
-            error.status = 404;
-            throw error;
-        }
+        if (!user) throw notFound("User not found");
 
         res.send(user);
     } catch (err) {
@@ -56,19 +54,15 @@ router.post("/", async (req, res, next) => {
         if (errors) {
             // For each error
             errors.forEach((error) => {
-                // Make error
-                const newError = Error();
                 // Customize error message and status
                 switch (error.type) {
                     case "unique violation":
-                        newError.status = 409;
-                        newError.message = error.message;
+                        next(conflict(error.message));
                 }
-                next(newError);
             });
-        } else {
-            next(err);
         }
+
+        next(err);
     }
 });
 
@@ -83,11 +77,7 @@ router.put("/:id", async (req, res, next) => {
         let user = await Users.findOne({ where: { id } });
 
         // If no user, 404
-        if (!user) {
-            const error = Error("User not found");
-            error.status = 404;
-            throw error;
-        }
+        if (!user) throw notFound("User not found");
 
         if (firstName) user.firstName = firstName;
         if (lastName) user.firstName = lastName;
@@ -112,11 +102,7 @@ router.delete("/:id", (req, res, next) => {
         const user = Users.findOne({ where: { id } });
 
         // If id did not correspond to a user, throw error
-        if (!user) {
-            const error = Error("User not found");
-            error.status = 404;
-            throw error;
-        }
+        if (!user) throw notFound("User not found");
 
         Users.destroy({
             where: { id },

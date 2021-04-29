@@ -1,6 +1,9 @@
 const express = require("express");
 const router = express.Router();
 
+// Errors
+const { notFound } = require("./errors");
+
 const {
     syncAndSeed,
     model: { Products, Artists, Categories, Users, Orders, Reviews },
@@ -9,7 +12,9 @@ const {
 // All Products
 router.get("/", async (req, res, next) => {
     try {
-        const products = await Products.findAll();
+        const products = await Products.findAll({
+            includes: [Artists, Categories, Reviews],
+        });
         res.send(products);
     } catch (err) {
         next(err);
@@ -19,8 +24,10 @@ router.get("/", async (req, res, next) => {
 // Product By Category
 router.get("/category/:id", async (req, res, next) => {
     try {
+        const { id } = req.params;
         const productsByCategory = await Products.findAll({
-            where: { categoryId: req.params.id },
+            where: { categoryId: id },
+            includes: [Artists, Categories, Reviews],
         });
         res.send(productsByCategory);
     } catch (err) {
@@ -33,8 +40,11 @@ router.get("/:id", async (req, res, next) => {
     try {
         const product = await Products.findOne({
             where: { id: req.params.id },
-            include:[Reviews]
+            include: [Artists, Categories, Reviews],
         });
+
+        if (!product) throw notFound("Review not found");
+
         res.send(product);
     } catch (err) {
         next(err);
