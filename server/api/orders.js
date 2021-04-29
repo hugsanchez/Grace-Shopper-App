@@ -37,7 +37,7 @@ router.get("/:id", async (req, res, next) => {
             ],
         });
 
-        if (!order) throw notFound("Product not found");
+        if (!order) throw notFound("Order not found");
 
         res.send(order);
     } catch (err) {
@@ -48,6 +48,25 @@ router.get("/:id", async (req, res, next) => {
 // Create Order
 router.post("/", async (req, res, next) => {
     try {
+        // API
+        // Products: [ { id: #, quantity: # }, { id: another #, quantity: # }, ...]
+        const { products, userId } = req.body;
+
+        if (!products.length) {
+            throw badSyntax("Orders must have at least one product");
+        }
+        if (!userId) throw badSyntax("Orders must have an associated user");
+
+        // Loop through products
+        products.forEach((product) => {
+            const { id } = product;
+            // const product = await Products.findById(id);
+            if (!product) throw notFound(`Product with id #${id} not found`);
+
+            const productOrderItem = {
+                // productId:
+            };
+        });
     } catch (err) {
         next(err);
     }

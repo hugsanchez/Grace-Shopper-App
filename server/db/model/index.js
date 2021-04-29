@@ -4,6 +4,7 @@ const Categories = require("./Categories");
 const Users = require("./Users");
 const Orders = require("./Orders");
 const Reviews = require("./Reviews");
+const ProductsOrders = require("./ProductsOrders");
 
 // ------ Associations ------
 Users.hasMany(Orders);
@@ -16,12 +17,12 @@ Artists.hasMany(Products);
 Products.belongsTo(Artists);
 
 Products.belongsToMany(Orders, {
-    through: "product_orders",
+    through: ProductsOrders,
     foreignKey: "productId",
     otherKey: "orderId",
 });
 Orders.belongsToMany(Products, {
-    through: "product_orders",
+    through: ProductsOrders,
     foreignKey: "orderId",
     otherKey: "productId",
 });
