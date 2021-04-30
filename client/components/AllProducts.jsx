@@ -103,8 +103,8 @@ class AllProducts extends Component {
         <div id="cart-summary">
           <h2>Cart Summary</h2>
           <ul>
-            {this.props.cart.map((curr) => {
-              return <li key={curr.id}>{curr.name}</li>;
+            {this.props.cart.map((curr, idx) => {
+              return <li key={idx}>{curr.name}</li>;
             })}
           </ul>
           <h3>Total: {totalPrice}</h3>
