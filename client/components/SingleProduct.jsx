@@ -12,9 +12,8 @@ class SingleProduct extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      singleProduct: [],
+      loading: true,
       editToggle: false,
-      //reviews: []
     };
     this.handleEditToggle = this.handleEditToggle.bind(this);
   }
@@ -22,7 +21,7 @@ class SingleProduct extends Component {
     const id = this.props.match.params.id * 1;
     await this.props.getSingleProduct(id);
     //await this.props.getReviewForProduct(id);
-    await this.setState({ singleProduct: store.getState().singleProduct });
+    await this.setState({ loading: false });
     //  await this.setState({reviews: store.getState().reviews})
   }
 
@@ -35,7 +34,9 @@ class SingleProduct extends Component {
   }
 
   render() {
-    const { singleProduct, editToggle } = this.state;
+    const { loading, editToggle } = this.state;
+    if (loading) return "loading";
+    const { singleProduct } = this.props;
     const { reviews } = singleProduct;
     if (!reviews) {
       return null;
@@ -77,6 +78,12 @@ class SingleProduct extends Component {
   }
 }
 
+const mapStateToProps = (state) => {
+  return {
+    singleProduct: state.singleProduct,
+  };
+};
+
 const mapDispatchToProps = (dispatch) => {
   return {
     getSingleProduct: (id) => dispatch(getSingleProduct(id)),
@@ -84,4 +91,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(null, mapDispatchToProps)(SingleProduct);
+export default connect(mapStateToProps, mapDispatchToProps)(SingleProduct);
