@@ -21,7 +21,6 @@ class SignIn extends Component {
         this.state = { username: "", password: "" };
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
-        // this.authenticate = this.authenticate.bind(this);
     }
 
     // Handles sign in submission/error checking

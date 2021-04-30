@@ -1,6 +1,14 @@
 const db = require("./db");
 const {
-    model: { Products, Artists, Categories, Users, Orders, Reviews },
+    model: {
+        Products,
+        Artists,
+        Categories,
+        Users,
+        Orders,
+        Reviews,
+        ProductsOrders,
+    },
 } = require("./model");
 
 const faker = require("faker");
@@ -41,7 +49,7 @@ const syncAndSeed = async () => {
         ]);
 
         // Generate Fake Users (not admins!)
-        let fakeUsers = Array(10).fill(' ');
+        let fakeUsers = Array(10).fill(" ");
         let userPromise = [];
 
          fakeUsers.forEach((user) => {
@@ -55,8 +63,6 @@ const syncAndSeed = async () => {
             userPromise.push(user);
         });
        await Promise.all(userPromise);
-
-
       
 
         // Generate Fake Products and Artists from the Met API
@@ -112,7 +118,6 @@ const syncAndSeed = async () => {
         //     }),
         // );
  
-
         // Auto-generated Users
         // const otherUsers = await Promise.all(
         //     fakeUsers.map((user) => {
@@ -144,6 +149,12 @@ const syncAndSeed = async () => {
                 productId: 1,
             }),
         ]);
+
+        await ProductsOrders.create({
+            productId: 2,
+            orderId: 1,
+            quantity: 4,
+        });
 
         // await Promise.all([
         //     new Reviews({
