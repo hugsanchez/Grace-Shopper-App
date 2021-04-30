@@ -5,6 +5,7 @@ const ProductsOrders = db.define("products_orders", {
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
+        autoIncrement: true,
         allowNull: false,
         validate: {
             notEmpty: true,

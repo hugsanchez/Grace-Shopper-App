@@ -1,6 +1,14 @@
 const db = require("./db");
 const {
-    model: { Products, Artists, Categories, Users, Orders, Reviews },
+    model: {
+        Products,
+        Artists,
+        Categories,
+        Users,
+        Orders,
+        Reviews,
+        ProductsOrders,
+    },
 } = require("./model");
 
 const faker = require("faker");
@@ -37,11 +45,11 @@ const syncAndSeed = async () => {
                 username: "hugsan",
                 password: "12345678",
                 userType: "GUEST",
-            })
+            }),
         ]);
 
         // Generate Fake Users (not admins!)
-        let fakeUsers = Array(10).fill(' ');
+        let fakeUsers = Array(10).fill(" ");
         let userPromise = [];
         // let fakeUsers = [];
         // const NUMBER_OF_USERS = 10;
@@ -54,7 +62,7 @@ const syncAndSeed = async () => {
                 password: faker.internet.password(),
             }).save();
             userPromise.push(fakeUsers[i]);
-        };
+        }
         await Promise.all(userPromise);
         //     // Create fake user details
         //     const firstName = faker.name.firstName();
@@ -75,15 +83,14 @@ const syncAndSeed = async () => {
         // }
 
         // Generate Fake Products and Artists from the Met API
-        let productsFake = Array(20).fill(' ');
+        let productsFake = Array(20).fill(" ");
         let productPromise = [];
         let randId = 437165;
 
-       for(let i = 0; i < productsFake.length; i++) {
-          
+        for (let i = 0; i < productsFake.length; i++) {
             const { data: productMet } = await axios.get(
-                `https://collectionapi.metmuseum.org/public/collection/v1/objects/${randId}`
-                );
+                `https://collectionapi.metmuseum.org/public/collection/v1/objects/${randId}`,
+            );
             ++randId;
             productsFake[i] = new Products({
                 name: productMet.title,
@@ -91,14 +98,12 @@ const syncAndSeed = async () => {
                 price: Math.floor(Math.random() * 10000),
                 year: productMet.objectEndDate,
                 stock: Math.floor(Math.random() * 10),
-                imgUrl: productMet.primaryImage || '#',
+                imgUrl: productMet.primaryImage || "#",
             }).save();
             productPromise.push(productsFake[i]);
-        };
+        }
 
         await Promise.all(productPromise);
-
- 
 
         // Auto-generated Users
         // const otherUsers = await Promise.all(
@@ -145,19 +150,25 @@ const syncAndSeed = async () => {
             }),
         ]);
 
+        await ProductsOrders.create({
+            productId: 2,
+            orderId: 1,
+            quantity: 4,
+        });
+
         const review = await Promise.all([
             Reviews.create({
                 detail: "I loved the Mona Lisa, 10/10 would go again!",
                 userId: 7,
                 productId: 21,
-             }),
-            Reviews.create({
-                detail: 'Looks good I guess...',
-                userId: 4,
-                productId: 12
             }),
             Reviews.create({
-                detail: 'Its a fake, do NOT BUY!!!',
+                detail: "Looks good I guess...",
+                userId: 4,
+                productId: 12,
+            }),
+            Reviews.create({
+                detail: "Its a fake, do NOT BUY!!!",
                 userId: 3,
                 productId: 11,
             }),
@@ -165,19 +176,18 @@ const syncAndSeed = async () => {
                 detail: "I hate the Mona Lisa >:(",
                 userId: 5,
                 productId: 21,
-             }),
+            }),
             Reviews.create({
-                detail: 'Looks great!',
+                detail: "Looks great!",
                 userId: 10,
                 productId: 21,
             }),
             Reviews.create({
-                detail: 'Do NOT BUY!!!',
+                detail: "Do NOT BUY!!!",
                 userId: 3,
                 productId: 21,
-            })
+            }),
         ]);
-
 
         const [monaLisa] = products;
         //const [craig] = users;

@@ -10,7 +10,13 @@ class SingleUser extends Component {
     }
 
     render() {
-        const {firstName, lastName, email,} = this.props.user;
+        const {
+            firstName,
+            lastName,
+            email,
+            username,
+            userType,
+        } = this.props.user;
         return <div className="primary-screen"></div>;
     }
 }
