@@ -9,16 +9,25 @@ import ADJUST_QUANTITY from "../actionCreators/shoppingCart";
 
 const initialCart = {
   cart: [],
+  total: 0
 };
 
 export const cartReducer = (state = initialCart, action) => {
   if (action.type === ADD_TO_CART) {
-    //console.log('cart reducer', action.payload)
-    // console.log('check add action reducer',action)
-    // return { ...state, item: action.payload };
-    const { cart } = state;
-    //console.log('cart log',cart)
-    return { ...state, cart: [...cart, action.payload] };
+    const { cart , total} = state;
+    let productIsInCart= false
+    for(let product of cart){
+      if(product.id===action.payload.id){
+        productIsInCart= true
+        product['quantity']++
+      }
+    }
+    if(!productIsInCart) {
+      action.payload.quantity=1
+      return { ...state, cart: [...cart, action.payload], total: total+ action.payload.price }
+    }
+    else return { ...state, cart: [...cart], total: total+ action.payload.price }
+
   } else {
     return state;
   }
