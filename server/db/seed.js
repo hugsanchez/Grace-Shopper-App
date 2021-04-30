@@ -153,7 +153,7 @@ const syncAndSeed = async () => {
              }),
             Reviews.create({
                 detail: 'Looks good I guess...',
-                userId: 4,
+                userId: 2,
                 productId: 12
             }),
             Reviews.create({
