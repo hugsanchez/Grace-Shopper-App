@@ -34,10 +34,7 @@ class Header extends Component {
                         <h1 id="main-title">AppName</h1>
                     </NavLink>
                 </div>
-                <div id="main-header-links" className="header-group">
-                    <NavLink to="/artists" className="header-link">
-                        <h2>Artists</h2>
-                    </NavLink>
+                <div className="header-group">
                     <NavLink
                         to="/store"
                         className="header-link"
@@ -45,41 +42,36 @@ class Header extends Component {
                     >
                         <h2>Store</h2>
                     </NavLink>
-                </div>
-                <div className="header-group">
+                    <NavLink to="/artists" className="header-link">
+                        <h2>Artists</h2>
+                    </NavLink>
                     {isSignedIn ? (
                         // If signed in, display welcome, else, display sign-in
                         <React.Fragment>
                             <NavLink
-                                to={`/user/${user.id}`}
+                                to={`/user/${user.id}/profile`}
                                 className="header-link"
                             >
-                                <h3>{user.username}</h3>
-                            </NavLink>
-                            <NavLink
-                                to="/sign-in"
-                                className="header-link"
-                                onClick={this.props.logout}
-                            >
-                                <h3>Logout</h3>
+                                <h2>{user.username}</h2>
                             </NavLink>
                         </React.Fragment>
                     ) : (
                         <React.Fragment>
                             <NavLink to={"#"} className="header-link">
-                                <h3>Guest</h3>
+                                <h2>Guest</h2>
                             </NavLink>
                             <NavLink to="/sign-in" className="header-link">
-                                <h3>Sign In</h3>
+                                <h2>Sign In</h2>
                             </NavLink>
                         </React.Fragment>
                     )}
-                    <NavLink to="/cart" className="header-link">
+                    <NavLink to="/cart" id="cart-link" className="header-link">
                         <img
                             src="/images/utils/cart.png"
                             alt=""
                             id="cart-img"
                         />
+                        <h2>&nbsp; Cart</h2>
                     </NavLink>
                 </div>
             </header>

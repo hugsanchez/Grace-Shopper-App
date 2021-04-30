@@ -1,30 +1,26 @@
 #app-header {
+    box-sizing: border-box;
+    width: 100%;
+    position: relative;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-content: center;
-    padding: 2vmin 10vmin;
+    padding: 0vmin 10vmin;
     background-color: rgb(45, 46, 44);
     z-index: 5;
-    position: sticky;
-    top: 0;
     box-shadow: 0px -12px 9px 5px rgba(0, 0, 0, 0);
     transition: 0.2s ease-in-out;
 }
 
 header img {
-    width: 3vmin;
-    height: 3vmin;
+    width: 3vh;
+    height: 3vh;
 }
 
 h2 {
-    font-size: 3vmin;
-    font-weight: 500;
-}
-
-h3 {
-    font-size: 2.3vmin;
-    font-weight: 500;
+    font-size: 20px;
+    font-weight: 450;
 }
 
 .header-group {
@@ -32,10 +28,6 @@ h3 {
     flex-direction: row;
     justify-content: center;
     align-content: center;
-}
-
-.header-group > * {
-    margin: 0vmin 1.1vmin;
 }
 
 #main-header-link {
@@ -57,6 +49,7 @@ h3 {
     flex-direction: column;
     justify-content: center;
     align-content: center;
+    padding: 2vh 3vh;
 }
 
 .header-link:hover {
@@ -64,6 +57,14 @@ h3 {
         hue-rotate(10deg) brightness(106%) contrast(96%);
 }
 
-#store-link {
-    margin-left: 3vmin;
+#cart-link {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+}
+
+#cart-img {
+    display: flex;
+    justify-content: center;
 }

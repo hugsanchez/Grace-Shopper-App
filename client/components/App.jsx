@@ -14,7 +14,7 @@ import Homepage from "./Homepage/Homepage.jsx";
 import AllProducts from "./AllProducts.jsx";
 import { SignUp, SignIn } from "./Forms";
 import SingleProduct from "./SingleProduct.jsx";
-import SingleUser from "./SingleUser.jsx";
+import SingleUser from "./Users/SingleUser.jsx";
 import Cart from "./Cart.jsx";
 
 class App extends Component {
@@ -50,11 +50,7 @@ class App extends Component {
                             />
                             <Route exact path="/sign-up" component={SignUp} />
                             <Route exact path="/sign-in" component={SignIn} />
-                            <Route
-                                exact
-                                path="/user/:id"
-                                component={SingleUser}
-                            />
+                            <Route path="/user/:id" component={SingleUser} />
                         </Switch>
                     </main>
                 </React.Fragment>
