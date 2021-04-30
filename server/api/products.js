@@ -115,7 +115,6 @@ router.post("/", async (req, res, next) => {
 router.put("/:id", async (req, res, next) => {
   try {
     const { id } = req.params;
-    let editedDetails = await req.body.updatedProduct;
 
     // User info update
     const {
@@ -156,19 +155,6 @@ router.put("/:id", async (req, res, next) => {
     if (price) product.price = price;
     if (year) product.year = year;
     if (imgUrl) product.imgUrl = imgUrl;
-
-    //Update based on changes
-    await Products.update(
-      {
-        name: editedDetails.name,
-        description: editedDetails.description,
-        stock: editedDetails.stock,
-        price: editedDetails.price,
-      },
-      {
-        where: { id: req.params.id },
-      }
-    );
 
     // Save changes
     await product.save();

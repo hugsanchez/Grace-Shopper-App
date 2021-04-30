@@ -1,13 +1,14 @@
 //Required imports
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { getSingleProduct } from "../store/actionCreators/singleProduct";
+import { updateSingleProduct } from "../store/actionCreators/singleProduct";
 import axios from "axios";
 
 class EditProduct extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
+      id: this.props.props.id,
       name: "",
       description: "",
       stock: "",
@@ -41,8 +42,7 @@ class EditProduct extends Component {
   async submitHanlder(e) {
     e.preventDefault();
     let updatedProduct = this.state;
-    await axios.put(`/api/products/${this.props.props.id}`, { updatedProduct });
-    await this.props.getSingleProduct(this.props.props.id);
+    await this.props.updateSingleProduct(updatedProduct);
   }
 
   render() {
@@ -79,7 +79,7 @@ class EditProduct extends Component {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getSingleProduct: (id) => dispatch(getSingleProduct(id)),
+    updateSingleProduct: (product) => dispatch(updateSingleProduct(product)),
   };
 };
 
