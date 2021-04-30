@@ -33,7 +33,7 @@ class SingleUser extends Component {
         }
 
         // If signed in, get user properties
-        const { id, firstName, lastName, email, username, userType } = user;
+        const { id } = user;
 
         return (
             <div className="primary-screen">

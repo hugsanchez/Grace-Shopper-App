@@ -19,3 +19,12 @@ a {
 a:hover {
     color: grey;
 }
+
+.user-screen {
+    display: flex;
+    flex-direction: column;
+}
+
+#account-title {
+    font-size: x-large;
+}
