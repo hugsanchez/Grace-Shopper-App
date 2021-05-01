@@ -39,3 +39,18 @@ h4 {
     display: flex;
     flex-direction: column;
 }
+
+.order-block {
+    margin: 0.5rem;
+}
+
+.order-unit {
+    background-color: gray;
+    display: flex;
+    flex-direction: row;
+}
+
+.order-detail {
+    display: flex;
+    flex-direction: column;
+}
