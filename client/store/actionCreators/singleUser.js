@@ -3,10 +3,16 @@ import axios from "axios";
 export const GET_USER = "GET_USER";
 export const SIGN_IN = "SIGN_IN";
 export const LOG_OUT = "LOG_OUT";
+export const UPDATE_USER = "UPDATE_USER";
 
 export const getUser = (user) => ({
     type: GET_USER,
     payload: user,
+});
+
+export const updateUser = (user) => ({
+    type: UPDATE_USER,
+    user,
 });
 
 // signs in a user
@@ -56,6 +62,23 @@ export const logOutUser = () => async (dispatch) => {
     try {
         window.localStorage.removeItem("token");
         dispatch(logOut());
+    } catch (err) {
+        console.error(err);
+    }
+};
+
+export const updateUserThunk = (payload) => async (dispatch) => {
+    try {
+        const { id, firstName, lastName, username, email } = payload;
+        const { data: user } = await axios.put(`/api/users/${id}`, {
+            id,
+            firstName,
+            lastName,
+            username,
+            email,
+        });
+
+        dispatch(updateUser(user));
     } catch (err) {
         console.error(err);
     }

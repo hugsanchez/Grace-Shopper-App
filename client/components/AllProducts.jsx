@@ -32,41 +32,9 @@ class AllProducts extends Component {
   }
 
   async addToCart(event) {
-    await this.props.addItemToCart(event.id);
+    const userId = await store.getState().signedIn.user.id;
+    await this.props.addItemToCart(event.id, userId);
     const currProduct = await store.getState().cart;
-    //Tracking total for our cart
-    // let tempPrice = 0;
-    // currProduct.cart.map((product) => {
-      // tempPrice += product.price;
-      // this.setState({ totalPrice: tempPrice });
-    // });
-    // // let cartArr= this.state.cart
-    // if(this.state.cart.length===0){
-    //     currProduct.quantity=1
-    //     await this.setState({
-    //         ...this.state,
-    //         cart: [...this.state.cart, currProduct],
-    //     });
-    // }else{
-    //     for(let val of this.state.cart){
-    //         // console.log('val && curr product',val, currProduct)
-    //         if(val.item.id===currProduct.item.id){
-    //             val.quantity++
-    //             return
-    //         }
-
-    //     }
-    //     await this.setState({
-    //         ...this.state,
-    //         cart: [...this.state.cart, currProduct],
-    //     });
-
-    // }
-    // await this.setState({
-    //     ...this.state,
-    //     cart: [...this.state.cart, currProduct],
-    // });
-    // await console.log('cart cart',this.state.cart);
   }
 
   render() {
@@ -102,7 +70,11 @@ class AllProducts extends Component {
           <h2>Cart Summary</h2>
           <ul>
             {this.props.cart.map((curr, idx) => {
-              return <li key={idx}>{curr.name} Quantity {curr.quantity? curr.quantity: 0 }</li>;
+              return (
+                <li key={idx}>
+                  {curr.name} Quantity {curr.quantity ? curr.quantity : 0}
+                </li>
+              );
             })}
           </ul>
           <h3>Total ${this.props.total}</h3>
@@ -116,15 +88,15 @@ class AllProducts extends Component {
 const mapDispatchToProps = (dispatch) => {
   return {
     getAllProducts: () => dispatch(getAllProducts()),
-    addItemToCart: (currProductId) => dispatch(addItemToCart(currProductId)),
+    addItemToCart: (currProduct, userId) =>
+      dispatch(addItemToCart(currProduct, userId)),
   };
 };
 
 const mapStateToProps = (state) => {
-  console.log('check for total in state',state)
   return {
     cart: state.cart.cart,
-    total: state.cart.total
+    total: state.cart.total,
   };
 };
 
