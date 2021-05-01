@@ -1,5 +1,8 @@
 import React, { Component } from "react";
 
+// Style Import
+import "../../../public/assets/user.css";
+
 class Orders extends Component {
     constructor(props) {
         super(props);
@@ -7,7 +10,13 @@ class Orders extends Component {
     }
 
     render() {
-        return <React.Fragment>Orders</React.Fragment>;
+        return (
+            <React.Fragment>
+                <div id="account-title-container" className="account-item">
+                    <h3 id="account-title">Order History</h3>
+                </div>
+            </React.Fragment>
+        );
     }
 }
 
