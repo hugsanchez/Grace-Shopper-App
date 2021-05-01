@@ -16,6 +16,7 @@ const faker = require("faker");
 const axios = require("axios");
 
 const syncAndSeed = async () => {
+
   try {
     await db.authenticate();
     console.log("Database Connected");
@@ -154,49 +155,78 @@ const syncAndSeed = async () => {
     ]);
 
     const orders = await Promise.all([
-      Orders.create({
-        userId: 1,
-      }),
-      Orders.create({
-        userId: 1,
-      }),
-      Orders.create({
-        userId: 2,
-      }),
-    ]);
+            Orders.create({
+                userId: 1,
+            }),
+            Orders.create({
+                userId: 2,
+            }),
+            Orders.create({
+                userId: 2,
+            }),
+            Orders.create({
+                userId: 2,
+            }),
+            Orders.create({
+                userId: 3,
+            }),
+            Orders.create({
+                userId: 3,
+            }),
+        ]);
 
-    await Promise.all([
-      ProductsOrders.create({
-        productId: 2,
-        orderId: 1,
-        quantity: 4,
-      }),
-      ProductsOrders.create({
-        productId: 4,
-        orderId: 1,
-        quantity: 1,
-      }),
-      ProductsOrders.create({
-        productId: 5,
-        orderId: 1,
-        quantity: 10,
-      }),
-      ProductsOrders.create({
-        productId: 1,
-        orderId: 2,
-        quantity: 2,
-      }),
-      ProductsOrders.create({
-        productId: 7,
-        orderId: 3,
-        quantity: 8,
-      }),
-      ProductsOrders.create({
-        productId: 3,
-        orderId: 3,
-        quantity: 1,
-      }),
-    ]);
+        await Promise.all([
+            ProductsOrders.create({
+                productId: 2,
+                orderId: 1,
+                quantity: 4,
+            }),
+            ProductsOrders.create({
+                productId: 4,
+                orderId: 1,
+                quantity: 1,
+            }),
+            ProductsOrders.create({
+                productId: 5,
+                orderId: 1,
+                quantity: 10,
+            }),
+            ProductsOrders.create({
+                productId: 1,
+                orderId: 2,
+                quantity: 2,
+            }),
+            ProductsOrders.create({
+                productId: 7,
+                orderId: 3,
+                quantity: 8,
+            }),
+            ProductsOrders.create({
+                productId: 3,
+                orderId: 3,
+                quantity: 1,
+            }),
+            ProductsOrders.create({
+                productId: 3,
+                orderId: 4,
+                quantity: 1,
+            }),
+            ProductsOrders.create({
+                productId: 8,
+                orderId: 5,
+                quantity: 1,
+            }),
+            ProductsOrders.create({
+                productId: 1,
+                orderId: 6,
+                quantity: 2,
+            }),
+            ProductsOrders.create({
+                productId: 2,
+                orderId: 6,
+                quantity: 1,
+            }),
+        ]);
 
     // await Promise.all([
     //     new Reviews({
@@ -249,6 +279,7 @@ const syncAndSeed = async () => {
   } catch (err) {
     console.log(err);
   }
+
 };
 
 module.exports = { syncAndSeed };

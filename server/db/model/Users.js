@@ -70,56 +70,6 @@ const Users = db.define("users", {
 });
 
 Users.isAdmin;
-
-// Finds a user by token
-Users.findByToken = async (token) => {
-    // JWT verifies token with ciphered version (using environment variable) and returns userId
-    const { id } = jwt.verify(token, process.env.JWT);
-
-    // Now we can get the User ID
-    return await Users.findByPk(id)
-        .then((user) => {
-            if (user) return user;
-
-            // If no user, client is trying to access a user that doesn't exist
-            const error = Error("This user does not exist");
-            error.status = 401;
-            throw error;
-        })
-        .catch((err) => {
-            throw err;
-        });
-};
-
-// Authenticates a user with a username and password
-Users.authenticate = async ({ username, password }) => {
-    try {
-        const user = await Users.findOne({
-            where: {
-                username,
-            },
-        });
-
-        // if password matches, sign a token that contains the id to match later
-        if (user && (await bcrypt.compare(password, user.password))) {
-            return jwt.sign({ id: user.id }, process.env.JWT);
-        } else {
-            const error = Error("Bad credentials");
-            error.status = 401;
-            throw error;
-        }
-    } catch (err) {
-        throw err;
-    }
-};
-
-// Add hooks to hash passwords if we need to
-Users.addHook("beforeSave", async (user) => {
-    if (user.changed("password")) {
-        user.password = await bcrypt.hash(user.password, 10);
-    }
-});
-
 Users.findOneIncludes = async (id) => {
     try {
         const user = await Users.findOne({
@@ -169,5 +119,54 @@ Users.findAllIncludes = async () => {
         console.error(err);
     }
 };
+
+// Finds a user by token
+Users.findByToken = async (token) => {
+    // JWT verifies token with ciphered version (using environment variable) and returns userId
+    const { id } = jwt.verify(token, process.env.JWT);
+
+    // Now we can get the User ID
+    return await Users.findOneIncludes(id)
+        .then((user) => {
+            if (user) return user;
+
+            // If no user, client is trying to access a user that doesn't exist
+            const error = Error("This user does not exist");
+            error.status = 401;
+            throw error;
+        })
+        .catch((err) => {
+            throw err;
+        });
+};
+
+// Authenticates a user with a username and password
+Users.authenticate = async ({ username, password }) => {
+    try {
+        const user = await Users.findOne({
+            where: {
+                username,
+            },
+        });
+
+        // if password matches, sign a token that contains the id to match later
+        if (user && (await bcrypt.compare(password, user.password))) {
+            return jwt.sign({ id: user.id }, process.env.JWT);
+        } else {
+            const error = Error("Bad credentials");
+            error.status = 401;
+            throw error;
+        }
+    } catch (err) {
+        throw err;
+    }
+};
+
+// Add hooks to hash passwords if we need to
+Users.addHook("beforeSave", async (user) => {
+    if (user.changed("password")) {
+        user.password = await bcrypt.hash(user.password, 10);
+    }
+});
 
 module.exports = Users;
