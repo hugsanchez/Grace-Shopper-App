@@ -119,7 +119,7 @@ class SignUp extends Component {
                     {isSignedIn ? (
                         <React.Fragment>
                             <p id="already-signed-in">Success!</p>
-                            <NavLink to={`/user/${user.id}`}>
+                            <NavLink to={`/user/${user.id}/profile`}>
                                 Go to Profile
                             </NavLink>
                         </React.Fragment>

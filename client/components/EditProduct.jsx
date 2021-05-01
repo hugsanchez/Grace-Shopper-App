@@ -1,3 +1,4 @@
+//Required imports
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { updateSingleProduct } from "../store/actionCreators/singleProduct";

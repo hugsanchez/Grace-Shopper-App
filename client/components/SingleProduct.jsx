@@ -7,6 +7,7 @@ import { connect } from "react-redux";
 import { getSingleProduct } from "../store/actionCreators/singleProduct";
 import EditProduct from "./EditProduct.jsx";
 import store from "../store/store";
+import ReviewForm from "./Review/FormReview.jsx";
 
 class SingleProduct extends Component {
   constructor(props) {
@@ -37,10 +38,11 @@ class SingleProduct extends Component {
     const { loading, editToggle } = this.state;
     if (loading) return "loading";
     const { singleProduct } = this.props;
-    const { reviews } = singleProduct;
-    if (!reviews) {
-      return null;
-    }
+    const {signedIn} = this.props;
+
+    // if(!user.id){
+    //   return null
+    // }
 
     return (
       <div>
@@ -54,24 +56,8 @@ class SingleProduct extends Component {
           <h3>Price: ${singleProduct.price}</h3>
           <p>Description: {singleProduct.description}</p>
         </div>
-
         <div>
-          <h2>Reviews:</h2>
-          {/* {console.log(singleProduct)} */}
-          <ul>
-            {reviews.length
-              ? reviews.map((currReview, revIdx) => {
-                  return (
-                    <div key={revIdx}>
-                      <div>
-                        <h4>{currReview.detail}</h4>
-                        <h3>Written By:{currReview.userId}</h3>
-                      </div>
-                    </div>
-                  );
-                })
-              : "Currently No Reviews"}
-          </ul>
+          <ReviewForm singleProductId = {singleProduct.id} userId = {2} />
         </div>
       </div>
     );
@@ -81,6 +67,7 @@ class SingleProduct extends Component {
 const mapStateToProps = (state) => {
   return {
     singleProduct: state.singleProduct,
+    signedIn: state.signedIn
   };
 };
 

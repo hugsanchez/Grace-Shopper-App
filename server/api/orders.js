@@ -26,7 +26,7 @@ router.get("/", async (req, res, next) => {
                 {
                     model: Products,
                     required: false,
-                    attributes: ["id", "name"],
+                    attributes: ["id", "name", "price"],
                     through: {
                         model: ProductsOrders,
                         attributes: ["quantity"],
@@ -52,9 +52,10 @@ router.get("/:id", async (req, res, next) => {
                 {
                     model: Products,
                     required: false,
-                    attributes: ["id", "name"],
+                    attributes: ["id", "name", "price"],
                     through: {
                         model: ProductsOrders,
+                        as: "details",
                         attributes: ["quantity"],
                     },
                 },
