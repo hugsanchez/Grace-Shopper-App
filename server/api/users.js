@@ -76,7 +76,6 @@ router.put("/:id", async (req, res, next) => {
 
         // User info update
         const { firstName, lastName, username, email } = req.body;
-        console.log(req.body);
 
         // Finds user
         let user = await Users.findOne({ where: { id } });

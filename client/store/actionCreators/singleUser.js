@@ -78,7 +78,7 @@ export const updateUserThunk = (payload) => async (dispatch) => {
             email,
         });
 
-        console.log(user);
+        dispatch(updateUser(user));
     } catch (err) {
         console.error(err);
     }
