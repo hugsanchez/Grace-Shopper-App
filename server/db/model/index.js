@@ -5,6 +5,7 @@ const Users = require("./Users");
 const Orders = require("./Orders");
 const Reviews = require("./Reviews");
 const ProductsOrders = require("./ProductsOrders");
+const Cart= require("./Cart")
 
 // ------ Associations ------
 Users.hasMany(Orders);
@@ -43,5 +44,6 @@ module.exports = {
         Orders,
         Reviews,
         ProductsOrders,
+        Cart
     },
 };
