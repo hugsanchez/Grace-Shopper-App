@@ -19,8 +19,10 @@ export const ADJUST_QUANTITY = "ADJUST_QUANTITY";
 
 export const addItemToCart = (product, userId) => {
   return async (dispatch) => {
-    console.log(product, userId);
-    const response = await axios.post(`/api/cart`, { product, userId });
+    await axios.post(`/api/cart`, { product, userId });
+    const response = (await axios.get(`/api/cart/productsInCart/${userId}`))
+      .data;
+    console.log("testing response", response);
     dispatch({ type: ADD_TO_CART, payload: response });
   };
 };

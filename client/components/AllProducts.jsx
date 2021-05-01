@@ -33,7 +33,7 @@ class AllProducts extends Component {
 
   async addToCart(event) {
     const userId = await store.getState().signedIn.user.id;
-    await this.props.addItemToCart(event.id, userId);
+    await this.props.addItemToCart(event, userId);
     const currProduct = await store.getState().cart;
   }
 

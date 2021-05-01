@@ -42,18 +42,18 @@ router.get("/", async (req, res, next) => {
 });
 
 //add single product to cart
-router.put("/cart", async (req, res, next) => {
-  try {
-    const currProduct = await Products.findByPk(req.body.productId);
-    const currUser = await req.body.userId;
-    await currProduct.update({ stock: stock - 1 });
-    const [newOrder, OrderWasCreated] = await Orders.findOrCreate({});
-    //make sure to update the current quantity so that multiple users cant buy the same item if it is in someone else's cart
-    res.send(currProduct);
-  } catch (err) {
-    next(err);
-  }
-});
+// router.put("/cart", async (req, res, next) => {
+//   try {
+//     const currProduct = await Products.findByPk(req.body.productId);
+//     const currUser = await req.body.userId;
+//     await currProduct.update({ stock: stock - 1 });
+//     const [newOrder, OrderWasCreated] = await Orders.findOrCreate({});
+//     //make sure to update the current quantity so that multiple users cant buy the same item if it is in someone else's cart
+//     res.send(currProduct);
+//   } catch (err) {
+//     next(err);
+//   }
+// });
 
 // Single Order
 router.get("/:id", async (req, res, next) => {
