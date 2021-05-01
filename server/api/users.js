@@ -76,6 +76,7 @@ router.put("/:id", async (req, res, next) => {
 
         // User info update
         const { firstName, lastName, username, email } = req.body;
+        console.log(req.body);
 
         // Finds user
         let user = await Users.findOne({ where: { id } });
@@ -84,9 +85,9 @@ router.put("/:id", async (req, res, next) => {
         if (!user) throw notFound("User not found");
 
         if (firstName) user.firstName = firstName;
-        if (lastName) user.firstName = lastName;
-        if (username) user.firstName = username;
-        if (email) user.firstName = email;
+        if (lastName) user.lastName = lastName;
+        if (username) user.username = username;
+        if (email) user.email = email;
 
         // Save changes
         await user.save();

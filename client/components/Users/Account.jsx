@@ -2,6 +2,13 @@ import React, { Component } from "react";
 
 // Redux Imports
 import { connect } from "react-redux";
+import { updateUserThunk } from "../../store/actionCreators/singleUser";
+
+// Material UI Imports
+import Button from "@material-ui/core/Button";
+
+// Component Imports
+import EditUserAccount from "./Dialogues/EditUserAccount.jsx";
 
 // Style Import
 import "../../../public/assets/user.css";
@@ -10,14 +17,39 @@ class Account extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            editing: false,
-            userValues: { ...props.user },
-            preValues: { ...props.user },
+            dialogueOpen: false,
         };
+
+        this.handleOpen = this.handleOpen.bind(this);
+        this.handleClose = this.handleClose.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    handleOpen() {
+        this.setState({
+            ...this.state,
+            dialogueOpen: true,
+        });
+    }
+
+    handleClose() {
+        this.setState({
+            ...this.state,
+            dialogueOpen: false,
+        });
+    }
+
+    handleSubmit(firstName, lastName, email, username) {
+        const { updateUser } = this.props;
+        const { id } = this.props.user;
+
+        updateUser({ id, firstName, lastName, username, email });
+        this.handleClose();
     }
 
     render() {
         const { user } = this.props;
+        const { dialogueOpen } = this.state;
         const { id, firstName, lastName, email, username, userType } = user;
         return (
             <React.Fragment>
@@ -56,15 +88,22 @@ class Account extends Component {
                                 <p>{email}</p>
                             </div>
                         </div>
-                        <div className="user-container-button">
-                            <a
-                                className="edit-link"
-                                onClick={this.toggleEditing}
-                            >
-                                edit
-                            </a>
-                        </div>
                     </form>
+                </div>
+                <div>
+                    <Button
+                        variant="outlined"
+                        color="primary"
+                        onClick={this.handleOpen}
+                    >
+                        Edit Information
+                    </Button>
+                    <EditUserAccount
+                        open={dialogueOpen}
+                        close={this.handleClose}
+                        submit={this.handleSubmit}
+                        {...user}
+                    />
                 </div>
             </React.Fragment>
         );
@@ -77,4 +116,9 @@ function mapStateToProps(state) {
     };
 }
 
-export default connect(mapStateToProps)(Account);
+function mapDispatchToProps(dispatch) {
+    return {
+        updateUser: (user) => dispatch(updateUserThunk(user)),
+    };
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Account);
