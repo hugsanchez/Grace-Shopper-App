@@ -7,6 +7,9 @@ const Reviews = db.define("reviews", {
     detail: {
         type: DataTypes.TEXT,
     },
+    rating: {
+        type: DataTypes.INTEGER
+    }
 });
 
 module.exports = Reviews;

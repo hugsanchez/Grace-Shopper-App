@@ -43,7 +43,7 @@ router.get("/:id", async (req, res, next) => {
 // Adding a review
 router.post("/", async (req, res, next) => {
     try {
-        const { detail, productId, userId } = req.body;
+        const { detail, rating, productId, userId } = req.body;
         console.log('api',req.body)
 
         // Error handling for correct syntax
@@ -65,6 +65,7 @@ router.post("/", async (req, res, next) => {
         // Make a new review
         const newReview = await Reviews.create({
             detail,
+            rating,
             userId,
             productId,
         });
