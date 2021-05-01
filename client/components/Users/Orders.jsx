@@ -7,7 +7,7 @@ class Orders extends Component {
     }
 
     render() {
-        return <React.Fragment></React.Fragment>;
+        return <React.Fragment>Orders</React.Fragment>;
     }
 }
 
