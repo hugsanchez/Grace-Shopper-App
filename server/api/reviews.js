@@ -43,8 +43,7 @@ router.get("/:id", async (req, res, next) => {
 // Adding a review
 router.post("/", async (req, res, next) => {
     try {
-        const { detail, productId, userId } = req.body;
-        console.log('api',req.body)
+        const { detail, rating, productId, userId } = req.body;
 
         // Error handling for correct syntax
         if (!detail) throw badSyntax("Reviews need a 'detail' property");
@@ -55,7 +54,6 @@ router.post("/", async (req, res, next) => {
         // Find associated product and user
         const product = await Products.findByPk(productId);
         const user = await Users.findByPk(userId);
-        console.log(user.username)
 
         // Error handling if product or user don't exist
         if (!product && !user) throw notFound("Product and User not found");
@@ -65,6 +63,7 @@ router.post("/", async (req, res, next) => {
         // Make a new review
         const newReview = await Reviews.create({
             detail,
+            rating,
             userId,
             productId,
         });

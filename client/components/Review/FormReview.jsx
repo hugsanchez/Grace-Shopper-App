@@ -1,13 +1,15 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import ReviewsPerProduct from './ReviewsProduct.jsx'
-import {thunkAddReview} from '../../store/actionCreators/reviews'
+import ReviewsPerProduct from './ReviewsProduct.jsx';
+import {thunkAddReview} from '../../store/actionCreators/reviews';
+import StarRatingComponent from 'react-star-rating-component';
 
 class ReviewForm extends Component{
     constructor(props){
         super(props);
         this.state = {
             detail: '',
+            rating: 1,
             productId: this.props.singleProductId,
             userId: this.props.userId,
         };
@@ -22,10 +24,17 @@ class ReviewForm extends Component{
     handleSubmit(evt) {
         evt.preventDefault();
         this.props.addReview({...this.state})
+        this.setState({ 
+            detail: '',
+            rating: 1,
+        })
     }
+    onStarClick(nextValue, prevValue, name) {
+        this.setState({rating: nextValue});
+      }
+
     render(){
-        const {reviewsPerProduct} = this.props;
-        const {detail} = this.state;
+        const {detail, rating} = this.state;
         const{handleChange, handleSubmit} = this;
 
         return(
@@ -34,22 +43,14 @@ class ReviewForm extends Component{
                 <form onSubmit={handleSubmit}>
                     <label htmlFor='detail'>Thoughts?</label>
                     <input name='detail' onChange={handleChange} value={detail} required />
-
+                    <StarRatingComponent 
+                        name="rate1" 
+                        starCount={5}
+                        value={rating}
+                        onStarClick={this.onStarClick.bind(this)}
+                    />
                     <button type='submit'>Post Review</button>
                 </form>
-                <div>
-                <h2>Reviews:</h2>
-                    <ul>
-                         {reviewsPerProduct.length ? reviewsPerProduct.map((currReview, revIdx) => {
-                            return (
-                                <div key={revIdx}>
-                                    <ReviewsPerProduct currReview={currReview}/>
-                                </div>
-                            )
-                         }) : 'Currently No Reviews'}
-                    </ul>
-
-                </div>
             </div>
         )
     }
@@ -58,7 +59,6 @@ class ReviewForm extends Component{
 const mapStateToProps = (state, otherProps) => {
     return{
         state,
-        reviewsPerProduct: state.reviews.filter(review => review.productId === otherProps.singleProductId)
     }
 }
 const mapDispatchToProps = (dispatch) => {
