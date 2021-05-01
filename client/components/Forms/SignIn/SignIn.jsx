@@ -21,7 +21,6 @@ class SignIn extends Component {
         this.state = { username: "", password: "" };
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
-        // this.authenticate = this.authenticate.bind(this);
     }
 
     // Handles sign in submission/error checking
@@ -74,7 +73,7 @@ class SignIn extends Component {
                     {isSignedIn ? (
                         <React.Fragment>
                             <p id="already-signed-in">You are signed in!</p>
-                            <NavLink to={`/user/${user.id}`}>
+                            <NavLink to={`/user/${user.id}/profile`}>
                                 Go to Profile
                             </NavLink>
                         </React.Fragment>

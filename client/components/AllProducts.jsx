@@ -28,7 +28,6 @@ class AllProducts extends Component {
 
   async componentDidMount() {
     await this.props.getAllProducts();
-    // await console.log(store.getState());
     await this.setState({ allProducts: store.getState().allProducts });
   }
 
@@ -36,11 +35,11 @@ class AllProducts extends Component {
     await this.props.addItemToCart(event.id);
     const currProduct = await store.getState().cart;
     //Tracking total for our cart
-    let tempPrice = 0;
-    currProduct.cart.map((product) => {
-      tempPrice += product.price;
-      this.setState({ totalPrice: tempPrice });
-    });
+    // let tempPrice = 0;
+    // currProduct.cart.map((product) => {
+      // tempPrice += product.price;
+      // this.setState({ totalPrice: tempPrice });
+    // });
     // // let cartArr= this.state.cart
     // if(this.state.cart.length===0){
     //     currProduct.quantity=1
@@ -73,7 +72,6 @@ class AllProducts extends Component {
   render() {
     const allProducts = this.state.allProducts;
     const totalPrice = this.state.totalPrice;
-
     return (
       <div>
         <div id="allProductsPage">
@@ -103,11 +101,11 @@ class AllProducts extends Component {
         <div id="cart-summary">
           <h2>Cart Summary</h2>
           <ul>
-            {this.props.cart.map((curr) => {
-              return <li key={curr.id}>{curr.name}</li>;
+            {this.props.cart.map((curr, idx) => {
+              return <li key={idx}>{curr.name} Quantity {curr.quantity? curr.quantity: 0 }</li>;
             })}
           </ul>
-          <h3>Total: {totalPrice}</h3>
+          <h3>Total ${this.props.total}</h3>
           <button>Proceed to Checkout</button>
         </div>
       </div>
@@ -123,8 +121,10 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 const mapStateToProps = (state) => {
+  console.log('check for total in state',state)
   return {
     cart: state.cart.cart,
+    total: state.cart.total
   };
 };
 

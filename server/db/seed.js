@@ -1,6 +1,14 @@
 const db = require("./db");
 const {
-    model: { Products, Artists, Categories, Users, Orders, Reviews },
+    model: {
+        Products,
+        Artists,
+        Categories,
+        Users,
+        Orders,
+        Reviews,
+        ProductsOrders,
+    },
 } = require("./model");
 
 const faker = require("faker");
@@ -37,14 +45,14 @@ const syncAndSeed = async () => {
                 username: "hugsan",
                 password: "12345678",
                 userType: "GUEST",
-            }).save()
+            }).save(),
         ]);
 
         // Generate Fake Users (not admins!)
-        let fakeUsers = Array(10).fill(' ');
+        let fakeUsers = Array(10).fill(" ");
         let userPromise = [];
 
-         fakeUsers.forEach((user) => {
+        fakeUsers.forEach((user) => {
             user = new Users({
                 firstName: faker.name.firstName(),
                 lastName: faker.name.lastName(),
@@ -54,39 +62,39 @@ const syncAndSeed = async () => {
             }).save();
             userPromise.push(user);
         });
-       await Promise.all(userPromise);
-
-
-      
+        await Promise.all(userPromise);
 
         // Generate Fake Products and Artists from the Met API
-        let fakeArt = Array(20).fill(' ');
-        
-       const promise = async(fakeArt) => { 
+        let fakeArt = Array(20).fill(" ");
+
+        const promise = async (fakeArt) => {
             let productPromise = [];
             let randId = 437165;
 
-            for(let i = 0; i < fakeArt.length; i++){
+            for (let i = 0; i < fakeArt.length; i++) {
                 const { data: productMet } = await axios.get(
                     `https://collectionapi.metmuseum.org/public/collection/v1/objects/${randId}`,
                 );
                 randId++;
-                productPromise.push( 
+                productPromise.push(
                     new Products({
                         name: productMet.title,
                         description: faker.commerce.productDescription(),
                         price: Math.floor(Math.random() * 10000),
                         year: productMet.objectEndDate,
                         stock: Math.floor(Math.random() * 10),
-                        imgUrl: productMet.primaryImage || "https://ualr.edu/elearning/files/2020/10/No-Photo-Available.jpg",
-                }).save());
+                        imgUrl:
+                            productMet.primaryImage ||
+                            "https://ualr.edu/elearning/files/2020/10/No-Photo-Available.jpg",
+                    }).save(),
+                );
                 // productPromise.push(art);
-            };
+            }
             return productPromise;
-        }
+        };
         const array = promise(fakeArt);
         await Promise.all([array]);
-       // console.log(array)
+        // console.log(array)
 
         await Promise.all([
             new Products({
@@ -94,14 +102,16 @@ const syncAndSeed = async () => {
                 description: "art",
                 price: 100000.0,
                 year: 1900,
-                imgUrl: "https://s.abcnews.com/images/International/mona_lisa_file_getty_190717_hpMain_20190717-061249_4x5_608.jpg",
+                imgUrl:
+                    "https://s.abcnews.com/images/International/mona_lisa_file_getty_190717_hpMain_20190717-061249_4x5_608.jpg",
             }).save(),
             new Products({
                 name: "PROF!!!!!",
                 description: "ART AF",
                 price: 100000.0,
                 year: 2020,
-                imgUrl: "https://ualr.edu/elearning/files/2020/10/No-Photo-Available.jpg",
+                imgUrl:
+                    "https://ualr.edu/elearning/files/2020/10/No-Photo-Available.jpg",
             }).save(),
         ]);
 
@@ -111,7 +121,6 @@ const syncAndSeed = async () => {
         //         Products.create({ ...product });
         //     }),
         // );
- 
 
         // Auto-generated Users
         // const otherUsers = await Promise.all(
@@ -129,9 +138,6 @@ const syncAndSeed = async () => {
 
         // Custom Products
 
-
-        
-
         const artists = await Promise.all([
             Artists.create({
                 name: "Leonardo Da Vinci",
@@ -141,7 +147,45 @@ const syncAndSeed = async () => {
         const orders = await Promise.all([
             Orders.create({
                 userId: 1,
+            }),
+            Orders.create({
+                userId: 1,
+            }),
+            Orders.create({
+                userId: 2,
+            }),
+        ]);
+
+        await Promise.all([
+            ProductsOrders.create({
+                productId: 2,
+                orderId: 1,
+                quantity: 4,
+            }),
+            ProductsOrders.create({
+                productId: 4,
+                orderId: 1,
+                quantity: 1,
+            }),
+            ProductsOrders.create({
+                productId: 5,
+                orderId: 1,
+                quantity: 10,
+            }),
+            ProductsOrders.create({
                 productId: 1,
+                orderId: 2,
+                quantity: 2,
+            }),
+            ProductsOrders.create({
+                productId: 7,
+                orderId: 3,
+                quantity: 8,
+            }),
+            ProductsOrders.create({
+                productId: 3,
+                orderId: 3,
+                quantity: 1,
             }),
         ]);
 
@@ -157,14 +201,14 @@ const syncAndSeed = async () => {
                 detail: "I loved the Mona Lisa, 10/10 would go again!",
                 userId: 6,
                 productId: 10,
-             }),
-            Reviews.create({
-                detail: 'Looks good I guess...',
-                userId: 2,
-                productId: 12
             }),
             Reviews.create({
-                detail: 'Its a fake, do NOT BUY!!!',
+                detail: "Looks good I guess...",
+                userId: 7,
+                productId: 10,
+            }),
+            Reviews.create({
+                detail: "Its a fake, do NOT BUY!!!",
                 userId: 9,
                 productId: 10,
             }),
@@ -172,19 +216,18 @@ const syncAndSeed = async () => {
                 detail: "I hate the Mona Lisa >:(",
                 userId: 4,
                 productId: 16,
-             }),
+            }),
             Reviews.create({
-                detail: 'Looks great!',
+                detail: "Looks great!",
                 userId: 9,
                 productId: 21,
             }),
             Reviews.create({
-                detail: 'Do NOT BUY!!!',
+                detail: "Do NOT BUY!!!",
                 userId: 1,
                 productId: 7,
-            })
+            }),
         ]);
-
 
         // const [monaLisa] = products;
         // //const [craig] = users;
