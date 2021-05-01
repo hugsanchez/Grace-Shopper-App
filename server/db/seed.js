@@ -64,6 +64,25 @@ const syncAndSeed = async () => {
         });
         await Promise.all(userPromise);
 
+        await Promise.all([
+            new Products({
+                name: "Mona Lisa",
+                description: "art",
+                price: 100000.0,
+                year: 1900,
+                imgUrl:
+                    "https://s.abcnews.com/images/International/mona_lisa_file_getty_190717_hpMain_20190717-061249_4x5_608.jpg",
+            }).save(),
+            new Products({
+                name: "PROF!!!!!",
+                description: "ART AF",
+                price: 100000.0,
+                year: 2020,
+                imgUrl:
+                    "https://ualr.edu/elearning/files/2020/10/No-Photo-Available.jpg",
+            }).save(),
+        ]);
+
         // Generate Fake Products and Artists from the Met API
         let fakeArt = Array(20).fill(" ");
 
@@ -96,24 +115,7 @@ const syncAndSeed = async () => {
         await Promise.all([array]);
         // console.log(array)
 
-        await Promise.all([
-            new Products({
-                name: "Mona Lisa",
-                description: "art",
-                price: 100000.0,
-                year: 1900,
-                imgUrl:
-                    "https://s.abcnews.com/images/International/mona_lisa_file_getty_190717_hpMain_20190717-061249_4x5_608.jpg",
-            }).save(),
-            new Products({
-                name: "PROF!!!!!",
-                description: "ART AF",
-                price: 100000.0,
-                year: 2020,
-                imgUrl:
-                    "https://ualr.edu/elearning/files/2020/10/No-Photo-Available.jpg",
-            }).save(),
-        ]);
+ 
 
         // Auto-generated Products
         // await Promise.all(
@@ -200,7 +202,7 @@ const syncAndSeed = async () => {
             Reviews.create({
                 detail: "I loved the Mona Lisa, 10/10 would go again!",
                 userId: 6,
-                productId: 10,
+                productId: 1,
             }),
             Reviews.create({
                 detail: "Looks good I guess...",
@@ -215,7 +217,7 @@ const syncAndSeed = async () => {
             Reviews.create({
                 detail: "I hate the Mona Lisa >:(",
                 userId: 4,
-                productId: 16,
+                productId: 1,
             }),
             Reviews.create({
                 detail: "Looks great!",

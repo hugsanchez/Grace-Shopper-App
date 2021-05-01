@@ -1,25 +1,22 @@
 import axios from 'axios';
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {connect} from 'react-redux';
 
-const ReviewsPerProduct = ({reviews}) => {
+const ReviewsPerProduct = ({currReview}) => {
+  const [user, setUsers] = useState([]);
+
+    useEffect(() => {
+      const getUsers = async() => {
+        const {data:user} = await axios.get(`/api/users/${currReview.userId}`);
+        setUsers(user);
+      }
+      getUsers();
+    },[]);
+
     return(
-        
         <div>
-          <h2>Reviews:</h2>
-          <ul>
-            {reviews.length ? reviews.map((currReview, revIdx) => {
-                  return (
-                    <div key={revIdx}>
-                      <div>
-                        <h3>{currReview.detail}</h3>
-                        <h4>Written By: {currReview.user.username}</h4>
-                      </div>
-                    </div>
-                  );
-                })
-              : "Currently No Reviews"}
-          </ul>
+          <h3>{currReview.detail}</h3>
+          <h4>Written By: {user.username}</h4>
         </div>
     )
 }
@@ -28,7 +25,6 @@ const mapStateToProps = (state,otherProps) => {
     return{
         state,
         otherProps,
-        reviews: state.reviews.filter(review => review.productId === otherProps.singleProductId)
     }
 }
 
