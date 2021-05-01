@@ -28,3 +28,8 @@ a:hover {
 #account-title {
     font-size: x-large;
 }
+
+h4 {
+    margin-bottom: 0.2rem;
+    font-size: larger;
+}

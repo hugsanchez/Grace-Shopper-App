@@ -10,6 +10,7 @@ import { NavLink } from "react-router-dom";
 // Component Imports
 import Account from "./Account.jsx";
 import Orders from "./Orders.jsx";
+import AdminScreen from "./AdminScreen.jsx";
 
 // Style Import
 import "../../../public/assets/user.css";
@@ -33,7 +34,7 @@ class SingleUser extends Component {
         }
 
         // If signed in, get user properties
-        const { id } = user;
+        const { id, userType } = user;
 
         return (
             <div className="primary-screen">
@@ -48,6 +49,16 @@ class SingleUser extends Component {
                             Orders
                         </NavLink>
                     </div>
+                    {userType === "ADMIN" ? (
+                        // If admin, show admin page link!
+                        <div className="user-header-container">
+                            <NavLink to={`/user/${id}/admin`} name="orders">
+                                Admin
+                            </NavLink>
+                        </div>
+                    ) : (
+                        ""
+                    )}
                 </header>
                 <div className="user-screen">
                     <Switch>
@@ -62,6 +73,13 @@ class SingleUser extends Component {
                             exact
                             path={`/user/${id}/orders`}
                             component={Orders}
+                        />
+                    </Switch>
+                    <Switch>
+                        <Route
+                            exact
+                            path={`/user/${id}/admin`}
+                            component={AdminScreen}
                         />
                     </Switch>
                 </div>
