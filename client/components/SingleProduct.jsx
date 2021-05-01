@@ -38,7 +38,11 @@ class SingleProduct extends Component {
     const { loading, editToggle } = this.state;
     if (loading) return "loading";
     const { singleProduct } = this.props;
-    
+    const {signedIn} = this.props;
+
+    // if(!user.id){
+    //   return null
+    // }
 
     return (
       <div>
@@ -53,7 +57,7 @@ class SingleProduct extends Component {
           <p>Description: {singleProduct.description}</p>
         </div>
         <div>
-          <ReviewForm singleProductId = {singleProduct.id} />
+          <ReviewForm singleProductId = {singleProduct.id} userId = {2} />
         </div>
       </div>
     );
@@ -63,6 +67,7 @@ class SingleProduct extends Component {
 const mapStateToProps = (state) => {
   return {
     singleProduct: state.singleProduct,
+    signedIn: state.signedIn
   };
 };
 

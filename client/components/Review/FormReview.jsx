@@ -1,31 +1,70 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import ReviewsPerProduct from './ReviewsProduct.jsx'
-import {Link} from 'react-router-dom';
+import {thunkAddReview} from '../../store/actionCreators/reviews'
 
 class ReviewForm extends Component{
     constructor(props){
         super(props);
-        this.state = {}
+        this.state = {
+            detail: '',
+            productId: this.props.singleProductId,
+            userId: this.props.userId,
+        };
+        this.handleChange = this.handleChange.bind(this)
+        this.handleSubmit = this.handleSubmit.bind(this)
     }
-    componentDidMount(){
+    handleChange(evt){
+        const review = {}
+        review[evt.target.name] = evt.target.value
+        this.setState(review)
+    }
+    handleSubmit(evt) {
+        evt.preventDefault();
+        this.props.addReview({...this.state})
     }
     render(){
-        const {singleProductId} = this.props;
+        const {reviewsPerProduct} = this.props;
+        const {detail} = this.state;
+        const{handleChange, handleSubmit} = this;
+
         return(
             <div>
                 <h1>REVIEW FORM</h1>
-                <h2>Wanna leave a <Link to='/sign-up'>Review?</Link></h2>
-                <ReviewsPerProduct singleProductId={singleProductId}/>
+                <form onSubmit={handleSubmit}>
+                    <label htmlFor='detail'>Thoughts?</label>
+                    <input name='detail' onChange={handleChange} value={detail} required />
+
+                    <button type='submit'>Post Review</button>
+                </form>
+                <div>
+                <h2>Reviews:</h2>
+                    <ul>
+                         {reviewsPerProduct.length ? reviewsPerProduct.map((currReview, revIdx) => {
+                            return (
+                                <div key={revIdx}>
+                                    <ReviewsPerProduct currReview={currReview}/>
+                                </div>
+                            )
+                         }) : 'Currently No Reviews'}
+                    </ul>
+
+                </div>
             </div>
         )
     }
 }
 
-// const mapDispatchToProps = (dispatch) => {
-//     return{
-        
-//     }
-// }
+const mapStateToProps = (state, otherProps) => {
+    return{
+        state,
+        reviewsPerProduct: state.reviews.filter(review => review.productId === otherProps.singleProductId)
+    }
+}
+const mapDispatchToProps = (dispatch) => {
+    return{
+        addReview: (review) => dispatch(thunkAddReview(review))
+    }
+}
 
-export default connect()(ReviewForm);
+export default connect(mapStateToProps, mapDispatchToProps)(ReviewForm);

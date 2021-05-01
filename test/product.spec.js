@@ -37,10 +37,8 @@ describe('Routes', () => {
                 expect(response.body.length).to.equal(products.length)
             });
         });
+
         describe('GET all Users', async() => {     
-        
-            describe('GET all Products', async() => {     
-        
                 it('testing get route', async() => {
                     const response = await app.get('/api/users');
                     expect(response.status).to.equal(200);
@@ -52,11 +50,10 @@ describe('Routes', () => {
                     console.log(response.body.length)
                     expect(response.body.length).to.equal(users.length)
                 });
-            });
         });
 
         describe('GET Single Product', async() => {     
-            it('returns single product mona lisa', async() => {
+            it('returns single product PROF', async() => {
                 const prof = await Products.findOne({
                     where:{
                         name:"PROF!!!!!",
@@ -68,12 +65,12 @@ describe('Routes', () => {
                 expect(response.body.name).to.equal('PROF!!!!!')
             });
             it('Does it include reviews', async() => {
-                const prof = await Products.findOne({
+                const monaLisa = await Products.findOne({
                     where:{
-                        name:"A Knight of Alcántara or Calatrava",
+                        name:"Mona Lisa",
                     }
                 });
-                const response = await app.get(`/api/products/${prof.id}`);
+                const response = await app.get(`/api/products/${monaLisa.id}`);
                 console.log(response.body.reviews.length)
                 expect(response.body.reviews).to.be.an('array');
             })

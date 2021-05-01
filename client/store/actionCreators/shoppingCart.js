@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const ADD_TO_CART = "ADD_TO_CART";
 export const REMOVE_FROM_CART = "REMOVE_FROM_CART";
-export const ADJUST_QUANTITY ="ADJUST_QUANTITY";
+export const ADJUST_QUANTITY = "ADJUST_QUANTITY";
 
 // export const addToCart= (currProductId)=>{
 //     console.log('this is working action creator', currProductId)
@@ -12,39 +12,40 @@ export const ADJUST_QUANTITY ="ADJUST_QUANTITY";
 //     }
 // }
 
-export const addItemToCart=(productId)=>{
-    return async(dispatch)=>{
-        const response= (await axios.put(`/api/orders/cart/${productId}`)).data
-        // console.log('response add to cart action', response)
-        dispatch({type: ADD_TO_CART, payload: response})
-    }
-}
+// API {
+//     products: [ { id: #, quantity: # }, { id: another #, quantity: # }, ...],
+//     userId: #,
+// }
 
-export const removeFromCart= (itemId)=>{
-    return{
-        type: REMOVE_FROM_CART,
-        payload:{
-            id: itemId
-        }
-    }
-}
+export const addItemToCart = (product, userId) => {
+  return async (dispatch) => {
+    console.log(product, userId);
+    const response = await axios.post(`/api/cart`, { product, userId });
+    dispatch({ type: ADD_TO_CART, payload: response });
+  };
+};
 
-export const adjustQuantity= (itemId, quantity)=>{
-    return{
-        type: ADJUST_QUANTITY,
-        payload:{
-            id: itemId,
-            quantity
-        }
-    }
-}
+export const removeFromCart = (itemId) => {
+  return {
+    type: REMOVE_FROM_CART,
+    payload: {
+      id: itemId,
+    },
+  };
+};
 
+export const adjustQuantity = (itemId, quantity) => {
+  return {
+    type: ADJUST_QUANTITY,
+    payload: {
+      id: itemId,
+      quantity,
+    },
+  };
+};
 
 // export const addItemToCart = (currProductId) => async (dispatch) => {
 //     const currProduct = (await axios.put(`/api/orders/cart/${currProductId}`)).data;
 //     console.log('thunk curr product found', currProductId)
 //     dispatch(addToCart(currProductId));
 //   };
-
-
-

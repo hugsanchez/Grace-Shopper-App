@@ -14,7 +14,7 @@ const app = require('./app');
 // Database Imports
 const {
     syncAndSeed,
-    model: { Products, Artists, Categories, Users, Orders, Reviews },
+    model: { Products, Artists, Categories, Users, Orders, Reviews, Cart },
 } = require("./db");
 
 // // Serve Static Folder
