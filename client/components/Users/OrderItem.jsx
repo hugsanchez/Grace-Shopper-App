@@ -27,20 +27,29 @@ class OrderItem extends Component {
 
         return (
             <div className="order-block">
-                <div className="order-unit">
+                <div className="order-info">
                     <div id="order-date" className="order-detail">
-                        <p>ORDER PLACED</p>
+                        <p className="detail-title">ORDER PLACED</p>
                         <p>{formattedDate}</p>
                     </div>
                     <div id="order-total" className="order-detail">
-                        <p>TOTAL</p>
+                        <p className="detail-title">TOTAL</p>
                         <p>{"$placeholder"}</p>
                     </div>
                 </div>
-                <div className="order-unit">
+                <div className="order-product-container">
                     {products.map((product) => (
-                        <div key={product.id}>
-                            <Link to={`/product/${id}`}>{product.name}</Link>
+                        <div className="order-product" key={product.id}>
+                            <div className="order-product-center">
+                                <Link to={`/product/${id}`}>
+                                    <img
+                                        className="order-img"
+                                        src={`${product.imgUrl}`}
+                                        alt={`Product ${product.id}`}
+                                    />
+                                </Link>
+                            </div>
+                            <div className="order-product-item"></div>
                         </div>
                     ))}
                 </div>
