@@ -25,11 +25,17 @@ a:hover {
     flex-direction: column;
 }
 
-#account-title {
+#account-title,
+#order-title {
     font-size: x-large;
 }
 
 h4 {
     margin-bottom: 0.2rem;
     font-size: larger;
+}
+
+#orders-container {
+    display: flex;
+    flex-direction: column;
 }

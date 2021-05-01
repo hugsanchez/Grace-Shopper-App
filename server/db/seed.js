@@ -149,10 +149,19 @@ const syncAndSeed = async () => {
                 userId: 1,
             }),
             Orders.create({
-                userId: 1,
+                userId: 2,
             }),
             Orders.create({
                 userId: 2,
+            }),
+            Orders.create({
+                userId: 2,
+            }),
+            Orders.create({
+                userId: 3,
+            }),
+            Orders.create({
+                userId: 3,
             }),
         ]);
 
@@ -185,6 +194,26 @@ const syncAndSeed = async () => {
             ProductsOrders.create({
                 productId: 3,
                 orderId: 3,
+                quantity: 1,
+            }),
+            ProductsOrders.create({
+                productId: 3,
+                orderId: 4,
+                quantity: 1,
+            }),
+            ProductsOrders.create({
+                productId: 8,
+                orderId: 5,
+                quantity: 1,
+            }),
+            ProductsOrders.create({
+                productId: 1,
+                orderId: 6,
+                quantity: 2,
+            }),
+            ProductsOrders.create({
+                productId: 2,
+                orderId: 6,
                 quantity: 1,
             }),
         ]);
