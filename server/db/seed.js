@@ -238,31 +238,37 @@ const syncAndSeed = async () => {
     const review = await Promise.all([
       Reviews.create({
         detail: "I loved the Mona Lisa, 10/10 would go again!",
+        rating: 5,
         userId: 6,
         productId: 1,
       }),
       Reviews.create({
         detail: "Looks good I guess...",
+        rating: 3,
         userId: 7,
         productId: 10,
       }),
       Reviews.create({
         detail: "Its a fake, do NOT BUY!!!",
+        rating: 1,
         userId: 9,
         productId: 10,
       }),
       Reviews.create({
         detail: "I hate the Mona Lisa >:(",
+        rating: 1,
         userId: 4,
         productId: 1,
       }),
       Reviews.create({
         detail: "Looks great!",
+        rating: 4,
         userId: 9,
         productId: 21,
       }),
       Reviews.create({
         detail: "Do NOT BUY!!!",
+        rating: 1,
         userId: 1,
         productId: 7,
       }),

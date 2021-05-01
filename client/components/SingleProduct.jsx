@@ -8,6 +8,8 @@ import { getSingleProduct } from "../store/actionCreators/singleProduct";
 import EditProduct from "./EditProduct.jsx";
 import store from "../store/store";
 import ReviewForm from "./Review/FormReview.jsx";
+import ReviewsPerProduct from './Review/ReviewsProduct.jsx';
+import {Link} from 'react-router-dom';
 
 class SingleProduct extends Component {
   constructor(props) {
@@ -38,7 +40,8 @@ class SingleProduct extends Component {
     const { loading, editToggle } = this.state;
     if (loading) return "loading";
     const { singleProduct } = this.props;
-    const {signedIn} = this.props;
+    const {isSignedIn} = this.props.signedIn;
+    const {user} = this.props.signedIn;
 
     // if(!user.id){
     //   return null
@@ -47,17 +50,23 @@ class SingleProduct extends Component {
     return (
       <div>
         <div>
-          <button onClick={this.handleEditToggle}>Edit</button>
-          {editToggle === false ? null : <EditProduct props={singleProduct} />}
-          <h1>{singleProduct.name}</h1>
-          <img src={singleProduct.imgUrl} width="450px" height="450px" />
-          <h3>Acquired On: {singleProduct.year}</h3>
-          <h3>Quantity Avaliable: {singleProduct.stock}</h3>
-          <h3>Price: ${singleProduct.price}</h3>
-          <p>Description: {singleProduct.description}</p>
+            <button onClick={this.handleEditToggle}>Edit</button>
+            {editToggle === false ? null : <EditProduct props={singleProduct} />}
+            <h1>{singleProduct.name}</h1>
+            <img src={singleProduct.imgUrl} width="450px" height="450px" />
+            <h3>Acquired On: {singleProduct.year}</h3>
+            <h3>Quantity Avaliable: {singleProduct.stock}</h3>
+            <h3>Price: ${singleProduct.price}</h3>
+            <p>Description: {singleProduct.description}</p>
         </div>
+            {
+              isSignedIn ?  <ReviewForm singleProductId = {singleProduct.id} userId = {user.id} /> : 
+                        <h3>Wanna leave a <Link to='/sign-up'>Review?</Link></h3>
+
+            }
         <div>
-          <ReviewForm singleProductId = {singleProduct.id} userId = {2} />
+            <h1>Reviews:</h1>
+            <ReviewsPerProduct singleProductId = {singleProduct.id} />
         </div>
       </div>
     );
