@@ -14,7 +14,6 @@ import AllProducts from "./AllProducts.jsx";
 import { SignUp, SignIn } from "./Forms";
 import SingleProduct from "./SingleProduct.jsx";
 import { getAllProducts } from "../store/actionCreators/allProducts";
-import {thunkLoadReviews} from '../store/actionCreators/review';
 import Cart from "./Cart.jsx";
 
 class App extends Component {
@@ -27,7 +26,6 @@ class App extends Component {
     // Search for a token in localStorage so users will stay signed in on refresh
     await this.props.attemptLogin();
     await this.props.allProducts();
-    await this.props.load()
 
   }
 
@@ -56,7 +54,6 @@ function mapDispatchToProps(dispatch) {
   return {
     attemptLogin: () => dispatch(attemptTokenLogin()),
     allProducts: () => dispatch(getAllProducts()),
-    load: () => dispatch(thunkLoadReviews())
   };
 }
 

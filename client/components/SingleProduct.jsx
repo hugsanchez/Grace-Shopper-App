@@ -38,6 +38,7 @@ class SingleProduct extends Component {
     const { loading, editToggle } = this.state;
     if (loading) return "loading";
     const { singleProduct } = this.props;
+    
 
     return (
       <div>
@@ -51,7 +52,22 @@ class SingleProduct extends Component {
           <h3>Price: ${singleProduct.price}</h3>
           <p>Description: {singleProduct.description}</p>
         </div>
-        <ReviewForm singleProductId = {singleProduct.id} />
+        <div>
+          <h2>Reviews:</h2>
+          <ul>
+            {reviews.length ? reviews.map((currReview, revIdx) => {
+                  return (
+                    <div key={revIdx}>
+                      <div>
+                        <h4>{currReview.detail}</h4>
+                        <h3>Written By: {currReview.userId}</h3>
+                      </div>
+                    </div>
+                  );
+                })
+              : "Currently No Reviews"}
+          </ul>
+        </div>
       </div>
     );
   }
