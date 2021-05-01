@@ -8,6 +8,7 @@ const {
     Orders,
     Reviews,
     ProductsOrders,
+    Cart
   },
 } = require("./model");
 

@@ -88,8 +88,8 @@ class AllProducts extends Component {
 const mapDispatchToProps = (dispatch) => {
   return {
     getAllProducts: () => dispatch(getAllProducts()),
-    addItemToCart: (currProductId, userId) =>
-      dispatch(addItemToCart(currProductId, userId)),
+    addItemToCart: (currProduct, userId) =>
+      dispatch(addItemToCart(currProduct, userId)),
   };
 };
 

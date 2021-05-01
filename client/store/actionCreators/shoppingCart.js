@@ -17,10 +17,10 @@ export const ADJUST_QUANTITY = "ADJUST_QUANTITY";
 //     userId: #,
 // }
 
-export const addItemToCart = (productId, userId) => {
+export const addItemToCart = (product, userId) => {
   return async (dispatch) => {
-    console.log(productId, userId);
-    const response = await axios.put(`/api/orders/cart`, { productId, userId });
+    console.log(product, userId);
+    const response = await axios.post(`/api/cart`, { product, userId });
     dispatch({ type: ADD_TO_CART, payload: response });
   };
 };
