@@ -13,7 +13,8 @@ const {
 router.get("/", async (req, res, next) => {
   try {
     const products = await Products.findAll({
-      include: [Artists, Categories, Reviews],
+     include: [Artists, Categories, Reviews],
+     order:[['name']]
     });
     res.send(products);
   } catch (err) {

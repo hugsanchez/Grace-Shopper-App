@@ -3,7 +3,7 @@ import React, {useState, useEffect} from 'react';
 import {connect} from 'react-redux';
 import StarRatingComponent from 'react-star-rating-component';
 
-const SingleReview = ({currReview, otherProps}) => {
+const SingleReview = ({currReview}) => {
     const [user, setUsers] = useState([]);
 
     useEffect(() => {
@@ -16,7 +16,6 @@ const SingleReview = ({currReview, otherProps}) => {
 
     return(
         <div>
-            {console.log(currReview)}
             <h3>{currReview.detail}</h3>
             <h5>Written By: {user.username}</h5>
             <div>

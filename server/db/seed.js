@@ -262,13 +262,13 @@ const syncAndSeed = async () => {
       }),
       Reviews.create({
         detail: "Looks great!",
-        rating: 4,
+        rating:4,
         userId: 9,
         productId: 21,
       }),
       Reviews.create({
         detail: "Do NOT BUY!!!",
-        rating: 1,
+        rating:1,
         userId: 1,
         productId: 7,
       }),
