@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 
 // Redux Imports
 import { getAllProducts } from "../store/actionCreators/allProducts";
-import { addItemToCart } from "../store/actionCreators/shoppingCart";
+import { addItemToCart, removeFromCart } from "../store/actionCreators/shoppingCart";
 
 import store from "../store/store";
 
@@ -27,6 +27,7 @@ class AllProducts extends Component {
       productsInCart: [],
     };
     this.addToCart = this.addToCart.bind(this);
+    this.deleteFromCart= this.deleteFromCart.bind(this)
   }
 
 
@@ -53,6 +54,17 @@ class AllProducts extends Component {
       ? (userId = 0)
       : (userId = await store.getState().signedIn.user.id);
     await this.props.addItemToCart(event, userId);
+    await this.setState({ ...this.state, productsInCart: this.props.cart });
+    console.log('state after button click')
+  }
+
+  async deleteFromCart(event) {
+    console.log('delete event',event)
+    let userId;
+    (await store.getState().signedIn.isSignedIn) === false
+      ? (userId = 0)
+      : (userId = await store.getState().signedIn.user.id);
+    await this.props.deleteFromCart(event, userId);
     await this.setState({ ...this.state, productsInCart: this.props.cart });
     console.log('state after button click')
   }
@@ -97,7 +109,7 @@ class AllProducts extends Component {
             {displayCart ? (
               displayCart.map((product, idx) => (
                 <li key={idx}>
-                  Name: {product.name} Quantity: {product.quantity}
+                  Name: {product.name} Quantity: {product.quantity} <button onClick={()=>{this.deleteFromCart(product)}}>Delete</button>
                 </li>
               ))
             ) : (
@@ -117,6 +129,8 @@ const mapDispatchToProps = (dispatch) => {
     getAllProducts: () => dispatch(getAllProducts()),
     addItemToCart: (currProduct, userId) =>
       dispatch(addItemToCart(currProduct, userId)),
+    deleteFromCart: (currProduct, userId) =>
+      dispatch(removeFromCart(currProduct, userId)),
   };
 };
 

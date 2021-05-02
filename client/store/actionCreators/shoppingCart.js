@@ -38,13 +38,13 @@ export const addItemToCart = (product, userId) => {
   };
 };
 
-export const removeFromCart = (itemId) => {
-  return {
-    type: REMOVE_FROM_CART,
-    payload: {
-      id: itemId,
-    },
-  };
+export const removeFromCart = (product, userId) => {
+  console.log('delete action creator',product, userId)
+  return async (dispatch) => {
+      const response= (await axios.delete(`/api/cart/productsInCart/${product.id}`, {data: { userId }})).data
+      console.log('action creator response', response)
+      dispatch({ type: REMOVE_FROM_CART, payload: response })
+  }
 };
 
 export const adjustQuantity = (itemId, quantity) => {
