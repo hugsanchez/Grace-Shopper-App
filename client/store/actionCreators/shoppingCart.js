@@ -19,32 +19,28 @@ export const ADJUST_QUANTITY = "ADJUST_QUANTITY";
 
 export const addItemToCart = (product, userId) => {
   return async (dispatch) => {
-    if(product===null){
-      const response= (await axios.get(`/api/cart/productsInCart/${userId}`)).data
-      console.log('action creator response', response)
-      dispatch({ type: ADD_TO_CART, payload: response })
-    }
-    else{
+    if (product === null) {
+      const response = (await axios.get(`/api/cart/productsInCart/${userId}`))
+        .data;
+      dispatch({ type: ADD_TO_CART, payload: response });
+    } else {
       await axios.post(`/api/cart`, { product, userId });
       const response = (await axios.get(`/api/cart/productsInCart/${userId}`))
         .data;
       dispatch({ type: ADD_TO_CART, payload: response });
-
     }
-    // await axios.post(`/api/cart`, { product, userId });
-    // const response = (await axios.get(`/api/cart/productsInCart/${userId}`))
-    //   .data;
-    // dispatch({ type: ADD_TO_CART, payload: response });
   };
 };
 
 export const removeFromCart = (product, userId) => {
-  console.log('delete action creator',product, userId)
   return async (dispatch) => {
-      const response= (await axios.delete(`/api/cart/productsInCart/${product.id}`, {data: { userId }})).data
-      console.log('action creator response', response)
-      dispatch({ type: REMOVE_FROM_CART, payload: response })
-  }
+    const response = (
+      await axios.delete(`/api/cart/productsInCart/${product.productId}`, {
+        data: { userId },
+      })
+    ).data;
+    dispatch({ type: REMOVE_FROM_CART, payload: response });
+  };
 };
 
 export const adjustQuantity = (itemId, quantity) => {

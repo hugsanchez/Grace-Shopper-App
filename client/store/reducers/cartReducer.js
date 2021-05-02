@@ -1,5 +1,5 @@
 import { ADD_TO_CART } from "../actionCreators/shoppingCart";
-import REMOVE_FROM_CART from "../actionCreators/shoppingCart";
+import { REMOVE_FROM_CART } from "../actionCreators/shoppingCart";
 import ADJUST_QUANTITY from "../actionCreators/shoppingCart";
 
 // const initialCart = {
@@ -18,16 +18,22 @@ export const cartReducer = (state = initialCart, action) => {
     action.payload.forEach((product) => {
       tempTotal += product.price * product.quantity;
     });
-    
-    return { ...state, cart: [...state.cart, action.payload] };
-  }
-  else   if (action.type === REMOVE_FROM_CART) {
+
+    return {
+      ...state,
+      cart: [...state.cart, action.payload],
+      total: tempTotal,
+    };
+  } else if (action.type === REMOVE_FROM_CART) {
     let tempTotal = 0;
     action.payload.forEach((product) => {
       tempTotal += product.price * product.quantity;
     });
-    
-    return { ...state, cart: [...state.cart, action.payload] };
+    return {
+      ...state,
+      cart: [...action.payload],
+      total: tempTotal,
+    };
   }
 
   return state;

@@ -5,7 +5,10 @@ import { connect } from "react-redux";
 
 // Redux Imports
 import { getAllProducts } from "../store/actionCreators/allProducts";
-import { addItemToCart, removeFromCart } from "../store/actionCreators/shoppingCart";
+import {
+  addItemToCart,
+  removeFromCart,
+} from "../store/actionCreators/shoppingCart";
 
 import store from "../store/store";
 
@@ -14,8 +17,6 @@ import { Link } from "react-router-dom";
 
 // Style Imports
 import "../../public/assets/style.css";
-
-
 
 class AllProducts extends Component {
   constructor(props) {
@@ -27,9 +28,8 @@ class AllProducts extends Component {
       productsInCart: [],
     };
     this.addToCart = this.addToCart.bind(this);
-    this.deleteFromCart= this.deleteFromCart.bind(this)
+    this.deleteFromCart = this.deleteFromCart.bind(this);
   }
-
 
   async componentDidMount() {
     let userId;
@@ -37,11 +37,15 @@ class AllProducts extends Component {
       ? (userId = 0)
       : (userId = await store.getState().signedIn.user.id);
     await this.props.getAllProducts();
-    const cartOnMount=await this.props.addItemToCart(null, userId);
-    console.log('cart on mount', cartOnMount)
-    console.log('store get state', store.getState())
+    const cartOnMount = await this.props.addItemToCart(null, userId);
+    console.log("cart on mount", cartOnMount);
+    console.log("store get state", store.getState());
     // console.log('products in cart', this.props.cart)
-    await this.setState({ ...this.state, allProducts: store.getState().allProducts,  productsInCart: this.props.cart});
+    await this.setState({
+      ...this.state,
+      allProducts: store.getState().allProducts,
+      productsInCart: this.props.cart,
+    });
     // console.log('component did mount')
     // await this.setState({ ...this.state, productsInCart: this.props.cart });
 
@@ -55,18 +59,15 @@ class AllProducts extends Component {
       : (userId = await store.getState().signedIn.user.id);
     await this.props.addItemToCart(event, userId);
     await this.setState({ ...this.state, productsInCart: this.props.cart });
-    console.log('state after button click')
   }
 
   async deleteFromCart(event) {
-    console.log('delete event',event)
     let userId;
     (await store.getState().signedIn.isSignedIn) === false
       ? (userId = 0)
       : (userId = await store.getState().signedIn.user.id);
     await this.props.deleteFromCart(event, userId);
     await this.setState({ ...this.state, productsInCart: this.props.cart });
-    console.log('state after button click')
   }
 
   render() {
@@ -75,8 +76,8 @@ class AllProducts extends Component {
       this.state.productsInCart.length - 1
     ];
     const totalPrice = this.state.totalPrice;
-    const {filterProducts} = this.props;
-    
+    const { filterProducts } = this.props;
+
     return (
       <div>
         <div id="allProductsPage">
@@ -109,7 +110,14 @@ class AllProducts extends Component {
             {displayCart ? (
               displayCart.map((product, idx) => (
                 <li key={idx}>
-                  Name: {product.name} Quantity: {product.quantity} <button onClick={()=>{this.deleteFromCart(product)}}>Delete</button>
+                  Name: {product.name} Quantity: {product.quantity}{" "}
+                  <button
+                    onClick={() => {
+                      this.deleteFromCart(product);
+                    }}
+                  >
+                    Delete
+                  </button>
                 </li>
               ))
             ) : (
