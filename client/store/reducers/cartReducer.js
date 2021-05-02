@@ -18,21 +18,19 @@ export const cartReducer = (state = initialCart, action) => {
     action.payload.forEach((product) => {
       tempTotal += product.price * product.quantity;
     });
-    let { cart } = state;
-    cart = [...action.payload];
-    let productIsInCart = false;
-    let tempObj = {};
-    for (let product of cart) {
-      let currentIdx = product.productId;
-      console.log("condition", tempObj[currentIdx] !== undefined);
-      console.log("tempObj", tempObj);
-      if (tempObj[currentIdx] !== 0) {
-        productIsInCart = true;
-        tempObj[currentIdx] = tempObj[currentIdx] + 1;
-      } else {
-        tempObj[currentIdx] = 1;
-      }
-    }
+    return { ...state, cart: [...state.cart, action.payload] };
+    // console.log("cart", cart);
+    // let productIsInCart = false;
+    // let tempObj = {};
+    // for (let product of cart) {
+    //   let currentIdx = product.productId;
+    //   if (tempObj[currentIdx] !== 0) {
+    //     productIsInCart = true;
+    //     tempObj[currentIdx] = tempObj[currentIdx] + 1;
+    //   } else {
+    //     tempObj[currentIdx] = 1;
+    //   }
+    // }
     // if (!productIsInCart) {
     //   action.payload.quantity = 1;
     //   return {
