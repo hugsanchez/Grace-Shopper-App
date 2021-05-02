@@ -19,18 +19,20 @@ router.post("/", async (req, res, next) => {
       },
     });
     if (doesProductExist.length > 0) {
+      // const toUpdate = await Cart.findAll();
       await Cart.increment("quantity", {
-        by: 1,
         where: { productId: req.body.product.id },
       });
     } else {
       const cart = await Cart.create({
         userId: req.body.userId,
         productId: req.body.product.id,
+        name: req.body.product.name,
         price: req.body.product.price,
       });
     }
-    //res.send(cart.dataValues);
+    const updatedCart = await Cart.findAll();
+    res.send(updatedCart);
   } catch (err) {
     next(err);
   }

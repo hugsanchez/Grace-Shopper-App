@@ -22,6 +22,7 @@ class AllProducts extends Component {
       allProducts: [],
       cart: [],
       totalPrice: 0,
+      idsInCart: {},
     };
     this.addToCart = this.addToCart.bind(this);
   }
@@ -38,6 +39,7 @@ class AllProducts extends Component {
       : (userId = await store.getState().signedIn.user.id);
     await this.props.addItemToCart(event, userId);
     const currProduct = await store.getState().cart;
+    console.log("userID");
   }
 
   render() {
@@ -71,15 +73,7 @@ class AllProducts extends Component {
         </div>
         <div id="cart-summary">
           <h2>Cart Summary</h2>
-          <ul>
-            {this.props.cart.map((curr, idx) => {
-              return (
-                <li key={idx}>
-                  {curr.name} Quantity {curr.quantity ? curr.quantity : 0}
-                </li>
-              );
-            })}
-          </ul>
+          <ul></ul>
           <h3>Total ${this.props.total}</h3>
           <button>Proceed to Checkout</button>
         </div>
