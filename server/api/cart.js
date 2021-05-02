@@ -56,8 +56,6 @@ router.get("/productsInCart/:id", async (req, res, next) => {
 
 router.delete("/productsInCart/:id", async (req, res, next) => {
   try {
-    console.log("product id", req.params.id);
-    console.log("user id ", req.body.userId);
     const updatedCart = await Cart.destroy({
       where: { productId: req.params.id },
     });
@@ -67,6 +65,23 @@ router.delete("/productsInCart/:id", async (req, res, next) => {
       },
     });
     console.log("server cart", cart);
+    res.send(cart);
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.put("/productsInCart/:id", async (req, res, next) => {
+  try {
+    console.log("userId", req.body.data.userId);
+    await Cart.increment("quantity", {
+      where: { productId: req.params.id },
+    });
+    const cart = await Cart.findAll({
+      where: {
+        userId: req.body.data.userId,
+      },
+    });
     res.send(cart);
   } catch (err) {
     next(err);
