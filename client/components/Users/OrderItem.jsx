@@ -22,8 +22,16 @@ class OrderItem extends Component {
     render() {
         const { id, createdAt, products, updatedAt } = this.props;
         const date = new Date(Date.parse(createdAt.substring(0, 10)));
-        console.log(date, typeof date);
         const formattedDate = this.formatDate(date, "mm/dd/yyyy");
+
+        const formatter = new Intl.NumberFormat("en-US", {
+            style: "currency",
+            currency: "USD",
+
+            // These options are needed to round to whole numbers if that's what you want.
+            //minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
+            maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
+        });
 
         return (
             <div className="order-block">
@@ -49,7 +57,29 @@ class OrderItem extends Component {
                                     />
                                 </Link>
                             </div>
-                            <div className="order-product-item"></div>
+                            <div className="order-product-item">
+                                <p className="order-item-quantity">
+                                    Qty: {product.productsOrders.quantity}
+                                </p>
+                            </div>
+                            <div className="order-product-item">
+                                <p className="order-item-quantity">
+                                    Price: {formatter.format(product.price)}
+                                </p>
+                            </div>
+                            <div className="order-product-item">
+                                <a
+                                    href={`/#/product/${product.id}`}
+                                    className="order-item-link"
+                                >
+                                    {product.name}
+                                </a>
+                                <p className="order-item-artist">
+                                    {product.artist
+                                        ? product.artist
+                                        : "Unknown/Not Found"}
+                                </p>
+                            </div>
                         </div>
                     ))}
                 </div>

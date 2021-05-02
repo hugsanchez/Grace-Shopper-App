@@ -40,19 +40,31 @@ class SingleUser extends Component {
             <div className="primary-screen">
                 <header className="user-header">
                     <div className="user-header-container">
-                        <NavLink to={`/user/${id}/profile`} name="profile">
+                        <NavLink
+                            to={`/user/${id}/profile`}
+                            className="header-link-user"
+                            name="profile"
+                        >
                             Account
                         </NavLink>
                     </div>
                     <div className="user-header-container">
-                        <NavLink to={`/user/${id}/orders`} name="orders">
+                        <NavLink
+                            to={`/user/${id}/orders`}
+                            className="header-link-user"
+                            name="orders"
+                        >
                             Orders
                         </NavLink>
                     </div>
                     {userType === "ADMIN" ? (
                         // If admin, show admin page link!
                         <div className="user-header-container">
-                            <NavLink to={`/user/${id}/admin`} name="orders">
+                            <NavLink
+                                to={`/user/${id}/admin`}
+                                className="header-link-user"
+                                name="orders"
+                            >
                                 Admin
                             </NavLink>
                         </div>
