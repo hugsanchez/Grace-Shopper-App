@@ -32,7 +32,7 @@ export const cartReducer = (state = initialCart, action) => {
     });
     return {
       ...state,
-      cart: [...action.payload],
+      cart: [...state.cart,action.payload],
       total: tempTotal,
     };
   } else if (action.type === INCREASE_QUANTITY) {
