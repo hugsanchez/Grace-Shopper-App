@@ -23,9 +23,11 @@ class Orders extends Component {
                     <h3 id="order-title">Order History</h3>
                 </div>
                 <div id="orders-container">
-                    {user.orders.map((order) => (
-                        <OrderItem {...order} key={order.id} />
-                    ))}
+                    {user.orders.length
+                        ? user.orders.map((order) => (
+                              <OrderItem {...order} key={order.id} />
+                          ))
+                        : "No Orders"}
                 </div>
             </React.Fragment>
         );
