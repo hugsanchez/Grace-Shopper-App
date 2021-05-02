@@ -16,6 +16,13 @@ const Cart = db.define("cart", {
       notEmpty: true,
     },
   },
+  name: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    validate: {
+      notEmpty: true,
+    },
+  },
   price: {
     type: DataTypes.FLOAT,
     allowNull: false,

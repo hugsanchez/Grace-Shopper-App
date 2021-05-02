@@ -14,28 +14,25 @@ const initialCart = {
 
 export const cartReducer = (state = initialCart, action) => {
   if (action.type === ADD_TO_CART) {
-    let quantity = 0;
-    let currId;
-    let idSet = {};
-    for (let product of action.payload) {
-      //product = {id: 1, price: 80, userId: 4}
-      currId = product.productId;
-      if (idSet[currId] === undefined) {
-        idSet[currId] = 1;
+    let tempTotal = 0;
+    action.payload.forEach((product) => {
+      tempTotal += product.price * product.quantity;
+    });
+    let { cart } = state;
+    cart = [...action.payload];
+    let productIsInCart = false;
+    let tempObj = {};
+    for (let product of cart) {
+      let currentIdx = product.productId;
+      console.log("condition", tempObj[currentIdx] !== undefined);
+      console.log("tempObj", tempObj);
+      if (tempObj[currentIdx] !== 0) {
+        productIsInCart = true;
+        tempObj[currentIdx] = tempObj[currentIdx] + 1;
       } else {
-        idSet[currId]++;
+        tempObj[currentIdx] = 1;
       }
     }
-    return { ...state, cart: [...state.cart, action.payload] };
-    // console.log("action", action.payload);
-    // const { cart, total } = state;
-    // let productIsInCart = false;
-    // for (let product of cart) {
-    //   if (product.id === action.payload.id) {
-    //     productIsInCart = true;
-    //     product["quantity"]++;
-    //   }
-    // }
     // if (!productIsInCart) {
     //   action.payload.quantity = 1;
     //   return {
@@ -43,9 +40,17 @@ export const cartReducer = (state = initialCart, action) => {
     //     cart: [...cart, action.payload],
     //     total: total + action.payload.price,
     //   };
-    // } else
-    //   return { ...state, cart: [...cart], total: total + action.payload.price };
-  } else {
-    return state;
+    //} else
+    // return { ...state, cart: [...cart], total: total + action.payload.price };
+
+    // return {
+    //   ...state,
+    //   cart: [...state.cart, ...action.payload],
+    //   total: tempTotal,
+    // };
+    // } else {
+    //   return state;
+    // }
   }
+  return state;
 };

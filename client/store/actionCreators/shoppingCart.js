@@ -22,7 +22,6 @@ export const addItemToCart = (product, userId) => {
     await axios.post(`/api/cart`, { product, userId });
     const response = (await axios.get(`/api/cart/productsInCart/${userId}`))
       .data;
-    console.log("testing response", response);
     dispatch({ type: ADD_TO_CART, payload: response });
   };
 };
