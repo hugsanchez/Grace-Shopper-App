@@ -18,6 +18,7 @@ export const cartReducer = (state = initialCart, action) => {
     action.payload.forEach((product) => {
       tempTotal += product.price * product.quantity;
     });
+    
     return { ...state, cart: [...state.cart, action.payload] };
     // console.log("cart", cart);
     // let productIsInCart = false;
