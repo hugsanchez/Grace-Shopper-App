@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 
 // React-Redux Imports
 import { connect } from "react-redux";
@@ -15,6 +15,8 @@ import { Link } from "react-router-dom";
 // Style Imports
 import "../../public/assets/style.css";
 
+
+
 class AllProducts extends Component {
   constructor(props) {
     super(props);
@@ -26,6 +28,7 @@ class AllProducts extends Component {
     };
     this.addToCart = this.addToCart.bind(this);
   }
+
 
   async componentDidMount() {
     await this.props.getAllProducts();
@@ -47,11 +50,13 @@ class AllProducts extends Component {
       this.state.productsInCart.length - 1
     ];
     const totalPrice = this.state.totalPrice;
+    const {filterProducts} = this.props;
+    
     return (
       <div>
         <div id="allProductsPage">
           <ul className="list-style" id="storePage">
-            {allProducts.map((product) => {
+            {filterProducts.map((product) => {
               return (
                 <li key={product.id} id="listOfAllProducts">
                   <img src={product.imgUrl} width="150" height="150" />

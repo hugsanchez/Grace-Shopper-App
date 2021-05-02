@@ -31,9 +31,7 @@ export const thunkLoadReviews = () => {
 export const thunkAddReview = (review) => {
     try{
         return async(dispatch) => {
-            console.log('preThunk', review)
             const {data:newReview} = await axios.post('/api/reviews', review);
-            console.log('thunk', newReview)
             dispatch(addReview(newReview))
         }
     } catch(err){

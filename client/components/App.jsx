@@ -17,6 +17,7 @@ import SingleProduct from "./SingleProduct.jsx";
 import {thunkLoadReviews} from '../store/actionCreators/reviews';
 import SingleUser from "./Users/SingleUser.jsx";
 import Cart from "./Cart.jsx";
+import SearchBar from "./SearchBar.jsx";
 
 class App extends Component {
     constructor(props) {
@@ -44,7 +45,7 @@ class App extends Component {
                             <Route
                                 exact
                                 path="/store"
-                                component={AllProducts}
+                                component={SearchBar}
                             />
                             <Route
                                 exact
