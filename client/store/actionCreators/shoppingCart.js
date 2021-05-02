@@ -47,12 +47,30 @@ export const removeFromCart = (product, userId) => {
 export const increaseQuantity = (product, userId) => {
   return async (dispatch) => {
     const response = (
-      await axios.put(`/api/cart/productsInCart/${product.productId}`, {
-        data: { userId },
-      })
+      await axios.put(
+        `/api/cart/productsInCart/increase/${product.productId}`,
+        {
+          data: { userId },
+        }
+      )
     ).data;
     console.log("response in reducer", response);
     dispatch({ type: INCREASE_QUANTITY, payload: response });
+  };
+};
+
+export const decreaseQuantity = (product, userId) => {
+  return async (dispatch) => {
+    const response = (
+      await axios.put(
+        `/api/cart/productsInCart/decrease/${product.productId}`,
+        {
+          data: { userId },
+        }
+      )
+    ).data;
+
+    dispatch({ type: DECREASE_QUANTITY, payload: response });
   };
 };
 
