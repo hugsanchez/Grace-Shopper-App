@@ -71,10 +71,27 @@ router.delete("/productsInCart/:id", async (req, res, next) => {
   }
 });
 
-router.put("/productsInCart/:id", async (req, res, next) => {
+router.put("/productsInCart/increase/:id", async (req, res, next) => {
   try {
     console.log("userId", req.body.data.userId);
     await Cart.increment("quantity", {
+      where: { productId: req.params.id },
+    });
+    const cart = await Cart.findAll({
+      where: {
+        userId: req.body.data.userId,
+      },
+    });
+    res.send(cart);
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.put("/productsInCart/decrease/:id", async (req, res, next) => {
+  try {
+    console.log("userId", req.body.data.userId);
+    await Cart.decrement("quantity", {
       where: { productId: req.params.id },
     });
     const cart = await Cart.findAll({

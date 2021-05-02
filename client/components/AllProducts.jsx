@@ -9,6 +9,7 @@ import {
   addItemToCart,
   removeFromCart,
   increaseQuantity,
+  decreaseQuantity,
 } from "../store/actionCreators/shoppingCart";
 
 import store from "../store/store";
@@ -31,6 +32,7 @@ class AllProducts extends Component {
     this.addToCart = this.addToCart.bind(this);
     this.deleteFromCart = this.deleteFromCart.bind(this);
     this.incrementQuantity = this.incrementQuantity.bind(this);
+    this.decrementQuantity = this.decrementQuantity.bind(this);
   }
 
   async componentDidMount() {
@@ -82,7 +84,18 @@ class AllProducts extends Component {
       ...this.state,
       productsInCart: this.props.cart,
     });
-    console.log("ProductsInCart After Increment", this.state.productsInCart);
+  }
+
+  async decrementQuantity(event) {
+    let userId;
+    (await store.getState().signedIn.isSignedIn) === false
+      ? (userId = 0)
+      : (userId = await store.getState().signedIn.user.id);
+    await this.props.decrementQuantity(event, userId);
+    await this.setState({
+      ...this.state,
+      productsInCart: this.props.cart,
+    });
   }
 
   render() {
@@ -137,6 +150,13 @@ class AllProducts extends Component {
                   </button>
                   <button
                     onClick={() => {
+                      this.decrementQuantity(product);
+                    }}
+                  >
+                    -
+                  </button>
+                  <button
+                    onClick={() => {
                       this.deleteFromCart(product);
                     }}
                   >
@@ -165,6 +185,8 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(removeFromCart(currProduct, userId)),
     incrementQuantity: (currProduct, userId) =>
       dispatch(increaseQuantity(currProduct, userId)),
+    decrementQuantity: (currProduct, userId) =>
+      dispatch(decreaseQuantity(currProduct, userId)),
   };
 };
 
