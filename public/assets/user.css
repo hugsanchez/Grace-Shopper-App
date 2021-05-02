@@ -142,12 +142,11 @@ h4 {
 }
 
 .admin-portal {
-    margin: 1rem;
     padding: 3rem 2rem;
     display: flex;
     flex-direction: column;
     align-items: center;
-    border: 1px solid #58b4e4;
+    border: 2px solid #58b4e4;
     border-radius: 1rem;
 }
 
@@ -158,6 +157,7 @@ h4 {
 
 .admin-portal-link {
     text-decoration: none;
+    margin: 1rem;
 }
 
 .admin-portal:hover {
