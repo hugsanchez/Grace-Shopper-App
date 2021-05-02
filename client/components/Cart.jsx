@@ -89,12 +89,9 @@ class Cart extends Component {
   }
 
   render() {
-    const allProducts = this.state.allProducts;
-    console.log("PRODUCTSINCART", this.state.productsInCart);
     let displayCart = this.state.productsInCart[
       this.state.productsInCart.length - 1
     ];
-    console.log("DISPLAYCART", displayCart);
     const totalPrice = this.state.totalPrice;
     const { filterProducts } = this.props;
 
