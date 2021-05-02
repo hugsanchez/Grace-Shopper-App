@@ -1,6 +1,6 @@
 import { ADD_TO_CART } from "../actionCreators/shoppingCart";
 import { REMOVE_FROM_CART } from "../actionCreators/shoppingCart";
-import ADJUST_QUANTITY from "../actionCreators/shoppingCart";
+import { INCREASE_QUANTITY } from "../actionCreators/shoppingCart";
 
 // const initialCart = {
 //     item: null,
@@ -34,7 +34,16 @@ export const cartReducer = (state = initialCart, action) => {
       cart: [...action.payload],
       total: tempTotal,
     };
+  } else if (action.type === INCREASE_QUANTITY) {
+    let tempTotal = 0;
+    action.payload.forEach((product) => {
+      tempTotal += product.price * product.quantity;
+    });
+    return {
+      ...state,
+      cart: [...state.cart, action.payload],
+      total: tempTotal,
+    };
   }
-
   return state;
 };

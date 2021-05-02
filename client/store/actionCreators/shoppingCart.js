@@ -2,7 +2,8 @@ import axios from "axios";
 
 export const ADD_TO_CART = "ADD_TO_CART";
 export const REMOVE_FROM_CART = "REMOVE_FROM_CART";
-export const ADJUST_QUANTITY = "ADJUST_QUANTITY";
+export const INCREASE_QUANTITY = "INCREASE_QUANTITY";
+export const DECREASE_QUANTITY = "DECREASE_QUANTITY";
 
 // export const addToCart= (currProductId)=>{
 //     console.log('this is working action creator', currProductId)
@@ -43,13 +44,15 @@ export const removeFromCart = (product, userId) => {
   };
 };
 
-export const adjustQuantity = (itemId, quantity) => {
-  return {
-    type: ADJUST_QUANTITY,
-    payload: {
-      id: itemId,
-      quantity,
-    },
+export const increaseQuantity = (product, userId) => {
+  return async (dispatch) => {
+    const response = (
+      await axios.put(`/api/cart/productsInCart/${product.productId}`, {
+        data: { userId },
+      })
+    ).data;
+    console.log("response in reducer", response);
+    dispatch({ type: INCREASE_QUANTITY, payload: response });
   };
 };
 

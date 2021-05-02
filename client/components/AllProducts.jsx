@@ -8,6 +8,7 @@ import { getAllProducts } from "../store/actionCreators/allProducts";
 import {
   addItemToCart,
   removeFromCart,
+  increaseQuantity,
 } from "../store/actionCreators/shoppingCart";
 
 import store from "../store/store";
@@ -29,6 +30,7 @@ class AllProducts extends Component {
     };
     this.addToCart = this.addToCart.bind(this);
     this.deleteFromCart = this.deleteFromCart.bind(this);
+    this.incrementQuantity = this.incrementQuantity.bind(this);
   }
 
   async componentDidMount() {
@@ -46,10 +48,10 @@ class AllProducts extends Component {
       allProducts: store.getState().allProducts,
       productsInCart: this.props.cart,
     });
-    // console.log('component did mount')
-    // await this.setState({ ...this.state, productsInCart: this.props.cart });
-
-    // console.log('state after component did mount', this.state)
+    console.log(
+      "ProductsInCart During Component Did Mount",
+      this.state.productsInCart
+    );
   }
 
   async addToCart(event) {
@@ -70,11 +72,26 @@ class AllProducts extends Component {
     await this.setState({ ...this.state, productsInCart: this.props.cart });
   }
 
+  async incrementQuantity(event) {
+    let userId;
+    (await store.getState().signedIn.isSignedIn) === false
+      ? (userId = 0)
+      : (userId = await store.getState().signedIn.user.id);
+    await this.props.incrementQuantity(event, userId);
+    await this.setState({
+      ...this.state,
+      productsInCart: this.props.cart,
+    });
+    console.log("ProductsInCart After Increment", this.state.productsInCart);
+  }
+
   render() {
     const allProducts = this.state.allProducts;
+    console.log("PRODUCTSINCART", this.state.productsInCart);
     let displayCart = this.state.productsInCart[
       this.state.productsInCart.length - 1
     ];
+    console.log("DISPLAYCART", displayCart);
     const totalPrice = this.state.totalPrice;
     const { filterProducts } = this.props;
 
@@ -113,6 +130,13 @@ class AllProducts extends Component {
                   Name: {product.name} Quantity: {product.quantity}{" "}
                   <button
                     onClick={() => {
+                      this.incrementQuantity(product);
+                    }}
+                  >
+                    +
+                  </button>
+                  <button
+                    onClick={() => {
                       this.deleteFromCart(product);
                     }}
                   >
@@ -139,6 +163,8 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(addItemToCart(currProduct, userId)),
     deleteFromCart: (currProduct, userId) =>
       dispatch(removeFromCart(currProduct, userId)),
+    incrementQuantity: (currProduct, userId) =>
+      dispatch(increaseQuantity(currProduct, userId)),
   };
 };
 
