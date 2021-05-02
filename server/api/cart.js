@@ -10,7 +10,7 @@ const {
   model: { Products, Artists, Categories, Users, Orders, Reviews, Cart },
 } = require("../db");
 
-router.use(express.json());   
+router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
 
 // All Users
@@ -56,15 +56,17 @@ router.get("/productsInCart/:id", async (req, res, next) => {
 
 router.delete("/productsInCart/:id", async (req, res, next) => {
   try {
-    console.log('product id', req.params.id)
-    console.log('user id ', req.body.userId)
-    const updatedCart=await Cart.destroy({where: {productId: req.params.id*1}})
+    console.log("product id", req.params.id);
+    console.log("user id ", req.body.userId);
+    const updatedCart = await Cart.destroy({
+      where: { productId: req.params.id },
+    });
     const cart = await Cart.findAll({
       where: {
         userId: req.body.userId,
       },
     });
-    console.log('server cart', cart)
+    console.log("server cart", cart);
     res.send(cart);
   } catch (err) {
     next(err);
