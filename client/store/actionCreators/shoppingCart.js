@@ -19,10 +19,22 @@ export const ADJUST_QUANTITY = "ADJUST_QUANTITY";
 
 export const addItemToCart = (product, userId) => {
   return async (dispatch) => {
-    await axios.post(`/api/cart`, { product, userId });
-    const response = (await axios.get(`/api/cart/productsInCart/${userId}`))
-      .data;
-    dispatch({ type: ADD_TO_CART, payload: response });
+    if(product===null){
+      const response= (await axios.get(`/api/cart/productsInCart/${userId}`)).data
+      console.log('action creator response', response)
+      dispatch({ type: ADD_TO_CART, payload: response })
+    }
+    else{
+      await axios.post(`/api/cart`, { product, userId });
+      const response = (await axios.get(`/api/cart/productsInCart/${userId}`))
+        .data;
+      dispatch({ type: ADD_TO_CART, payload: response });
+
+    }
+    // await axios.post(`/api/cart`, { product, userId });
+    // const response = (await axios.get(`/api/cart/productsInCart/${userId}`))
+    //   .data;
+    // dispatch({ type: ADD_TO_CART, payload: response });
   };
 };
 

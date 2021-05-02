@@ -31,8 +31,20 @@ class AllProducts extends Component {
 
 
   async componentDidMount() {
+    let userId;
+    (await store.getState().signedIn.isSignedIn) === false
+      ? (userId = 0)
+      : (userId = await store.getState().signedIn.user.id);
     await this.props.getAllProducts();
-    await this.setState({ allProducts: store.getState().allProducts });
+    const cartOnMount=await this.props.addItemToCart(null, userId);
+    console.log('cart on mount', cartOnMount)
+    console.log('store get state', store.getState())
+    // console.log('products in cart', this.props.cart)
+    await this.setState({ ...this.state, allProducts: store.getState().allProducts,  productsInCart: this.props.cart});
+    // console.log('component did mount')
+    // await this.setState({ ...this.state, productsInCart: this.props.cart });
+
+    // console.log('state after component did mount', this.state)
   }
 
   async addToCart(event) {
@@ -42,6 +54,7 @@ class AllProducts extends Component {
       : (userId = await store.getState().signedIn.user.id);
     await this.props.addItemToCart(event, userId);
     await this.setState({ ...this.state, productsInCart: this.props.cart });
+    console.log('state after button click')
   }
 
   render() {
