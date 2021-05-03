@@ -75,4 +75,13 @@ describe('Routes', () => {
                 expect(response.body.reviews).to.be.an('array');
             })
         });
+
+        describe('POST add review to DB', () => {
+            it('creates new review', async () => {
+                const response = await app.post('/api/reviews').send({detail:'I am a test', rating:5, productId: 5, userId:5});
+                expect(response.status).to.equal(201);
+                console.log(response.body)
+                expect(response.body.detail).to.equal('I am a test');
+            })
+        });
 });
