@@ -11,7 +11,8 @@ const ordersAPI = require("./api/orders");
 const reviewsAPI = require("./api/reviews");
 const categoriesAPI = require("./api/categories");
 const authAPI = require("./api/auth");
-const cartAPI = require("./api/cart")
+const cartAPI = require("./api/cart");
+const artistsAPI = require("./api/artists");
 
 // Database Imports
 const {
@@ -36,8 +37,9 @@ app.use("/api/products", productsAPI);
 app.use("/api/orders", ordersAPI);
 app.use("/api/reviews", reviewsAPI);
 app.use("/api/categories", categoriesAPI);
+app.use("/api/artists", artistsAPI);
 app.use("/api/auth", authAPI);
-app.use("/api/cart", cartAPI)
+app.use("/api/cart", cartAPI);
 
 app.get("/", async (req, res, next) => {
     try {

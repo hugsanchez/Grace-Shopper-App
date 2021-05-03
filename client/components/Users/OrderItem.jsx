@@ -46,7 +46,7 @@ class OrderItem extends Component {
                     {products.map((product) => (
                         <div className="order-product" key={product.id}>
                             <div className="order-product-center">
-                                <Link to={`/product/${id}`}>
+                                <Link to={`/product/${product.id}`}>
                                     <img
                                         className="order-img"
                                         src={`${product.imgUrl}`}

@@ -83,3 +83,22 @@ export const updateUserThunk = (payload) => async (dispatch) => {
         console.error(err);
     }
 };
+
+export const updateUser_adminAccess = (payload) => async (dispatch) => {
+    try {
+        const token = window.localStorage.getItem("token");
+        const { data: user } = await axios.put(
+            `/api/admins/users/${payload.id}`,
+            { ...payload },
+            {
+                headers: {
+                    authorization: token,
+                },
+            },
+        );
+
+        dispatch(updateUser(user));
+    } catch (err) {
+        console.error(err);
+    }
+};
