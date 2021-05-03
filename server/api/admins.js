@@ -83,8 +83,6 @@ router.put("/products/:id", async (req, res, next) => {
         const { id } = req.params;
         const token = req.headers.authorization;
 
-        console.log(req.headers);
-
         // Need to send a token to use this route
         if (!token) throw unauthorized("Invalid credentials");
 
