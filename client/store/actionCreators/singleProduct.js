@@ -22,5 +22,19 @@ export const updateSingleProduct = (product) => async (dispatch) => {
     const singleProduct = await axios.put(`/api/products/${product.id}`, {
         ...product,
     });
-    dispatch(getProduct(singleProduct.data));
+    dispatch(updateProduct(singleProduct.data));
+};
+
+export const updateProduct_adminAccess = (product) => async (dispatch) => {
+    const token = window.localStorage.getItem("token");
+    const { data: singleProduct } = await axios.put(
+        `/api/admins/products/${product.id}`,
+        { ...product },
+        {
+            headers: {
+                authorization: token,
+            },
+        },
+    );
+    dispatch(updateProduct(singleProduct));
 };

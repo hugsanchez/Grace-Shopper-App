@@ -6,7 +6,7 @@ export const allProductsReducer = (state = [], action) => {
         return action.payload;
     }
     if (action.type === UPDATE_PRODUCT) {
-        state = state.map((product) =>
+        return state.map((product) =>
             product.id !== action.payload.id ? product : action.payload,
         );
     } else {

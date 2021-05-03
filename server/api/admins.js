@@ -54,8 +54,6 @@ router.put("/users/:id", async (req, res, next) => {
             throw unauthorized("Invalid credentials");
         }
 
-        console.log(req.body);
-
         // Finds user to be edited
         let user = await Users.findOne({ where: { id } });
 
@@ -75,6 +73,58 @@ router.put("/users/:id", async (req, res, next) => {
         const updatedUser = await Users.findOneIncludes(id);
 
         res.status(200).send(updatedUser);
+    } catch (err) {
+        next(err);
+    }
+});
+
+router.put("/products/:id", async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        const token = req.headers.authorization;
+
+        console.log(req.headers);
+
+        // Need to send a token to use this route
+        if (!token) throw unauthorized("Invalid credentials");
+
+        // Product info update
+        const { name, description, price, year, stock, imgUrl } = req.body;
+
+        // Finds user who made request
+        const requestor = await Users.findByToken(token);
+
+        // If no requestor, 401
+        if (!requestor) throw unauthorized("Invalid credentials");
+
+        // If user is not an admin, 401 error
+        if (requestor.userType !== "ADMIN") {
+            throw unauthorized("Invalid credentials");
+        }
+
+        // Finds user to be edited
+        let product = await Products.findOne({ where: { id } });
+
+        // If user doesn't exist,
+        if (!product) throw notFound("Product not found");
+
+        if (name) product.name = name;
+        if (description) product.description = description;
+        if (price) product.price = price;
+        if (year) product.year = year;
+        if (stock) product.stock = stock;
+        if (imgUrl) product.imgUrl = imgUrl;
+
+        // Save changes
+        await product.save();
+
+        // Finds user again with the same format as GET
+        const updatedProduct = await Products.findOne({
+            where: { id },
+            include: [Artists, Categories, Reviews],
+        });
+
+        res.status(200).send(updatedProduct);
     } catch (err) {
         next(err);
     }

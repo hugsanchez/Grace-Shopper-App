@@ -6,7 +6,7 @@ import { NavLink } from "react-router-dom";
 // Redux Imports
 import { connect } from "react-redux";
 import { getAllProducts } from "../../store/actionCreators/allProducts";
-import { updateSingleProduct } from "../../store/actionCreators/singleProduct";
+import { updateProduct_adminAccess } from "../../store/actionCreators/singleProduct";
 
 // Component Imports
 import ProductDialogue from "./ProductDialogue.jsx";
@@ -71,10 +71,26 @@ class AdminInventory extends Component {
         });
     }
 
-    handleSubmit(id, name, description, price, year, stock, imgUrl) {
+    async handleSubmit(id, name, description, price, year, stock, imgUrl) {
         const { updateProduct } = this.props;
 
-        updateUser({ id, name, description, price, year, stock, imgUrl });
+        await updateProduct({
+            id,
+            name,
+            description,
+            price,
+            year,
+            stock,
+            imgUrl,
+        });
+
+        const { allProducts } = this.props;
+
+        this.setState({
+            ...this.state,
+            products: allProducts.sort((a, b) => a.id - b.id),
+        });
+
         this.handleClose();
     }
 
@@ -180,7 +196,8 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return {
         loadAllProducts: () => dispatch(getAllProducts()),
-        updateProduct: (product) => dispatch(updateSingleProduct(product)),
+        updateProduct: (product) =>
+            dispatch(updateProduct_adminAccess(product)),
     };
 }
 
