@@ -9,7 +9,9 @@ import { allUsersReducer } from "./reducers/allUsersReducer";
 import { singleUserReducer } from "./reducers/singleUserReducer";
 import { cartReducer } from "./reducers/cartReducer";
 import { signInReducer } from "./reducers/signInReducer";
-import {reviewReducer} from "./reducers/reviewReducer";
+import { reviewReducer } from "./reducers/reviewReducer";
+import { artistsReducer } from "./reducers/artistsReducer";
+import { categoriesReducer } from "./reducers/categoriesReducer";
 
 // Combiend Reducer
 const primaryReducer = combineReducers({
@@ -20,6 +22,8 @@ const primaryReducer = combineReducers({
     cart: cartReducer,
     signedIn: signInReducer,
     reviews: reviewReducer,
+    allArtists: artistsReducer,
+    allCategories: categoriesReducer,
 });
 
 // Redux Middleware
