@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 // Redux Imports
 import { connect } from "react-redux";
-import { updateUserThunk } from "../../store/actionCreators/singleUser";
+import { updateProfileThunk } from "../../store/actionCreators/singleUser";
 import { logOutUser } from "../../store/actionCreators/singleUser";
 
 // Material UI Imports
@@ -134,7 +134,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        updateUser: (user) => dispatch(updateUserThunk(user)),
+        updateUser: (user) => dispatch(updateProfileThunk(user)),
         logout: () => dispatch(logOutUser()),
     };
 }

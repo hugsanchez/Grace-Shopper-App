@@ -4,6 +4,7 @@ export const GET_USER = "GET_USER";
 export const SIGN_IN = "SIGN_IN";
 export const LOG_OUT = "LOG_OUT";
 export const UPDATE_USER = "UPDATE_USER";
+export const UPDATE_PROFILE = "UPDATE_PROFILE";
 
 export const getUser = (user) => ({
     type: GET_USER,
@@ -12,6 +13,11 @@ export const getUser = (user) => ({
 
 export const updateUser = (user) => ({
     type: UPDATE_USER,
+    user,
+});
+
+export const updateProfile = (user) => ({
+    type: UPDATE_PROFILE,
     user,
 });
 
@@ -79,6 +85,23 @@ export const updateUserThunk = (payload) => async (dispatch) => {
         });
 
         dispatch(updateUser(user));
+    } catch (err) {
+        console.error(err);
+    }
+};
+
+export const updateProfileThunk = (payload) => async (dispatch) => {
+    try {
+        const { id, firstName, lastName, username, email } = payload;
+        const { data: user } = await axios.put(`/api/users/${id}`, {
+            id,
+            firstName,
+            lastName,
+            username,
+            email,
+        });
+
+        dispatch(updateProfile(user));
     } catch (err) {
         console.error(err);
     }
