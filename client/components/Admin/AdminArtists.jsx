@@ -5,21 +5,23 @@ import { NavLink } from "react-router-dom";
 
 // Redux Imports
 import { connect } from "react-redux";
-import { getAllUsers } from "../../store/actionCreators/allUsers";
-import { updateUser_adminAccess } from "../../store/actionCreators/singleUser";
+import {
+    getArtists_thunk,
+    updateArtist_thunk,
+} from "../../store/actionCreators/artists";
 
 // Style Imports
 import "../../../public/assets/admin.css";
 
 // Component Imports
-import UserDialogue from "./dialogs/UserDialogue.jsx";
+import ArtistDialog from "./dialogs/ArtistDialog.jsx";
 
-class AdminUsers extends Component {
+class AdminArtists extends Component {
     constructor(props) {
         super(props);
         this.state = {
             loading: true,
-            users: [],
+            artists: [],
             dialogueOpen: [],
         };
 
@@ -29,18 +31,18 @@ class AdminUsers extends Component {
     }
 
     async componentDidMount() {
-        await this.props.loadAllUsers();
-        const { allUsers } = this.props;
+        await this.props.loadAllArtists();
+        const { allArtists } = this.props;
 
         let dialogueOpen = [];
-        for (let i = 0; i < allUsers.length; i++) {
+        for (let i = 0; i < allArtists.length; i++) {
             dialogueOpen.push(false);
         }
 
         this.setState({
             ...this.state,
             loading: false,
-            users: allUsers.sort((a, b) => a.id - b.id),
+            artists: allArtists.sort((a, b) => a.id - b.id),
             dialogueOpen,
         });
     }
@@ -62,7 +64,7 @@ class AdminUsers extends Component {
     }
 
     handleClose() {
-        const { users } = this.state;
+        const { artists } = this.state;
         let dialogueOpen = [];
         for (let i = 0; i < users.length; i++) {
             dialogueOpen.push(false);
@@ -74,30 +76,26 @@ class AdminUsers extends Component {
         });
     }
 
-    async handleSubmit(id, firstName, lastName, email, username, userType) {
-        const { updateUser } = this.props;
+    async handleSubmit(id, name) {
+        const { updateArtist } = this.props;
 
-        await updateUser({
+        await updateArtist({
             id,
-            firstName,
-            lastName,
-            username,
-            email,
-            userType,
+            name,
         });
 
-        const { allUsers } = this.props;
+        const { allArtists } = this.props;
 
         this.setState({
             ...this.state,
-            users: allUsers.sort((a, b) => a.id - b.id),
+            artists: allArtists.sort((a, b) => a.id - b.id),
         });
 
         this.handleClose();
     }
 
     render() {
-        const { loading, users, dialogueOpen } = this.state;
+        const { loading, artists, dialogueOpen } = this.state;
 
         if (loading) {
             return <React.Fragment>Loading...</React.Fragment>;
@@ -120,27 +118,17 @@ class AdminUsers extends Component {
                             <th>Edit</th>
                         </tr>
                     </thead>
-                    {users.map((user) => (
-                        <tbody key={user.id}>
+                    {artists.map((artist) => (
+                        <tbody key={artist.id}>
                             <tr>
-                                <td>{user.id}</td>
-                                <td>{user.firstName}</td>
-                                <td>{user.lastName}</td>
-                                <td>{user.email}</td>
-                                <td>{user.username}</td>
-                                <td>{user.userType}</td>
-                                <td className="img-container">
-                                    <img
-                                        className="edit-img"
-                                        src="/images/utils/editUser.png"
-                                        alt=""
-                                        onClick={() => this.handleOpen(user.id)}
-                                    />
-                                    <UserDialogue
-                                        open={dialogueOpen[user.id - 1]}
+                                <td>{artist.id}</td>
+                                <td>
+                                    {artist.name}
+                                    <ArtistDialog
+                                        open={dialogueOpen[artist.id - 1]}
                                         close={this.handleClose}
                                         submit={this.handleSubmit}
-                                        {...user}
+                                        {...artist}
                                     />
                                 </td>
                             </tr>
@@ -154,15 +142,15 @@ class AdminUsers extends Component {
 
 function mapStateToProps(state) {
     return {
-        allUsers: state.allUsers,
+        allArtists: state.allArtists,
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        loadAllUsers: () => dispatch(getAllUsers()),
-        updateUser: (user) => dispatch(updateUser_adminAccess(user)),
+        loadAllArtists: () => dispatch(getArtists_thunk()),
+        updateArtist: (artist) => dispatch(updateArtist_thunk(artist)),
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(AdminUsers);
+export default connect(mapStateToProps, mapDispatchToProps)(AdminArtists);

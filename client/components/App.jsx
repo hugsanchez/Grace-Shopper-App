@@ -18,8 +18,7 @@ import { thunkLoadReviews } from "../store/actionCreators/reviews";
 import SingleUser from "./Users/SingleUser.jsx";
 import Cart from "./Cart.jsx";
 import SearchBar from "./SearchBar.jsx";
-import AdminUsers from "./Admin/AdminUsers.jsx";
-import AdminInventory from "./Admin/AdminInventory.jsx";
+import AdminPortal from "./Admin/AdminPortal.jsx";
 
 class App extends Component {
     constructor(props) {
@@ -52,16 +51,7 @@ class App extends Component {
                             <Route exact path="/sign-up" component={SignUp} />
                             <Route exact path="/sign-in" component={SignIn} />
                             <Route path="/user/:id" component={SingleUser} />
-                            <Route
-                                exact
-                                path="/admin/users"
-                                component={AdminUsers}
-                            />
-                            <Route
-                                exact
-                                path="/admin/inventory"
-                                component={AdminInventory}
-                            />
+                            <Route path="/admin" component={AdminPortal} />
                         </Switch>
                     </main>
                 </React.Fragment>

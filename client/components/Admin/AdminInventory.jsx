@@ -9,7 +9,7 @@ import { getAllProducts } from "../../store/actionCreators/allProducts";
 import { updateProduct_adminAccess } from "../../store/actionCreators/singleProduct";
 
 // Component Imports
-import ProductDialogue from "./ProductDialogue.jsx";
+import ProductDialogue from "./dialogs/ProductDialogue.jsx";
 
 class AdminInventory extends Component {
     constructor(props) {
@@ -101,87 +101,65 @@ class AdminInventory extends Component {
             return <React.Fragment>Loading...</React.Fragment>;
         }
         return (
-            <div className="primary-screen">
-                <header className="user-header">
-                    <div className="user-header-container">
-                        <NavLink
-                            to={`/admin/users`}
-                            className="header-link-user"
-                            name="users"
-                        >
-                            Users
-                        </NavLink>
-                    </div>
-                    <div className="user-header-container">
-                        <NavLink
-                            to={`/admin/inventory`}
-                            className="header-link-user"
-                            name="inventory"
-                        >
-                            Inventory
-                        </NavLink>
-                    </div>
-                </header>
-                <div id="admin-view">
-                    <div id="order-title-container" className="order-item">
-                        <h3 id="order-title">Inventory</h3>
-                    </div>
-                    <table id="admin-table">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Image Preview</th>
-                                <th>Name</th>
-                                <th>Price</th>
-                                <th>Year</th>
-                                <th>Stock</th>
-                                <th>Edit</th>
-                            </tr>
-                        </thead>
-                        {products.map((product) => (
-                            <tbody key={product.id}>
-                                <tr>
-                                    <td>{product.id}</td>
-                                    <td>
-                                        <NavLink to={`/product/${product.id}`}>
-                                            <img
-                                                className="product-img"
-                                                src={`${product.imgUrl}`}
-                                            ></img>
-                                        </NavLink>
-                                    </td>
-                                    <td>
-                                        <NavLink
-                                            className="product-link-admin"
-                                            to={`/product/${product.id}`}
-                                        >
-                                            {product.name}
-                                        </NavLink>
-                                    </td>
-                                    <td>{product.price}</td>
-                                    <td>{product.year.substring(0, 4)}</td>
-                                    <td>{product.stock}</td>
-                                    <td className="img-container">
-                                        <img
-                                            className="edit-img"
-                                            src="/images/utils/editUser.png"
-                                            alt=""
-                                            onClick={() =>
-                                                this.handleOpen(product.id)
-                                            }
-                                        />
-                                        <ProductDialogue
-                                            open={dialogueOpen[product.id - 1]}
-                                            close={this.handleClose}
-                                            submit={this.handleSubmit}
-                                            {...product}
-                                        />
-                                    </td>
-                                </tr>
-                            </tbody>
-                        ))}
-                    </table>
+            <div id="admin-view">
+                <div id="order-title-container" className="order-item">
+                    <h3 id="order-title">Inventory</h3>
                 </div>
+                <table id="admin-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Image Preview</th>
+                            <th>Name</th>
+                            <th>Price</th>
+                            <th>Year</th>
+                            <th>Stock</th>
+                            <th>Edit</th>
+                        </tr>
+                    </thead>
+                    {products.map((product) => (
+                        <tbody key={product.id}>
+                            <tr>
+                                <td>{product.id}</td>
+                                <td>
+                                    <NavLink to={`/product/${product.id}`}>
+                                        <img
+                                            className="product-img"
+                                            src={`${product.imgUrl}`}
+                                        ></img>
+                                    </NavLink>
+                                </td>
+                                <td>
+                                    <NavLink
+                                        className="product-link-admin"
+                                        to={`/product/${product.id}`}
+                                    >
+                                        {product.name}
+                                    </NavLink>
+                                </td>
+                                <td>{product.price}</td>
+                                <td>{product.year.substring(0, 4)}</td>
+                                <td>{product.stock}</td>
+                                <td className="img-container">
+                                    <img
+                                        className="edit-img"
+                                        src="/images/utils/editUser.png"
+                                        alt=""
+                                        onClick={() =>
+                                            this.handleOpen(product.id)
+                                        }
+                                    />
+                                    <ProductDialogue
+                                        open={dialogueOpen[product.id - 1]}
+                                        close={this.handleClose}
+                                        submit={this.handleSubmit}
+                                        {...product}
+                                    />
+                                </td>
+                            </tr>
+                        </tbody>
+                    ))}
+                </table>
             </div>
         );
     }
