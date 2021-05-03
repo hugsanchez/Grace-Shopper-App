@@ -1,5 +1,8 @@
 import React, { Component } from "react";
 
+// React Router Imports
+import { NavLink } from "react-router-dom";
+
 // Redux Imports
 import { connect } from "react-redux";
 import { getAllProducts } from "../../store/actionCreators/allProducts";
@@ -28,12 +31,70 @@ class AdminInventory extends Component {
             return <React.Fragment>Loading...</React.Fragment>;
         }
         return (
-            <React.Fragment>
-                <div className="product-tablebase"></div>
-                {products.map((product) => (
-                    <div key={product.id}>{product.name}</div>
-                ))}
-            </React.Fragment>
+            <div className="primary-screen">
+                <header className="user-header">
+                    <div className="user-header-container">
+                        <NavLink
+                            to={`/admin/users`}
+                            className="header-link-user"
+                            name="users"
+                        >
+                            Users
+                        </NavLink>
+                    </div>
+                    <div className="user-header-container">
+                        <NavLink
+                            to={`/admin/inventory`}
+                            className="header-link-user"
+                            name="inventory"
+                        >
+                            Inventory
+                        </NavLink>
+                    </div>
+                </header>
+                <div id="admin-view">
+                    <div id="order-title-container" className="order-item">
+                        <h3 id="order-title">Inventory</h3>
+                    </div>
+                    <table id="admin-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Image Preview</th>
+                                <th>Name</th>
+                                <th>Price</th>
+                                <th>Year</th>
+                                <th>Stock</th>
+                                <th>Edit</th>
+                            </tr>
+                        </thead>
+                        {products.map((product) => (
+                            <tbody key={product.id}>
+                                <tr>
+                                    <td>{product.id}</td>
+                                    <td>
+                                        <img
+                                            className="product-img"
+                                            src={`${product.imgUrl}`}
+                                        ></img>
+                                    </td>
+                                    <td>{product.name}</td>
+                                    <td>{product.price}</td>
+                                    <td>{product.year}</td>
+                                    <td>{product.stock}</td>
+                                    <td className="img-container">
+                                        <img
+                                            className="edit-img"
+                                            src="/images/utils/editUser.png"
+                                            alt=""
+                                        />
+                                    </td>
+                                </tr>
+                            </tbody>
+                        ))}
+                    </table>
+                </div>
+            </div>
         );
     }
 }

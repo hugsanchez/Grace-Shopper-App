@@ -1,0 +1,42 @@
+#admin-view {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.edit-img {
+    filter: invert(68%) sepia(67%) saturate(938%) hue-rotate(171deg)
+        brightness(94%) contrast(90%);
+    width: 1rem;
+    height: auto;
+}
+
+.edit-img:hover {
+    cursor: pointer;
+    filter: invert(34%) sepia(30%) saturate(1472%) hue-rotate(158deg)
+        brightness(100%) contrast(94%);
+}
+
+.img-container {
+    text-align: center;
+}
+
+tbody:nth-child(even) {
+    background-color: #dddddd;
+}
+
+td,
+th {
+    padding: 8px;
+}
+
+#admin-table td,
+#admin-table th {
+    max-width: 10rem;
+}
+
+.product-img {
+    width: 3rem;
+    height: auto;
+}
