@@ -5,14 +5,6 @@ export const REMOVE_FROM_CART = "REMOVE_FROM_CART";
 export const INCREASE_QUANTITY = "INCREASE_QUANTITY";
 export const DECREASE_QUANTITY = "DECREASE_QUANTITY";
 
-// export const addToCart= (currProductId)=>{
-//     console.log('this is working action creator', currProductId)
-//     return{
-//         type: ADD_TO_CART,
-//         payload: currProductId
-//     }
-// }
-
 // API {
 //     products: [ { id: #, quantity: # }, { id: another #, quantity: # }, ...],
 //     userId: #,
@@ -73,9 +65,3 @@ export const decreaseQuantity = (product, userId) => {
     dispatch({ type: DECREASE_QUANTITY, payload: response });
   };
 };
-
-// export const addItemToCart = (currProductId) => async (dispatch) => {
-//     const currProduct = (await axios.put(`/api/orders/cart/${currProductId}`)).data;
-//     console.log('thunk curr product found', currProductId)
-//     dispatch(addToCart(currProductId));
-//   };
