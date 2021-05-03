@@ -56,7 +56,7 @@ class OrderItem extends Component {
                             </div>
                             <div className="order-product-item">
                                 <p className="order-item-quantity">
-                                    Qty: {product.productsOrders.quantity}
+                                    Quantity: {product.productsOrders.quantity}
                                 </p>
                             </div>
                             <div className="order-product-item">
