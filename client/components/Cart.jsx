@@ -10,6 +10,7 @@ import {
   increaseQuantity,
   decreaseQuantity,
 } from "../store/actionCreators/shoppingCart";
+import TakeMoney from "./CheckoutWithStripe.jsx";
 
 import store from "../store/store";
 
@@ -132,7 +133,7 @@ class Cart extends Component {
             )}
           </ul>
           <h3>Total ${this.props.total}</h3>
-          <button>Proceed to Checkout</button>
+          <TakeMoney />
         </div>
       </div>
     );

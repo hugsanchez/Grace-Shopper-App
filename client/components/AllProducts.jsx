@@ -42,18 +42,11 @@ class AllProducts extends Component {
       : (userId = await store.getState().signedIn.user.id);
     await this.props.getAllProducts();
     const cartOnMount = await this.props.addItemToCart(null, userId);
-    console.log("cart on mount", cartOnMount);
-    console.log("store get state", store.getState());
-    // console.log('products in cart', this.props.cart)
     await this.setState({
       ...this.state,
       allProducts: store.getState().allProducts,
       productsInCart: this.props.cart,
     });
-    console.log(
-      "ProductsInCart During Component Did Mount",
-      this.state.productsInCart
-    );
   }
 
   async addToCart(event) {
@@ -100,11 +93,9 @@ class AllProducts extends Component {
 
   render() {
     const allProducts = this.state.allProducts;
-    console.log("PRODUCTSINCART", this.state.productsInCart);
     let displayCart = this.state.productsInCart[
       this.state.productsInCart.length - 1
     ];
-    console.log("DISPLAYCART", displayCart);
     const totalPrice = this.state.totalPrice;
     const { filterProducts } = this.props;
 
