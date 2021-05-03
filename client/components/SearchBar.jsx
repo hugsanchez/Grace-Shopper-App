@@ -11,7 +11,9 @@ const SearchBar = (products) => {
     }
     return(
         <div>
+            <h3>Search: </h3>
             <input type='text' value={search} onChange={(evt) => setSearch(evt.target.value)} />
+            <button onClick={() => setSearch('')}>Clear</button>
             <div>
                 <AllProducts filterProducts = {searchFunc(products.products)} />
             </div>
