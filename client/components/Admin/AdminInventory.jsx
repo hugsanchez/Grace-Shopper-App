@@ -6,6 +6,10 @@ import { NavLink } from "react-router-dom";
 // Redux Imports
 import { connect } from "react-redux";
 import { getAllProducts } from "../../store/actionCreators/allProducts";
+import { updateSingleProduct } from "../../store/actionCreators/singleProduct";
+
+// Component Imports
+import ProductDialogue from "./ProductDialogue.jsx";
 
 class AdminInventory extends Component {
     constructor(props) {
@@ -13,20 +17,70 @@ class AdminInventory extends Component {
         this.state = {
             loading: true,
             products: [],
+            dialogueOpen: [],
         };
+
+        this.handleOpen = this.handleOpen.bind(this);
+        this.handleClose = this.handleClose.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     async componentDidMount() {
         await this.props.loadAllProducts();
+        const { allProducts } = this.props;
+
+        let dialogueOpen = [];
+        for (let i = 0; i < allProducts.length; i++) {
+            dialogueOpen.push(false);
+        }
+
         this.setState({
             ...this.state,
             loading: false,
-            products: this.props.allProducts,
+            products: allProducts.sort((a, b) => a.id - b.id),
+            dialogueOpen,
         });
     }
 
+    handleOpen(id) {
+        const { dialogueOpen } = this.state;
+        const newDialogueOpen = dialogueOpen.map((bool, idx) => {
+            if (idx + 1 === id) {
+                return true;
+            } else {
+                return false;
+            }
+        });
+
+        this.setState({
+            ...this.state,
+            dialogueOpen: newDialogueOpen,
+        });
+    }
+
+    handleClose() {
+        const { products } = this.state;
+        let dialogueOpen = [];
+        for (let i = 0; i < products.length; i++) {
+            dialogueOpen.push(false);
+        }
+
+        this.setState({
+            ...this.state,
+            dialogueOpen,
+        });
+    }
+
+    handleSubmit(id, name, description, price, year, stock, imgUrl) {
+        const { updateProduct } = this.props;
+
+        updateUser({ id, name, description, price, year, stock, imgUrl });
+        this.handleClose();
+    }
+
     render() {
-        const { loading, products } = this.state;
+        const { loading, products, dialogueOpen } = this.state;
+
         if (loading) {
             return <React.Fragment>Loading...</React.Fragment>;
         }
@@ -73,20 +127,38 @@ class AdminInventory extends Component {
                                 <tr>
                                     <td>{product.id}</td>
                                     <td>
-                                        <img
-                                            className="product-img"
-                                            src={`${product.imgUrl}`}
-                                        ></img>
+                                        <NavLink to={`/product/${product.id}`}>
+                                            <img
+                                                className="product-img"
+                                                src={`${product.imgUrl}`}
+                                            ></img>
+                                        </NavLink>
                                     </td>
-                                    <td>{product.name}</td>
+                                    <td>
+                                        <NavLink
+                                            className="product-link-admin"
+                                            to={`/product/${product.id}`}
+                                        >
+                                            {product.name}
+                                        </NavLink>
+                                    </td>
                                     <td>{product.price}</td>
-                                    <td>{product.year}</td>
+                                    <td>{product.year.substring(0, 4)}</td>
                                     <td>{product.stock}</td>
                                     <td className="img-container">
                                         <img
                                             className="edit-img"
                                             src="/images/utils/editUser.png"
                                             alt=""
+                                            onClick={() =>
+                                                this.handleOpen(product.id)
+                                            }
+                                        />
+                                        <ProductDialogue
+                                            open={dialogueOpen[product.id - 1]}
+                                            close={this.handleClose}
+                                            submit={this.handleSubmit}
+                                            {...product}
                                         />
                                     </td>
                                 </tr>
@@ -108,6 +180,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return {
         loadAllProducts: () => dispatch(getAllProducts()),
+        updateProduct: (product) => dispatch(updateSingleProduct(product)),
     };
 }
 

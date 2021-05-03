@@ -10,21 +10,18 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import RadioGroup from "@material-ui/core/RadioGroup";
 
-// Redux Imports
-import { connect } from "react-redux";
-
-class UserDialogue extends Component {
+class ProductDialogue extends Component {
     constructor(props) {
         super(props);
         this.state = {
             id: props.id,
-            firstName: props.firstName,
-            lastName: props.lastName,
-            username: props.username,
-            email: props.email,
-            userType: props.userType,
+            name: props.name,
+            description: props.description,
+            price: props.price,
+            year: props.year,
+            stock: props.stock,
+            imgUrl: props.imgUrl,
         };
-
         this.handleChange = this.handleChange.bind(this);
         this.reset = this.reset.bind(this);
     }
@@ -40,11 +37,12 @@ class UserDialogue extends Component {
     reset() {
         const {
             close,
-            firstName,
-            lastName,
-            username,
-            email,
-            userType,
+            name,
+            description,
+            price,
+            year,
+            stock,
+            imgUrl,
         } = this.props;
 
         close();
@@ -52,25 +50,27 @@ class UserDialogue extends Component {
         // Reset after the window closes
         setTimeout(() => {
             this.setState({
-                firstName,
-                lastName,
-                username,
-                email,
-                userType,
+                name,
+                description,
+                price,
+                year,
+                stock,
+                imgUrl,
             });
         }, 100);
     }
 
     render() {
-        // Our function props
         const { submit, close, open } = this.props;
+
         const {
             id,
-            firstName,
-            lastName,
-            email,
-            username,
-            userType,
+            name,
+            description,
+            price,
+            year,
+            stock,
+            imgUrl,
         } = this.state;
 
         return (
@@ -80,20 +80,78 @@ class UserDialogue extends Component {
                     onClose={close}
                     aria-labelledby="form-dialog-title"
                     fullWidth
-                    maxWidth="xs"
+                    maxWidth="sm"
                 >
                     <DialogTitle id="form-dialog-title">
-                        Edit User Profile
+                        Edit Product Details
                     </DialogTitle>
                     <DialogContent>
                         <TextField
                             autoFocus
+                            required
                             margin="dense"
                             id="name"
-                            label="First Name"
+                            label="Name"
                             type="name"
-                            name="firstName"
-                            value={firstName}
+                            name="name"
+                            value={name}
+                            fullWidth
+                            onChange={this.handleChange}
+                        />
+                    </DialogContent>
+                    <DialogContent>
+                        <TextField
+                            autoFocus
+                            required
+                            margin="dense"
+                            id="description"
+                            label="Description"
+                            type="description"
+                            name="description"
+                            multiline
+                            value={description}
+                            fullWidth
+                            onChange={this.handleChange}
+                        />
+                    </DialogContent>
+                    <DialogContent>
+                        <TextField
+                            autoFocus
+                            required
+                            margin="dense"
+                            id="price"
+                            label="Price"
+                            type="price"
+                            name="price"
+                            value={price}
+                            fullWidth
+                            onChange={this.handleChange}
+                        />
+                    </DialogContent>
+                    <DialogContent>
+                        <TextField
+                            autoFocus
+                            required
+                            margin="dense"
+                            id="year"
+                            label="Year"
+                            type="date"
+                            name="year"
+                            value={year}
+                            fullWidth
+                            onChange={this.handleChange}
+                        />
+                    </DialogContent>
+                    <DialogContent>
+                        <TextField
+                            autoFocus
+                            required
+                            margin="dense"
+                            id="stock"
+                            label="Stock"
+                            type="stock"
+                            name="stock"
+                            value={stock}
                             fullWidth
                             onChange={this.handleChange}
                         />
@@ -102,50 +160,11 @@ class UserDialogue extends Component {
                         <TextField
                             autoFocus
                             margin="dense"
-                            id="name"
-                            label="Last Name"
-                            type="name"
-                            name="lastName"
-                            value={lastName}
-                            fullWidth
-                            onChange={this.handleChange}
-                        />
-                    </DialogContent>
-                    <DialogContent>
-                        <TextField
-                            autoFocus
-                            margin="dense"
-                            id="username"
-                            label="Username"
-                            type="username"
-                            name="username"
-                            value={username}
-                            fullWidth
-                            onChange={this.handleChange}
-                        />
-                    </DialogContent>
-                    <DialogContent>
-                        <TextField
-                            autoFocus
-                            margin="dense"
-                            id="email"
-                            label="Email Address"
-                            type="email"
-                            name="email"
-                            value={email}
-                            fullWidth
-                            onChange={this.handleChange}
-                        />
-                    </DialogContent>
-                    <DialogContent>
-                        <TextField
-                            autoFocus
-                            margin="dense"
-                            id="userType"
-                            label="Permissions (type 'USER' or 'ADMIN')"
-                            type="userType"
-                            name="userType"
-                            value={userType}
+                            id="imgUrl"
+                            label="Image URL"
+                            type="imgUrl"
+                            name="imgUrl"
+                            value={imgUrl}
                             fullWidth
                             onChange={this.handleChange}
                         />
@@ -158,11 +177,12 @@ class UserDialogue extends Component {
                             onClick={() =>
                                 submit(
                                     id,
-                                    firstName,
-                                    lastName,
-                                    email,
-                                    username,
-                                    userType,
+                                    name,
+                                    description,
+                                    price,
+                                    year,
+                                    stock,
+                                    imgUrl,
                                 )
                             }
                             color="primary"
@@ -176,4 +196,4 @@ class UserDialogue extends Component {
     }
 }
 
-export default connect()(UserDialogue);
+export default ProductDialogue;

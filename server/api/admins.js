@@ -6,6 +6,8 @@ const {
     model: { Products, Artists, Categories, Users, Orders, Reviews },
 } = require("../db");
 
+const { notFound, unauthorized } = require("./errors");
+
 // All Admins
 router.get("/", async (req, res, next) => {
     try {
@@ -30,4 +32,51 @@ router.get("/:id", async (req, res, next) => {
     }
 });
 
+router.put("/users/:id", async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        const token = req.headers.authorization;
+
+        // Need to send a token to use this route
+        if (!token) throw unauthorized("Invalid credentials");
+
+        // User info update
+        const { firstName, lastName, username, email, userType } = req.body;
+
+        // Finds user who made request
+        const requestor = await Users.findByToken(token);
+
+        // If no requestor, 401
+        if (!requestor) throw unauthorized("Invalid credentials");
+
+        // If user is not an admin, 401 error
+        if (requestor.userType !== "ADMIN") {
+            throw unauthorized("Invalid credentials");
+        }
+
+        console.log(req.body);
+
+        // Finds user to be edited
+        let user = await Users.findOne({ where: { id } });
+
+        // If user doesn't exist,
+        if (!user) throw notFound("User not found");
+
+        if (firstName) user.firstName = firstName;
+        if (lastName) user.lastName = lastName;
+        if (username) user.username = username;
+        if (email) user.email = email;
+        if (userType) user.userType = userType;
+
+        // Save changes
+        await user.save();
+
+        // Finds user again with the same format as GET
+        const updatedUser = await Users.findOneIncludes(id);
+
+        res.status(200).send(updatedUser);
+    } catch (err) {
+        next(err);
+    }
+});
 module.exports = router;

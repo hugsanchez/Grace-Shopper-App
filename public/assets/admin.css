@@ -33,10 +33,21 @@ th {
 
 #admin-table td,
 #admin-table th {
-    max-width: 10rem;
+    max-width: 15rem;
 }
 
 .product-img {
     width: 3rem;
     height: auto;
+}
+
+.product-link-admin {
+    font-weight: 400;
+    color: black;
+    text-decoration: none;
+}
+
+.product-link-admin:hover {
+    cursor: pointer;
+    text-decoration: underline;
 }

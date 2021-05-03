@@ -6,7 +6,7 @@ import { NavLink } from "react-router-dom";
 // Redux Imports
 import { connect } from "react-redux";
 import { getAllUsers } from "../../store/actionCreators/allUsers";
-import { updateUserThunk } from "../../store/actionCreators/singleUser";
+import { updateUser_adminAccess } from "../../store/actionCreators/singleUser";
 
 // Style Imports
 import "../../../public/assets/admin.css";
@@ -21,7 +21,6 @@ class AdminUsers extends Component {
             loading: true,
             users: [],
             dialogueOpen: [],
-            dialogueUser: {},
         };
 
         this.handleOpen = this.handleOpen.bind(this);
@@ -41,15 +40,15 @@ class AdminUsers extends Component {
         this.setState({
             ...this.state,
             loading: false,
-            users: this.props.allUsers.sort((a, b) => a.id - b.id),
+            users: allUsers.sort((a, b) => a.id - b.id),
             dialogueOpen,
         });
     }
 
-    handleOpen(user) {
+    handleOpen(id) {
         const { dialogueOpen } = this.state;
         const newDialogueOpen = dialogueOpen.map((bool, idx) => {
-            if (idx + 1 === user.id) {
+            if (idx + 1 === id) {
                 return true;
             } else {
                 return false;
@@ -59,7 +58,6 @@ class AdminUsers extends Component {
         this.setState({
             ...this.state,
             dialogueOpen: newDialogueOpen,
-            dialogueUser: user,
         });
     }
 
@@ -76,16 +74,30 @@ class AdminUsers extends Component {
         });
     }
 
-    handleSubmit(firstName, lastName, email, username) {
+    async handleSubmit(id, firstName, lastName, email, username, userType) {
         const { updateUser } = this.props;
-        const { id } = this.props.user;
 
-        updateUser({ id, firstName, lastName, username, email });
+        await updateUser({
+            id,
+            firstName,
+            lastName,
+            username,
+            email,
+            userType,
+        });
+
+        const { allUsers } = this.props;
+
+        this.setState({
+            ...this.state,
+            users: allUsers.sort((a, b) => a.id - b.id),
+        });
+
         this.handleClose();
     }
 
     render() {
-        const { loading, users, dialogueOpen, dialogueUser } = this.state;
+        const { loading, users, dialogueOpen } = this.state;
 
         if (loading) {
             return <React.Fragment>Loading...</React.Fragment>;
@@ -130,34 +142,32 @@ class AdminUsers extends Component {
                             </tr>
                         </thead>
                         {users.map((user) => (
-                            <React.Fragment key={user.id}>
-                                <tbody>
-                                    <tr>
-                                        <td>{user.id}</td>
-                                        <td>{user.firstName}</td>
-                                        <td>{user.lastName}</td>
-                                        <td>{user.email}</td>
-                                        <td>{user.username}</td>
-                                        <td>{user.userType}</td>
-                                        <td className="img-container">
-                                            <img
-                                                className="edit-img"
-                                                src="/images/utils/editUser.png"
-                                                alt=""
-                                                onClick={() =>
-                                                    this.handleOpen(user)
-                                                }
-                                            />
-                                            <UserDialogue
-                                                open={dialogueOpen[user.id - 1]}
-                                                close={this.handleClose}
-                                                submit={this.handleSubmit}
-                                                {...user}
-                                            />
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </React.Fragment>
+                            <tbody key={user.id}>
+                                <tr>
+                                    <td>{user.id}</td>
+                                    <td>{user.firstName}</td>
+                                    <td>{user.lastName}</td>
+                                    <td>{user.email}</td>
+                                    <td>{user.username}</td>
+                                    <td>{user.userType}</td>
+                                    <td className="img-container">
+                                        <img
+                                            className="edit-img"
+                                            src="/images/utils/editUser.png"
+                                            alt=""
+                                            onClick={() =>
+                                                this.handleOpen(user.id)
+                                            }
+                                        />
+                                        <UserDialogue
+                                            open={dialogueOpen[user.id - 1]}
+                                            close={this.handleClose}
+                                            submit={this.handleSubmit}
+                                            {...user}
+                                        />
+                                    </td>
+                                </tr>
+                            </tbody>
                         ))}
                     </table>
                 </div>
@@ -175,7 +185,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return {
         loadAllUsers: () => dispatch(getAllUsers()),
-        updateUser: (user) => dispatch(updateUserThunk(user)),
+        updateUser: (user) => dispatch(updateUser_adminAccess(user)),
     };
 }
 
