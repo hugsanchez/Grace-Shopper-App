@@ -23,6 +23,28 @@ const syncAndSeed = async () => {
 
     await db.sync({ force: true });
 
+    // Custom Categories
+    const categories = await Promise.all([
+      Categories.create({
+        name: "Classical",
+      }),
+      Categories.create({
+        name: 'Post-Impressionism'
+      }),
+      Categories.create({
+        name: 'Neo-Impressionism'
+      }),
+      Categories.create({
+        name:'Divisionism'
+      }),
+      Categories.create({
+        name: 'Cubism'
+      }),
+      Categories.create({
+        name: 'Expressionism'
+      })
+    ]);
+
     // Custom Users
     await Promise.all([
       new Users({
@@ -115,6 +137,7 @@ const syncAndSeed = async () => {
             imgUrl:
               productMet.primaryImage ||
               "https://ualr.edu/elearning/files/2020/10/No-Photo-Available.jpg",
+            categoryId: Math.floor(Math.random() * 6) + 1,
           }).save()
         );
         // productPromise.push(art);
@@ -139,12 +162,7 @@ const syncAndSeed = async () => {
     //     }),
     // );
 
-    // Custom Categories
-    const categories = await Promise.all([
-      Categories.create({
-        name: "Classical",
-      }),
-    ]);
+    
 
     // Custom Products
 
