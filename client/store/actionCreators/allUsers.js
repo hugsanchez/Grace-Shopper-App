@@ -32,3 +32,19 @@ export const addSingleUser = (user) => async (dispatch) => {
             throw err;
         });
 };
+
+export const adminAddUser = (user) => async (dispatch) => {
+    const token = window.localStorage.getItem("token");
+    const { data: newUser } = await axios.post(
+        "/api/admins/users",
+        {
+            ...user,
+        },
+        {
+            headers: {
+                authorization: token,
+            },
+        },
+    );
+    dispatch(addUser(newUser));
+};

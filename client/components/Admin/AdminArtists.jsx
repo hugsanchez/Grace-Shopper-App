@@ -32,6 +32,7 @@ class AdminArtists extends Component {
 
     async componentDidMount() {
         await this.props.loadAllArtists();
+        console.log(this.props);
         const { allArtists } = this.props;
 
         let dialogueOpen = [];
@@ -110,11 +111,7 @@ class AdminArtists extends Component {
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>First Name</th>
-                            <th>Last Name</th>
-                            <th>Email</th>
-                            <th>Username</th>
-                            <th>Type</th>
+                            <th>Name</th>
                             <th>Edit</th>
                         </tr>
                     </thead>
@@ -122,8 +119,16 @@ class AdminArtists extends Component {
                         <tbody key={artist.id}>
                             <tr>
                                 <td>{artist.id}</td>
-                                <td>
-                                    {artist.name}
+                                <td>{artist.name}</td>
+                                <td className="img-container">
+                                    <img
+                                        className="edit-img"
+                                        src="/images/utils/editUser.png"
+                                        alt=""
+                                        onClick={() =>
+                                            this.handleOpen(artist.id)
+                                        }
+                                    />
                                     <ArtistDialog
                                         open={dialogueOpen[artist.id - 1]}
                                         close={this.handleClose}

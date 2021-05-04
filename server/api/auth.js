@@ -7,7 +7,8 @@ const {
 } = require("../db");
 
 router.post("/", async (req, res, next) => {
-    await Users.authenticate(req.body)
+    const { username, password } = req.body;
+    await Users.authenticate({ username, password })
         .then((token) => {
             res.status(201).send({ token });
         })
