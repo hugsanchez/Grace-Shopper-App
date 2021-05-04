@@ -18,8 +18,22 @@
         brightness(100%) contrast(94%);
 }
 
+.delete-img {
+    filter: invert(26%) sepia(95%) saturate(5156%) hue-rotate(344deg)
+        brightness(82%) contrast(98%);
+    width: 1rem;
+    height: auto;
+}
+
+.delete-img:hover {
+    cursor: pointer;
+    filter: invert(9%) sepia(46%) saturate(7469%) hue-rotate(347deg)
+        brightness(102%) contrast(94%);
+}
+
 .img-container {
     text-align: center;
+    padding: 0rem 0.3rem;
 }
 
 tbody:nth-child(even) {

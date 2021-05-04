@@ -11,12 +11,14 @@ import { connect } from "react-redux";
 import { getAllUsers } from "../../store/actionCreators/allUsers";
 import { updateUser_adminAccess } from "../../store/actionCreators/singleUser";
 import { adminAddUser } from "../../store/actionCreators/allUsers";
+import { deleteUser_thunk } from "../../store/actionCreators/singleUser";
 
 // Style Imports
 import "../../../public/assets/admin.css";
 
 // Component Imports
 import UserDialogue from "./dialogs/UserDialogue.jsx";
+import AreYouSure from "../AreYouSure.jsx";
 
 class AdminUsers extends Component {
     constructor(props) {
@@ -26,6 +28,8 @@ class AdminUsers extends Component {
             users: [],
             dialogueOpen: [],
             newUserDialog: false,
+            deleteDialog: false,
+            userDeleteStaged: NaN,
         };
 
         this.handleOpen = this.handleOpen.bind(this);
@@ -34,6 +38,9 @@ class AdminUsers extends Component {
         this.handleOpenPost = this.handleOpenPost.bind(this);
         this.handleClosePost = this.handleClosePost.bind(this);
         this.handleSubmitPost = this.handleSubmitPost.bind(this);
+        this.openDelete = this.openDelete.bind(this);
+        this.closeDelete = this.closeDelete.bind(this);
+        this.handleDelete = this.handleDelete.bind(this);
     }
 
     async componentDidMount() {
@@ -151,8 +158,44 @@ class AdminUsers extends Component {
         );
     }
 
+    openDelete(id) {
+        this.setState({
+            ...this.state,
+            deleteDialog: true,
+            userDeleteStaged: id,
+        });
+    }
+    closeDelete() {
+        this.setState({
+            ...this.state,
+            deleteDialog: false,
+            userDeleteStaged: NaN,
+        });
+    }
+
+    async handleDelete() {
+        const { userDeleteStaged } = this.state;
+        await this.props.deleteUser(userDeleteStaged);
+
+        const { allUsers } = this.props;
+        this.setState({
+            ...this.state,
+            users: allUsers.sort((a, b) => a.id - b.id),
+        }, () => {
+            this.closeDelete();
+        });
+
+        
+    }
+
     render() {
-        const { loading, users, dialogueOpen, newUserDialog } = this.state;
+        const {
+            loading,
+            users,
+            dialogueOpen,
+            newUserDialog,
+            deleteDialog,
+        } = this.state;
 
         if (loading) {
             return <React.Fragment>Loading...</React.Fragment>;
@@ -193,6 +236,7 @@ class AdminUsers extends Component {
                             <th>Username</th>
                             <th>Type</th>
                             <th>Edit</th>
+                            <th>Delete</th>
                         </tr>
                     </thead>
                     {users.map((user, idx) => {
@@ -225,10 +269,26 @@ class AdminUsers extends Component {
                                             title="Edit User Profile"
                                         />
                                     </td>
+                                    <td className="img-container">
+                                        <img
+                                            className="delete-img"
+                                            src="/images/utils/delete.png"
+                                            alt=""
+                                            onClick={() =>
+                                                this.openDelete(user.id)
+                                            }
+                                        />
+                                    </td>
                                 </tr>
                             </tbody>
                         );
                     })}
+                    <AreYouSure
+                        message="Are you sure you want to delete this user?"
+                        open={deleteDialog}
+                        close={this.closeDelete}
+                        userFn={this.handleDelete}
+                    />
                 </table>
             </div>
         );
@@ -246,6 +306,7 @@ function mapDispatchToProps(dispatch) {
         loadAllUsers: () => dispatch(getAllUsers()),
         updateUser: (user) => dispatch(updateUser_adminAccess(user)),
         addUser: (user) => dispatch(adminAddUser(user)),
+        deleteUser: (id) => dispatch(deleteUser_thunk(id)),
     };
 }
 

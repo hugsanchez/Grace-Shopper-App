@@ -103,6 +103,22 @@ router.put("/:id", async (req, res, next) => {
 router.delete("/:id", async (req, res, next) => {
     try {
         const { id } = req.params;
+        const token = req.headers.authorization;
+
+        // Need to send a token to use this route
+        if (!token) throw unauthorized("Invalid credentials");
+
+        // Finds user who made request
+        const requestor = await Users.findByToken(token);
+
+        // If no requestor, 401
+        if (!requestor) throw unauthorized("Invalid credentials");
+
+        // If user is not an admin, 401 error
+        if (requestor.userType !== "ADMIN") {
+            throw unauthorized("Invalid credentials");
+        }
+
         const user = await Users.findOne({ where: { id } });
 
         // If id did not correspond to a user, throw error
