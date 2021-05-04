@@ -13,11 +13,12 @@ const categoriesAPI = require("./api/categories");
 const authAPI = require("./api/auth");
 const cartAPI = require("./api/cart");
 const artistsAPI = require("./api/artists");
+const stripeAPI = require("./api/stripeCheckout");
 
 // Database Imports
 const {
-    syncAndSeed,
-    model: { Products, Artists, Categories, Users, Orders, Reviews },
+  syncAndSeed,
+  model: { Products, Artists, Categories, Users, Orders, Reviews },
 } = require("./db");
 
 // Serve Static Folder
@@ -40,13 +41,14 @@ app.use("/api/categories", categoriesAPI);
 app.use("/api/artists", artistsAPI);
 app.use("/api/auth", authAPI);
 app.use("/api/cart", cartAPI);
+app.use("/api/checkout", stripeAPI);
 
 app.get("/", async (req, res, next) => {
-    try {
-        res.sendFile(path.join(__dirname, "../public/index.html"));
-    } catch (err) {
-        next(err);
-    }
+  try {
+    res.sendFile(path.join(__dirname, "../public/index.html"));
+  } catch (err) {
+    next(err);
+  }
 });
 
 module.exports = app;
