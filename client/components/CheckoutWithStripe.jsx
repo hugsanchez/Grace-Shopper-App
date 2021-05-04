@@ -7,9 +7,9 @@ import axios from "axios";
 
 class TakeMoney extends React.Component {
   async handleToken(token, addresses) {
-    console.log("TOKEN", token);
     const response = await axios.post("/api/checkout", { token });
     const { status } = response.data;
+    console.log(status);
     if (status === "success") {
       toast("Success! Check email for details", { type: "success" });
     } else {
