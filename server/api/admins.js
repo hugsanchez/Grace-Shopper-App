@@ -3,7 +3,15 @@ const router = express.Router();
 
 const {
     syncAndSeed,
-    model: { Products, Artists, Categories, Users, Orders, Reviews },
+    model: {
+        Products,
+        Artists,
+        Categories,
+        Users,
+        Orders,
+        Reviews,
+        ProductsCategories,
+    },
 } = require("../db");
 
 const { notFound, unauthorized, conflict, badSyntax } = require("./errors");
@@ -148,7 +156,15 @@ router.post("/products", async (req, res, next) => {
         if (!token) throw unauthorized("Invalid credentials");
 
         // User info update
-        const { name, description, price, year, stock, imgUrl } = req.body;
+        const {
+            name,
+            description,
+            price,
+            year,
+            stock,
+            imgUrl,
+            categories,
+        } = req.body;
 
         const props = [name, description, price, year, stock];
 
@@ -179,6 +195,9 @@ router.post("/products", async (req, res, next) => {
             stock,
             imgUrl,
         });
+
+        await newProduct.addCategories(categories.map((cat) => cat.id));
+        await newProduct.save();
 
         // Finds user again with the same format as GET
         const postedProduct = await Products.findOne({
@@ -213,7 +232,15 @@ router.put("/products/:id", async (req, res, next) => {
         if (!token) throw unauthorized("Invalid credentials");
 
         // Product info update
-        const { name, description, price, year, stock, imgUrl } = req.body;
+        const {
+            name,
+            description,
+            price,
+            year,
+            stock,
+            imgUrl,
+            categories,
+        } = req.body;
 
         // Finds user who made request
         const requestor = await Users.findByToken(token);
@@ -238,6 +265,13 @@ router.put("/products/:id", async (req, res, next) => {
         if (year) product.year = year;
         if (stock) product.stock = stock;
         if (imgUrl) product.imgUrl = imgUrl;
+
+        // Destroy all category associations, we will rebuild
+        await ProductsCategories.destroy({
+            where: { productId: product.id },
+        });
+
+        await product.addCategories(categories.map((cat) => cat.id));
 
         // Save changes
         await product.save();

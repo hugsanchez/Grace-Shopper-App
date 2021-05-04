@@ -41,6 +41,7 @@ export const updateProduct_adminAccess = (product) => async (dispatch) => {
             },
         },
     );
+
     dispatch(updateProduct(singleProduct));
 };
 
