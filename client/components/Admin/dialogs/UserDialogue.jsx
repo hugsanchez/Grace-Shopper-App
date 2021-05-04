@@ -83,7 +83,7 @@ class UserDialogue extends Component {
                     maxWidth="xs"
                 >
                     <DialogTitle id="form-dialog-title">
-                        Edit User Profile
+                        {this.props.title}
                     </DialogTitle>
                     <DialogContent>
                         <TextField
@@ -100,7 +100,6 @@ class UserDialogue extends Component {
                     </DialogContent>
                     <DialogContent>
                         <TextField
-                            autoFocus
                             margin="dense"
                             id="name"
                             label="Last Name"
@@ -113,7 +112,6 @@ class UserDialogue extends Component {
                     </DialogContent>
                     <DialogContent>
                         <TextField
-                            autoFocus
                             margin="dense"
                             id="username"
                             label="Username"
@@ -126,7 +124,6 @@ class UserDialogue extends Component {
                     </DialogContent>
                     <DialogContent>
                         <TextField
-                            autoFocus
                             margin="dense"
                             id="email"
                             label="Email Address"
@@ -139,7 +136,6 @@ class UserDialogue extends Component {
                     </DialogContent>
                     <DialogContent>
                         <TextField
-                            autoFocus
                             margin="dense"
                             id="userType"
                             label="Permissions (type 'USER' or 'ADMIN')"

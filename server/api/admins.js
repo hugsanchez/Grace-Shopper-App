@@ -6,7 +6,7 @@ const {
     model: { Products, Artists, Categories, Users, Orders, Reviews },
 } = require("../db");
 
-const { notFound, unauthorized } = require("./errors");
+const { notFound, unauthorized, conflict, badSyntax } = require("./errors");
 
 // All Admins
 router.get("/", async (req, res, next) => {
@@ -32,12 +32,72 @@ router.get("/:id", async (req, res, next) => {
     }
 });
 
-router.put("/users/:id", async (req, res, next) => {
+router.post("/users", async (req, res, next) => {
     try {
         const { id } = req.params;
         const token = req.headers.authorization;
 
-        console.log(req.body, token);
+        // Need to send a token to use this route
+        if (!token) throw unauthorized("Invalid credentials");
+
+        // User info update
+        const { firstName, lastName, username, email, userType } = req.body;
+
+        const props = [firstName, lastName, username, email, userType];
+
+        // Error handling for correct request body syntax
+        for (let prop of props) {
+            if (!prop)
+                throw badSyntax(
+                    "New Users must have all of the following properties: First Name, Last Name, username, Email, userType",
+                );
+        }
+
+        // Finds user who made request
+        const requestor = await Users.findByToken(token);
+
+        // If no requestor, 401
+        if (!requestor) throw unauthorized("Invalid credentials");
+
+        // If user is not an admin, 401 error
+        if (requestor.userType !== "ADMIN") {
+            throw unauthorized("Invalid credentials");
+        }
+
+        const newUser = await Users.create({
+            firstName,
+            lastName,
+            email,
+            username,
+            password: "default_",
+            userType,
+        });
+
+        // Finds user again with the same format as GET
+        const postedUser = await Users.findOneIncludes(newUser.id);
+
+        res.status(201).send(postedUser);
+    } catch (err) {
+        const { errors } = err;
+        if (errors) {
+            // For each error
+            errors.forEach((error) => {
+                // Customize error message and status
+                switch (error.type) {
+                    case "unique violation":
+                        next(conflict(error.message));
+                }
+            });
+        }
+
+        next(err);
+    }
+});
+
+router.put("/users/:id", async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        const token = req.headers.authorization;
 
         // Need to send a token to use this route
         if (!token) throw unauthorized("Invalid credentials");

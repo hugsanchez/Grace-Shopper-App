@@ -3,10 +3,14 @@ import React, { Component } from "react";
 // React Router Imports
 import { NavLink } from "react-router-dom";
 
+// Material UI Imports
+import Button from "@material-ui/core/Button";
+
 // Redux Imports
 import { connect } from "react-redux";
 import { getAllUsers } from "../../store/actionCreators/allUsers";
 import { updateUser_adminAccess } from "../../store/actionCreators/singleUser";
+import { adminAddUser } from "../../store/actionCreators/allUsers";
 
 // Style Imports
 import "../../../public/assets/admin.css";
@@ -21,11 +25,15 @@ class AdminUsers extends Component {
             loading: true,
             users: [],
             dialogueOpen: [],
+            newUserDialog: false,
         };
 
         this.handleOpen = this.handleOpen.bind(this);
         this.handleClose = this.handleClose.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleOpenPost = this.handleOpenPost.bind(this);
+        this.handleClosePost = this.handleClosePost.bind(this);
+        this.handleSubmitPost = this.handleSubmitPost.bind(this);
     }
 
     async componentDidMount() {
@@ -45,6 +53,50 @@ class AdminUsers extends Component {
         });
     }
 
+    handleOpenPost() {
+        this.setState({
+            ...this.state,
+            newUserDialog: true,
+        });
+    }
+
+    handleClosePost() {
+        this.setState({
+            ...this.state,
+            newUserDialog: false,
+        });
+    }
+
+    async handleSubmitPost(id, firstName, lastName, email, username, userType) {
+        const { addUser } = this.props;
+
+        await addUser({
+            firstName,
+            lastName,
+            username,
+            email,
+            userType,
+        });
+
+        const { allUsers } = this.props;
+
+        const dialogueOpen = [];
+        for (let i = 0; i < allUsers.length; i++) {
+            dialogueOpen.push({ active: false, userId: allUsers[i].id });
+        }
+
+        this.setState(
+            {
+                ...this.state,
+                users: allUsers.sort((a, b) => a.id - b.id),
+                dialogueOpen,
+            },
+            () => {
+                this.handleClosePost();
+            },
+        );
+    }
+
     handleOpen(id) {
         const { dialogueOpen } = this.state;
         const newDialogueOpen = dialogueOpen.map((obj) => {
@@ -54,8 +106,6 @@ class AdminUsers extends Component {
                 return { active: false, userId: obj.userId };
             }
         });
-
-        console.log(newDialogueOpen);
 
         this.setState({
             ...this.state,
@@ -90,18 +140,20 @@ class AdminUsers extends Component {
 
         const { allUsers } = this.props;
 
-        this.setState({
-            ...this.state,
-            users: allUsers.sort((a, b) => a.id - b.id),
-        });
-
-        this.handleClose();
+        this.setState(
+            {
+                ...this.state,
+                users: allUsers.sort((a, b) => a.id - b.id),
+            },
+            () => {
+                this.handleClose();
+            },
+        );
     }
 
     render() {
-        const { loading, users, dialogueOpen } = this.state;
-
-        console.log(dialogueOpen);
+        console.log(this.props);
+        const { loading, users, dialogueOpen, newUserDialog } = this.state;
 
         if (loading) {
             return <React.Fragment>Loading...</React.Fragment>;
@@ -112,6 +164,26 @@ class AdminUsers extends Component {
                 <div id="order-title-container" className="order-item">
                     <h3 id="order-title">User List</h3>
                 </div>
+                <UserDialogue
+                    open={newUserDialog}
+                    close={this.handleClosePost}
+                    submit={this.handleSubmitPost}
+                    {...{
+                        firstName: "",
+                        lastName: "",
+                        email: "",
+                        username: "",
+                        userType: "",
+                    }}
+                    title="Create New User"
+                />
+                <Button
+                    variant="outlined"
+                    color="primary"
+                    onClick={this.handleOpenPost}
+                >
+                    Create New User
+                </Button>
                 <table>
                     <thead>
                         <tr>
@@ -151,6 +223,7 @@ class AdminUsers extends Component {
                                             close={this.handleClose}
                                             submit={this.handleSubmit}
                                             {...user}
+                                            title="Edit User Profile"
                                         />
                                     </td>
                                 </tr>
@@ -173,6 +246,7 @@ function mapDispatchToProps(dispatch) {
     return {
         loadAllUsers: () => dispatch(getAllUsers()),
         updateUser: (user) => dispatch(updateUser_adminAccess(user)),
+        addUser: (user) => dispatch(adminAddUser(user)),
     };
 }
 
