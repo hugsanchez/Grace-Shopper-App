@@ -13,7 +13,7 @@ export const getCategories = (categories) => ({
 
 export const getCategory = (category) => ({
     type: GET_CATEGORY,
-    artist,
+    category,
 });
 
 export const addCategory = (category) => ({

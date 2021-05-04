@@ -6,7 +6,15 @@ const { notFound, badSyntax, unauthorized } = require("./errors");
 
 const {
     syncAndSeed,
-    model: { Products, Artists, Categories, Users, Orders, Reviews },
+    model: {
+        Products,
+        Artists,
+        Categories,
+        Users,
+        Orders,
+        Reviews,
+        ProductsCategories,
+    },
 } = require("../db");
 
 // All Products
@@ -54,60 +62,64 @@ router.get("/:id", async (req, res, next) => {
 });
 
 // Create Product
-// Adding a review
 router.post("/", async (req, res, next) => {
     try {
+        const token = req.headers.authorization;
+
+        // Need to send a token to use this route
+        if (!token) throw unauthorized("Invalid credentials");
+
+        // Product info update
         const {
             name,
             description,
             price,
             year,
+            stock,
             imgUrl,
-            artistId,
-            categoryId,
+            categories,
         } = req.body;
 
-        const props = [
-            name,
-            description,
-            price,
-            year,
-            imgUrl,
-            artistId,
-            categoryId,
-        ];
+        const props = [name, description, price, year, stock];
 
         // Error handling for correct request body syntax
         for (let prop of props) {
             if (!prop)
                 throw badSyntax(
-                    "New products must have all of the following properties: name, description, price, year, imgUrl, artistId, categoryId",
+                    "New products must have all of the following properties: Name, Description, Price, Year, and Stock",
                 );
         }
 
-        // Find associated artist and category
-        const artist = await Artists.findByPk(artistId);
-        const category = await Categories.findByPk(categoryId);
+        // Finds user who made request
+        const requestor = await Users.findByToken(token);
 
-        // Error handling if artist or category don't exist
-        if (!artist && !category) {
-            throw notFound("Artist and Category not found");
+        // If no requestor, 401
+        if (!requestor) throw unauthorized("Invalid credentials");
+
+        // If user is not an admin, 401 error
+        if (requestor.userType !== "ADMIN") {
+            throw unauthorized("Invalid credentials");
         }
-        if (!artist) throw notFound("Artist not found");
-        if (!category) throw notFound("Category not found");
 
-        // Make a new review
         const newProduct = await Products.create({
             name,
             description,
             price,
             year,
+            stock,
             imgUrl,
-            artistId,
-            categoryId,
         });
 
-        res.status(201).send(newProduct);
+        await newProduct.addCategories(categories.map((cat) => cat.id));
+        await newProduct.save();
+
+        // Finds user again with the same format as GET
+        const postedProduct = await Products.findOne({
+            where: { id: newProduct.id },
+            include: [Artists, Categories, Reviews],
+        });
+
+        res.status(201).send(postedProduct);
     } catch (err) {
         next(err);
     }
@@ -116,51 +128,57 @@ router.post("/", async (req, res, next) => {
 router.put("/:id", async (req, res, next) => {
     try {
         const { id } = req.params;
+        const token = req.headers.authorization;
 
-        // User info update
+        // Need to send a token to use this route
+        if (!token) throw unauthorized("Invalid credentials");
+
+        // Product info update
         const {
             name,
             description,
             price,
             year,
+            stock,
             imgUrl,
-            artistId,
-            categoryId,
+            categories,
         } = req.body;
 
-        // Finds product
+        // Finds user who made request
+        const requestor = await Users.findByToken(token);
+
+        // If no requestor, 401
+        if (!requestor) throw unauthorized("Invalid credentials");
+
+        // If user is not an admin, 401 error
+        if (requestor.userType !== "ADMIN") {
+            throw unauthorized("Invalid credentials");
+        }
+
+        // Finds user to be edited
         let product = await Products.findOne({ where: { id } });
 
-        // If no product, 404
+        // If user doesn't exist,
         if (!product) throw notFound("Product not found");
 
-        // Find associated artist and set it
-        if (artistId) {
-            const artist = await Artists.findByPk(artistId);
-            if (!artist) throw notFound("Artist not found");
-
-            await product.setArtist(artist);
-        }
-
-        // Find associated category and set it
-        if (categoryId) {
-            const category = await Categories.findByPk(categoryId);
-            if (!category) throw notFound("Category not found");
-
-            await product.setCategory(category);
-        }
-
-        // Update values
         if (name) product.name = name;
         if (description) product.description = description;
         if (price) product.price = price;
         if (year) product.year = year;
+        if (stock) product.stock = stock;
         if (imgUrl) product.imgUrl = imgUrl;
+
+        // Destroy all category associations, we will rebuild
+        await ProductsCategories.destroy({
+            where: { productId: product.id },
+        });
+
+        await product.addCategories(categories.map((cat) => cat.id));
 
         // Save changes
         await product.save();
 
-        // Finds product again with the same format as GET
+        // Finds user again with the same format as GET
         const updatedProduct = await Products.findOne({
             where: { id },
             include: [Artists, Categories, Reviews],

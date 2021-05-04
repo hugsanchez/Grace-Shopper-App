@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 // Error Imports
-const { notFound, badSyntax, conflict } = require("./errors");
+const { notFound, badSyntax, conflict, unauthorized } = require("./errors");
 
 // DB Imports
 const {

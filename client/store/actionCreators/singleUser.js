@@ -82,15 +82,23 @@ export const logOutUser = () => async (dispatch) => {
 
 export const updateUserThunk = (payload) => async (dispatch) => {
     try {
+        const token = window.localStorage.getItem("token");
         const { id, firstName, lastName, username, email } = payload;
-        const { data: user } = await axios.put(`/api/users/${id}`, {
-            id,
-            firstName,
-            lastName,
-            username,
-            email,
-        });
-
+        const { data: user } = await axios.put(
+            `/api/users/${id}`,
+            {
+                id,
+                firstName,
+                lastName,
+                username,
+                email,
+            },
+            {
+                headers: {
+                    authorization: token,
+                },
+            },
+        );
         dispatch(updateUser(user));
     } catch (err) {
         console.error(err);
@@ -99,14 +107,23 @@ export const updateUserThunk = (payload) => async (dispatch) => {
 
 export const updateProfileThunk = (payload) => async (dispatch) => {
     try {
+        const token = window.localStorage.getItem("token");
         const { id, firstName, lastName, username, email } = payload;
-        const { data: user } = await axios.put(`/api/users/${id}`, {
-            id,
-            firstName,
-            lastName,
-            username,
-            email,
-        });
+        const { data: user } = await axios.put(
+            `/api/users/${id}`,
+            {
+                id,
+                firstName,
+                lastName,
+                username,
+                email,
+            },
+            {
+                headers: {
+                    authorization: token,
+                },
+            },
+        );
 
         dispatch(updateProfile(user));
     } catch (err) {
@@ -143,6 +160,6 @@ export const deleteUser_thunk = (id) => async (dispatch) => {
         });
         dispatch(deleteUser(id));
     } catch (err) {
-        console.error(err)
+        console.error(err);
     }
 };

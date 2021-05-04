@@ -10,7 +10,7 @@ import { NavLink } from "react-router-dom";
 // Component Imports
 import AdminUsers from "./AdminUsers.jsx";
 import AdminInventory from "./AdminInventory.jsx";
-import AdminArtists from "./AdminArtists.jsx";
+import AdminCategories from "./AdminCategories.jsx";
 
 // Style Imports
 import "../../../public/assets/admin.css";
@@ -65,15 +65,6 @@ class AdminPortal extends Component {
                     </div>
                     <div className="user-header-container">
                         <NavLink
-                            to={`/admin/artists`}
-                            className="header-link-user"
-                            name="artists"
-                        >
-                            Artists
-                        </NavLink>
-                    </div>
-                    <div className="user-header-container">
-                        <NavLink
                             to={`/admin/categories`}
                             className="header-link-user"
                             name="categories"
@@ -100,8 +91,8 @@ class AdminPortal extends Component {
                     <Switch>
                         <Route
                             exact
-                            path={`/admin/artists`}
-                            component={AdminArtists}
+                            path={`/admin/categories`}
+                            component={AdminCategories}
                         />
                     </Switch>
                 </div>

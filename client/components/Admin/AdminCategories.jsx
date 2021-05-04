@@ -1,35 +1,37 @@
 import React, { Component } from "react";
 
-// React Router Imports
-import { NavLink } from "react-router-dom";
-
 // Material UI Imports
 import Button from "@material-ui/core/Button";
 
+// React Router Imports
+import { NavLink } from "react-router-dom";
+
 // Redux Imports
 import { connect } from "react-redux";
-import { getAllUsers } from "../../store/actionCreators/allUsers";
-import { updateUser_adminAccess } from "../../store/actionCreators/singleUser";
-import { adminAddUser } from "../../store/actionCreators/allUsers";
-import { deleteUser_thunk } from "../../store/actionCreators/singleUser";
+import {
+    getCategories_thunk,
+    addCategory_thunk,
+    updateCategory_thunk,
+    deleteCategory_thunk,
+} from "../../store/actionCreators/categories";
 
 // Style Imports
 import "../../../public/assets/admin.css";
 
 // Component Imports
-import UserDialogue from "./dialogs/UserDialogue.jsx";
+import CategoryDialog from "./dialogs/CategoryDialog.jsx";
 import AreYouSure from "../AreYouSure.jsx";
 
-class AdminUsers extends Component {
+class AdminCategories extends Component {
     constructor(props) {
         super(props);
         this.state = {
             loading: true,
-            users: [],
+            categories: [],
             dialogueOpen: [],
-            newUserDialog: false,
+            newCategoryDialog: false,
             deleteDialog: false,
-            userDeleteStaged: NaN,
+            categoryDeleteStaged: NaN,
         };
 
         this.handleOpen = this.handleOpen.bind(this);
@@ -44,18 +46,22 @@ class AdminUsers extends Component {
     }
 
     async componentDidMount() {
-        await this.props.loadAllUsers();
-        const { allUsers } = this.props;
+        await this.props.loadAllCategories();
+
+        const { allCategories } = this.props;
 
         let dialogueOpen = [];
-        for (let i = 0; i < allUsers.length; i++) {
-            dialogueOpen.push({ active: false, userId: allUsers[i].id });
+        for (let i = 0; i < allCategories.length; i++) {
+            dialogueOpen.push({
+                active: false,
+                categoryId: allCategories[i].id,
+            });
         }
 
         this.setState({
             ...this.state,
             loading: false,
-            users: allUsers.sort((a, b) => a.id - b.id),
+            categories: allCategories.sort((a, b) => a.id - b.id),
             dialogueOpen,
         });
     }
@@ -63,39 +69,36 @@ class AdminUsers extends Component {
     handleOpenPost() {
         this.setState({
             ...this.state,
-            newUserDialog: true,
+            newCategoryDialog: true,
         });
     }
 
     handleClosePost() {
         this.setState({
             ...this.state,
-            newUserDialog: false,
+            newCategoryDialog: false,
         });
     }
 
-    async handleSubmitPost(id, firstName, lastName, email, username, userType) {
-        const { addUser } = this.props;
+    async handleSubmitPost(id, name) {
+        const { addCategory } = this.props;
 
-        await addUser({
-            firstName,
-            lastName,
-            username,
-            email,
-            userType,
-        });
+        await addCategory({ name });
 
-        const { allUsers } = this.props;
+        const { allCategories } = this.props;
 
         const dialogueOpen = [];
-        for (let i = 0; i < allUsers.length; i++) {
-            dialogueOpen.push({ active: false, userId: allUsers[i].id });
+        for (let i = 0; i < allCategories.length; i++) {
+            dialogueOpen.push({
+                active: false,
+                categoryId: allCategories[i].id,
+            });
         }
 
         this.setState(
             {
                 ...this.state,
-                users: allUsers.sort((a, b) => a.id - b.id),
+                categories: allCategories.sort((a, b) => a.id - b.id),
                 dialogueOpen,
             },
             () => {
@@ -107,10 +110,10 @@ class AdminUsers extends Component {
     handleOpen(id) {
         const { dialogueOpen } = this.state;
         const newDialogueOpen = dialogueOpen.map((obj) => {
-            if (obj.userId === id) {
-                return { active: true, userId: obj.userId };
+            if (obj.categoryId === id) {
+                return { active: true, categoryId: obj.categoryId };
             } else {
-                return { active: false, userId: obj.userId };
+                return { active: false, categoryId: obj.categoryId };
             }
         });
 
@@ -121,10 +124,13 @@ class AdminUsers extends Component {
     }
 
     handleClose() {
-        const { users } = this.state;
+        const { categories } = this.state;
         let dialogueOpen = [];
-        for (let i = 0; i < users.length; i++) {
-            dialogueOpen.push({ active: false, userId: users[i].id });
+        for (let i = 0; i < categories.length; i++) {
+            dialogueOpen.push({
+                active: false,
+                categoryId: categories[i].id,
+            });
         }
 
         this.setState({
@@ -133,55 +139,44 @@ class AdminUsers extends Component {
         });
     }
 
-    async handleSubmit(id, firstName, lastName, email, username, userType) {
-        const { updateUser } = this.props;
+    async handleSubmit(id, name) {
+        const { updateCategory } = this.props;
+        await updateCategory({ id, name });
 
-        await updateUser({
-            id,
-            firstName,
-            lastName,
-            username,
-            email,
-            userType,
+        const { allCategories } = this.props;
+
+        this.setState({
+            ...this.state,
+            categories: allCategories.sort((a, b) => a.id - b.id),
         });
 
-        const { allUsers } = this.props;
-
-        this.setState(
-            {
-                ...this.state,
-                users: allUsers.sort((a, b) => a.id - b.id),
-            },
-            () => {
-                this.handleClose();
-            },
-        );
+        this.handleClose();
     }
 
     openDelete(id) {
         this.setState({
             ...this.state,
             deleteDialog: true,
-            userDeleteStaged: id,
+            categoryDeleteStaged: id,
         });
     }
     closeDelete() {
         this.setState({
             ...this.state,
             deleteDialog: false,
-            userDeleteStaged: NaN,
+            categoryDeleteStaged: NaN,
         });
     }
 
     async handleDelete() {
-        const { userDeleteStaged } = this.state;
-        await this.props.deleteUser(userDeleteStaged);
+        const { categoryDeleteStaged } = this.state;
+        await this.props.deleteCategory(categoryDeleteStaged);
 
-        const { allUsers } = this.props;
+        const { allCategories } = this.props;
         this.setState(
             {
                 ...this.state,
-                users: allUsers.sort((a, b) => a.id - b.id),
+                categories: allCategories.sort((a, b) => a.id - b.id),
             },
             () => {
                 this.closeDelete();
@@ -192,9 +187,9 @@ class AdminUsers extends Component {
     render() {
         const {
             loading,
-            users,
+            categories,
             dialogueOpen,
-            newUserDialog,
+            newCategoryDialog,
             deleteDialog,
         } = this.state;
 
@@ -205,69 +200,55 @@ class AdminUsers extends Component {
         return (
             <div id="admin-view">
                 <div id="order-title-container" className="order-item">
-                    <h3 id="order-title">User List</h3>
+                    <h3 id="order-title">Category List</h3>
                 </div>
-                <UserDialogue
-                    open={newUserDialog}
+                <CategoryDialog
+                    open={newCategoryDialog}
                     close={this.handleClosePost}
                     submit={this.handleSubmitPost}
                     {...{
-                        firstName: "",
-                        lastName: "",
-                        email: "",
-                        username: "",
-                        userType: "",
+                        name: "",
                     }}
-                    title="Create New User"
                 />
                 <Button
                     variant="outlined"
                     color="primary"
                     onClick={this.handleOpenPost}
                 >
-                    Create New User
+                    Create New Category
                 </Button>
                 <table>
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>First Name</th>
-                            <th>Last Name</th>
-                            <th>Email</th>
-                            <th>Username</th>
-                            <th>Type</th>
+                            <th>Name</th>
                             <th>Edit</th>
                             <th>Delete</th>
                         </tr>
                     </thead>
-                    {users.map((user, idx) => {
+                    {categories.map((category) => {
                         const dialog = dialogueOpen.filter(
-                            (obj) => obj.userId === user.id,
+                            (obj) => obj.categoryId === category.id,
                         )[0].active;
                         return (
-                            <tbody key={user.id}>
+                            <tbody key={category.id}>
                                 <tr>
-                                    <td>{user.id}</td>
-                                    <td>{user.firstName}</td>
-                                    <td>{user.lastName}</td>
-                                    <td>{user.email}</td>
-                                    <td>{user.username}</td>
-                                    <td>{user.userType}</td>
+                                    <td>{category.id}</td>
+                                    <td>{category.name}</td>
                                     <td className="img-container">
                                         <img
                                             className="edit-img"
                                             src="/images/utils/editUser.png"
                                             alt=""
                                             onClick={() =>
-                                                this.handleOpen(user.id)
+                                                this.handleOpen(category.id)
                                             }
                                         />
-                                        <UserDialogue
+                                        <CategoryDialog
                                             open={dialog}
                                             close={this.handleClose}
                                             submit={this.handleSubmit}
-                                            {...user}
-                                            title="Edit User Profile"
+                                            {...category}
                                         />
                                     </td>
                                     <td className="img-container">
@@ -276,7 +257,7 @@ class AdminUsers extends Component {
                                             src="/images/utils/delete.png"
                                             alt=""
                                             onClick={() =>
-                                                this.openDelete(user.id)
+                                                this.openDelete(category.id)
                                             }
                                         />
                                     </td>
@@ -285,7 +266,7 @@ class AdminUsers extends Component {
                         );
                     })}
                     <AreYouSure
-                        message="Are you sure you want to delete this user?"
+                        message="Are you sure you want to delete this category?"
                         open={deleteDialog}
                         close={this.closeDelete}
                         userFn={this.handleDelete}
@@ -298,17 +279,17 @@ class AdminUsers extends Component {
 
 function mapStateToProps(state) {
     return {
-        allUsers: state.allUsers,
+        allCategories: state.allCategories,
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        loadAllUsers: () => dispatch(getAllUsers()),
-        updateUser: (user) => dispatch(updateUser_adminAccess(user)),
-        addUser: (user) => dispatch(adminAddUser(user)),
-        deleteUser: (id) => dispatch(deleteUser_thunk(id)),
+        loadAllCategories: () => dispatch(getCategories_thunk()),
+        addCategory: (category) => dispatch(addCategory_thunk(category)),
+        updateCategory: (category) => dispatch(updateCategory_thunk(category)),
+        deleteCategory: (id) => dispatch(deleteCategory_thunk(id)),
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(AdminUsers);
+export default connect(mapStateToProps, mapDispatchToProps)(AdminCategories);

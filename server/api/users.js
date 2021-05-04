@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 // Errors
-const { notFound, badSyntax, conflict } = require("./errors");
+const { notFound, badSyntax, conflict, unauthorized } = require("./errors");
 
 const {
     syncAndSeed,
@@ -35,6 +35,7 @@ router.get("/:id", async (req, res, next) => {
     }
 });
 
+// This route is for anybody signing up to create their own user
 router.post("/", async (req, res, next) => {
     try {
         const { email, username, password } = req.body;
@@ -44,8 +45,8 @@ router.post("/", async (req, res, next) => {
         if (!password) throw badSyntax("User needs a password property");
 
         const newUser = await Users.create({
-            firstName: "Testing Data CHANGE ME",
-            lastName: "Testing Data CHANGE ME",
+            firstName: "Default",
+            lastName: "Default",
             email,
             username,
             password,
@@ -70,9 +71,23 @@ router.post("/", async (req, res, next) => {
     }
 });
 
+// Allows users to edit their own profiles
 router.put("/:id", async (req, res, next) => {
     try {
         const { id } = req.params;
+
+        // Need token to prove you have the authentication to edit yourself
+        const token = req.headers.authorization;
+        if (!token) throw unauthorized("Invalid credentials");
+
+        // Finds user who made request
+        const requestor = await Users.findByToken(token);
+        if (!requestor) throw unauthorized("Invalid credentials");
+
+        // Prevents anybody from accessing this route and editing people
+        if (requestor.id !== parseInt(id)) {
+            throw unauthorized("Invalid credentials");
+        }
 
         // User info update
         const { firstName, lastName, username, email } = req.body;

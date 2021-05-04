@@ -13,7 +13,7 @@ import RadioGroup from "@material-ui/core/RadioGroup";
 // Redux Imports
 import { connect } from "react-redux";
 
-class ArtistDialog extends Component {
+class CategoryDialog extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -50,7 +50,6 @@ class ArtistDialog extends Component {
         // Our function props
         const { submit, close, open } = this.props;
         const { id, name } = this.state;
-
         return (
             <div>
                 <Dialog
@@ -61,7 +60,7 @@ class ArtistDialog extends Component {
                     maxWidth="xs"
                 >
                     <DialogTitle id="form-dialog-title">
-                        Edit Artist
+                        Edit Category
                     </DialogTitle>
                     <DialogContent>
                         <TextField
@@ -93,4 +92,4 @@ class ArtistDialog extends Component {
     }
 }
 
-export default connect()(ArtistDialog);
+export default connect()(CategoryDialog);
