@@ -14,6 +14,7 @@ const {
 
 const faker = require("faker");
 const axios = require("axios");
+const ProductsCategories = require("./model/ProductsCategories");
 
 const syncAndSeed = async () => {
 
@@ -192,6 +193,89 @@ const syncAndSeed = async () => {
                 userId: 3,
             }),
         ]);
+        await Promise.all([
+          ProductsCategories.create({
+              productId: 20,
+              categoryId: 1,
+          }),
+          ProductsCategories.create({
+              productId: 14,
+              categoryId: 1,
+          }),
+          ProductsCategories.create({
+              productId: 15,
+              categoryId: 1,
+          }),
+          ProductsCategories.create({
+              productId: 1,
+              categoryId: 3,
+          }),
+          ProductsCategories.create({
+              productId: 7,
+              categoryId: 4,
+          }),
+          ProductsCategories.create({
+              productId: 3,
+              categoryId: 2,
+          }),
+          ProductsCategories.create({
+              productId: 3,
+              categoryId: 6,
+          }),
+          ProductsCategories.create({
+              productId: 18,
+              categoryId: 5,
+          }),
+          ProductsCategories.create({
+              productId: 11,
+              categoryId: 6,
+          }),
+          ProductsCategories.create({
+              productId: 12,
+              categoryId: 6,
+          }),
+          ProductsCategories.create({
+            productId: 2,
+            categoryId: 1,
+        }),
+        ProductsCategories.create({
+            productId: 4,
+            categoryId: 1,
+        }),
+        ProductsCategories.create({
+            productId: 5,
+            categoryId: 1,
+        }),
+        ProductsCategories.create({
+            productId: 1,
+            categoryId: 2,
+        }),
+        ProductsCategories.create({
+            productId: 7,
+            categoryId: 3,
+        }),
+        ProductsCategories.create({
+            productId: 3,
+            categoryId: 3,
+        }),
+        ProductsCategories.create({
+            productId: 3,
+            categoryId: 4,
+        }),
+        ProductsCategories.create({
+            productId: 8,
+            categoryId: 5,
+        }),
+        ProductsCategories.create({
+            productId: 1,
+            categoryId: 6,
+        }),
+        ProductsCategories.create({
+            productId: 2,
+            categoryId: 6,
+        }),
+      ]);
+
 
         await Promise.all([
             ProductsOrders.create({
