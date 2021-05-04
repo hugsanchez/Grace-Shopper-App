@@ -92,6 +92,7 @@ class AllProducts extends Component {
   }
 
   render() {
+    const userStatus = store.getState().signedIn.isSignedIn;
     const allProducts = this.state.allProducts;
     let displayCart = this.state.productsInCart[
       this.state.productsInCart.length - 1
@@ -160,7 +161,26 @@ class AllProducts extends Component {
             )}
           </ul>
           <h3>Total ${this.props.total}</h3>
-          <button>Proceed to Checkout</button>
+          {userStatus ? (
+            <a href="#/cart">
+              <button>Proceed To Checkout</button>
+            </a>
+          ) : (
+            <a href="#/sign-in">
+              <button>Proceed To Checkout</button>
+            </a>
+          )}
+          {/* <button
+            onClick={() => {
+              return userStatus ? (
+                <a href="/cart"></a>
+              ) : (
+                <a href="/sign-in"></a>
+              );
+            }}
+          >
+            Proceed to Checkout
+          </button> */}
         </div>
       </div>
     );
