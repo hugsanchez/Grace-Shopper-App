@@ -1,11 +1,13 @@
 import React from "react";
 import StripeCheckout from "react-stripe-checkout";
+import { toast } from "react-toastify";
 import { connect } from "react-redux";
 import store from "../store/store";
 import axios from "axios";
 
 class TakeMoney extends React.Component {
   async handleToken(token, addresses) {
+    console.log("TOKEN", token);
     const response = await axios.post("/api/checkout", { token });
     const { status } = response.data;
     if (status === "success") {
