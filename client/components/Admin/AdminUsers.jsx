@@ -34,7 +34,7 @@ class AdminUsers extends Component {
 
         let dialogueOpen = [];
         for (let i = 0; i < allUsers.length; i++) {
-            dialogueOpen.push(false);
+            dialogueOpen.push({ active: false, userId: allUsers[i].id });
         }
 
         this.setState({
@@ -47,13 +47,15 @@ class AdminUsers extends Component {
 
     handleOpen(id) {
         const { dialogueOpen } = this.state;
-        const newDialogueOpen = dialogueOpen.map((bool, idx) => {
-            if (idx + 1 === id) {
-                return true;
+        const newDialogueOpen = dialogueOpen.map((obj) => {
+            if (obj.userId === id) {
+                return { active: true, userId: obj.userId };
             } else {
-                return false;
+                return { active: false, userId: obj.userId };
             }
         });
+
+        console.log(newDialogueOpen);
 
         this.setState({
             ...this.state,
@@ -65,7 +67,7 @@ class AdminUsers extends Component {
         const { users } = this.state;
         let dialogueOpen = [];
         for (let i = 0; i < users.length; i++) {
-            dialogueOpen.push(false);
+            dialogueOpen.push({ active: false, userId: users[i].id });
         }
 
         this.setState({
@@ -99,6 +101,8 @@ class AdminUsers extends Component {
     render() {
         const { loading, users, dialogueOpen } = this.state;
 
+        console.log(dialogueOpen);
+
         if (loading) {
             return <React.Fragment>Loading...</React.Fragment>;
         }
@@ -120,32 +124,39 @@ class AdminUsers extends Component {
                             <th>Edit</th>
                         </tr>
                     </thead>
-                    {users.map((user) => (
-                        <tbody key={user.id}>
-                            <tr>
-                                <td>{user.id}</td>
-                                <td>{user.firstName}</td>
-                                <td>{user.lastName}</td>
-                                <td>{user.email}</td>
-                                <td>{user.username}</td>
-                                <td>{user.userType}</td>
-                                <td className="img-container">
-                                    <img
-                                        className="edit-img"
-                                        src="/images/utils/editUser.png"
-                                        alt=""
-                                        onClick={() => this.handleOpen(user.id)}
-                                    />
-                                    <UserDialogue
-                                        open={dialogueOpen[user.id - 1]}
-                                        close={this.handleClose}
-                                        submit={this.handleSubmit}
-                                        {...user}
-                                    />
-                                </td>
-                            </tr>
-                        </tbody>
-                    ))}
+                    {users.map((user, idx) => {
+                        const dialog = dialogueOpen.filter(
+                            (obj) => obj.userId === user.id,
+                        )[0].active;
+                        return (
+                            <tbody key={user.id}>
+                                <tr>
+                                    <td>{user.id}</td>
+                                    <td>{user.firstName}</td>
+                                    <td>{user.lastName}</td>
+                                    <td>{user.email}</td>
+                                    <td>{user.username}</td>
+                                    <td>{user.userType}</td>
+                                    <td className="img-container">
+                                        <img
+                                            className="edit-img"
+                                            src="/images/utils/editUser.png"
+                                            alt=""
+                                            onClick={() =>
+                                                this.handleOpen(user.id)
+                                            }
+                                        />
+                                        <UserDialogue
+                                            open={dialog}
+                                            close={this.handleClose}
+                                            submit={this.handleSubmit}
+                                            {...user}
+                                        />
+                                    </td>
+                                </tr>
+                            </tbody>
+                        );
+                    })}
                 </table>
             </div>
         );

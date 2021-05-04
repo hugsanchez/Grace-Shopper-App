@@ -37,6 +37,8 @@ router.put("/users/:id", async (req, res, next) => {
         const { id } = req.params;
         const token = req.headers.authorization;
 
+        console.log(req.body, token);
+
         // Need to send a token to use this route
         if (!token) throw unauthorized("Invalid credentials");
 
