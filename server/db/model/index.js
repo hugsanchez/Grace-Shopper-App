@@ -5,7 +5,8 @@ const Users = require("./Users");
 const Orders = require("./Orders");
 const Reviews = require("./Reviews");
 const ProductsOrders = require("./ProductsOrders");
-const Cart= require("./Cart")
+const Cart= require("./Cart");
+const ProductsCategories = require("./ProductsCategories");
 
 // ------ Associations ------
 Users.hasMany(Orders);
@@ -31,8 +32,16 @@ Orders.belongsToMany(Products, {
 Products.hasMany(Reviews);
 Reviews.belongsTo(Products);
 
-Categories.hasMany(Products);
-Products.belongsTo(Categories);
+Products.belongsToMany(Categories, {
+    through: ProductsCategories,
+    foreignKey: "productId",
+    otherKey: "categoryId",
+});
+Categories.belongsToMany(Products, {
+    through: ProductsCategories,
+    foreignKey: "categoryId",
+    otherKey: "productId",
+});
 // --------------------------
 
 module.exports = {
@@ -44,6 +53,7 @@ module.exports = {
         Orders,
         Reviews,
         ProductsOrders,
+        ProductsCategories,
         Cart
     },
 };

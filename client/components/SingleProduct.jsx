@@ -126,6 +126,13 @@ class SingleProduct extends Component {
             <h3>Quantity Avaliable: {singleProduct.stock}</h3>
             <h3>Price: ${singleProduct.price}</h3>
             <p>Description: {singleProduct.description}</p>
+            <h4>Categories: {singleProduct.categories.map((currCat) => {
+              return (
+                <div key ={currCat.id}>
+                  <h2 >{currCat.name}</h2>
+                </div>
+              )
+            })}</h4>
             <button
                     onClick={() => {
                       this.addToCart(singleProduct);
