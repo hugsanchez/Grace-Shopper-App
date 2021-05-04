@@ -152,7 +152,6 @@ class AdminUsers extends Component {
     }
 
     render() {
-        console.log(this.props);
         const { loading, users, dialogueOpen, newUserDialog } = this.state;
 
         if (loading) {

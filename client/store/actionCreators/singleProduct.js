@@ -13,6 +13,10 @@ export const updateProduct = (product) => ({
     type: UPDATE_PRODUCT,
     payload: product,
 });
+export const createProduct = (product) => ({
+    type: CREATE_PRODUCT,
+    payload: product,
+});
 
 export const getSingleProduct = (id) => async (dispatch) => {
     const singleProduct = await axios.get(`/api/products/${id}`);
@@ -38,4 +42,18 @@ export const updateProduct_adminAccess = (product) => async (dispatch) => {
         },
     );
     dispatch(updateProduct(singleProduct));
+};
+
+export const adminAddProduct = (product) => async (dispatch) => {
+    const token = window.localStorage.getItem("token");
+    const { data: singleProduct } = await axios.post(
+        `/api/admins/products`,
+        { ...product },
+        {
+            headers: {
+                authorization: token,
+            },
+        },
+    );
+    dispatch(createProduct(singleProduct));
 };

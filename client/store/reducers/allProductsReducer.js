@@ -1,5 +1,8 @@
 import { ALL_PRODUCTS } from "../actionCreators/allProducts";
-import { UPDATE_PRODUCT } from "../actionCreators/singleProduct";
+import {
+    UPDATE_PRODUCT,
+    CREATE_PRODUCT,
+} from "../actionCreators/singleProduct";
 
 export const allProductsReducer = (state = [], action) => {
     if (action.type === ALL_PRODUCTS) {
@@ -9,6 +12,8 @@ export const allProductsReducer = (state = [], action) => {
         return state.map((product) =>
             product.id !== action.payload.id ? product : action.payload,
         );
+    } else if (action.type === CREATE_PRODUCT) {
+        return (state = [...state, action.payload]);
     } else {
         return state;
     }
