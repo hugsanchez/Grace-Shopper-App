@@ -170,17 +170,6 @@ class AllProducts extends Component {
               <button>Proceed To Checkout</button>
             </a>
           )}
-          {/* <button
-            onClick={() => {
-              return userStatus ? (
-                <a href="/cart"></a>
-              ) : (
-                <a href="/sign-in"></a>
-              );
-            }}
-          >
-            Proceed to Checkout
-          </button> */}
         </div>
       </div>
     );

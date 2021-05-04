@@ -90,6 +90,7 @@ class Cart extends Component {
   }
 
   render() {
+    const userStatus = store.getState().signedIn.isSignedIn;
     let displayCart = this.state.productsInCart[
       this.state.productsInCart.length - 1
     ];
@@ -133,7 +134,13 @@ class Cart extends Component {
             )}
           </ul>
           <h3>Total ${this.props.total}</h3>
-          <TakeMoney />
+          {userStatus ? (
+            <TakeMoney />
+          ) : (
+            <a href="#/sign-in">
+              <button>Proceed To Checkout</button>
+            </a>
+          )}
         </div>
       </div>
     );
