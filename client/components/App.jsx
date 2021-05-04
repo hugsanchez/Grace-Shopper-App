@@ -21,51 +21,47 @@ import SearchBar from "./SearchBar.jsx";
 import AdminPortal from "./Admin/AdminPortal.jsx";
 
 class App extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {};
-    }
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
 
-    async componentDidMount() {
-        // Search for a token in localStorage so users will stay signed in on refresh
-        await this.props.attemptLogin();
-        await this.props.allProducts();
-        await this.props.loadReviews();
-    }
+  async componentDidMount() {
+    // Search for a token in localStorage so users will stay signed in on refresh
+    await this.props.attemptLogin();
+    await this.props.allProducts();
+    await this.props.loadReviews();
+  }
 
-    render() {
-        return (
-            <Router>
-                <React.Fragment>
-                    <Header />
-                    <main className="main-view">
-                        <Switch>
-                            <Route exact path="/" component={Homepage} />
-                            <Route exact path="/cart" component={Cart} />
-                            <Route exact path="/store" component={SearchBar} />
-                            <Route
-                                exact
-                                path="/product/:id"
-                                component={SingleProduct}
-                            />
-                            <Route exact path="/sign-up" component={SignUp} />
-                            <Route exact path="/sign-in" component={SignIn} />
-                            <Route path="/user/:id" component={SingleUser} />
-                            <Route path="/admin" component={AdminPortal} />
-                        </Switch>
-                    </main>
-                </React.Fragment>
-            </Router>
-        );
-    }
+  render() {
+    return (
+      <Router>
+        <React.Fragment>
+          <Header />
+          <main className="main-view">
+            <Switch>
+              <Route exact path="/" component={Homepage} />
+              <Route exact path="/cart" component={Cart} />
+              <Route exact path="/store" component={SearchBar} />
+              <Route exact path="/product/:id" component={SingleProduct} />
+              <Route exact path="/sign-up" component={SignUp} />
+              <Route exact path="/sign-in" component={SignIn} />
+              <Route path="/user/:id" component={SingleUser} />
+              <Route path="/admin" component={AdminPortal} />
+            </Switch>
+          </main>
+        </React.Fragment>
+      </Router>
+    );
+  }
 }
 
 function mapDispatchToProps(dispatch) {
-    return {
-        attemptLogin: () => dispatch(attemptTokenLogin()),
-        allProducts: () => dispatch(getAllProducts()),
-        loadReviews: () => dispatch(thunkLoadReviews()),
-    };
+  return {
+    attemptLogin: () => dispatch(attemptTokenLogin()),
+    allProducts: () => dispatch(getAllProducts()),
+    loadReviews: () => dispatch(thunkLoadReviews()),
+  };
 }
 
 export default connect(null, mapDispatchToProps)(App);
