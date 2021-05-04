@@ -5,6 +5,7 @@ export const SIGN_IN = "SIGN_IN";
 export const LOG_OUT = "LOG_OUT";
 export const UPDATE_USER = "UPDATE_USER";
 export const UPDATE_PROFILE = "UPDATE_PROFILE";
+export const DELETE_USER = "DELETE_USER";
 
 export const getUser = (user) => ({
     type: GET_USER,
@@ -30,6 +31,12 @@ export const signIn = (user) => ({
 // Remove a user from the redux store for signing in
 export const logOut = () => ({
     type: LOG_OUT,
+});
+
+// signs in a user
+export const deleteUser = (id) => ({
+    type: DELETE_USER,
+    id,
 });
 
 // Simply just gets information about any user
@@ -75,15 +82,23 @@ export const logOutUser = () => async (dispatch) => {
 
 export const updateUserThunk = (payload) => async (dispatch) => {
     try {
+        const token = window.localStorage.getItem("token");
         const { id, firstName, lastName, username, email } = payload;
-        const { data: user } = await axios.put(`/api/users/${id}`, {
-            id,
-            firstName,
-            lastName,
-            username,
-            email,
-        });
-
+        const { data: user } = await axios.put(
+            `/api/users/${id}`,
+            {
+                id,
+                firstName,
+                lastName,
+                username,
+                email,
+            },
+            {
+                headers: {
+                    authorization: token,
+                },
+            },
+        );
         dispatch(updateUser(user));
     } catch (err) {
         console.error(err);
@@ -92,14 +107,23 @@ export const updateUserThunk = (payload) => async (dispatch) => {
 
 export const updateProfileThunk = (payload) => async (dispatch) => {
     try {
+        const token = window.localStorage.getItem("token");
         const { id, firstName, lastName, username, email } = payload;
-        const { data: user } = await axios.put(`/api/users/${id}`, {
-            id,
-            firstName,
-            lastName,
-            username,
-            email,
-        });
+        const { data: user } = await axios.put(
+            `/api/users/${id}`,
+            {
+                id,
+                firstName,
+                lastName,
+                username,
+                email,
+            },
+            {
+                headers: {
+                    authorization: token,
+                },
+            },
+        );
 
         dispatch(updateProfile(user));
     } catch (err) {
@@ -121,6 +145,20 @@ export const updateUser_adminAccess = (payload) => async (dispatch) => {
         );
 
         dispatch(updateUser(user));
+    } catch (err) {
+        console.error(err);
+    }
+};
+
+export const deleteUser_thunk = (id) => async (dispatch) => {
+    try {
+        const token = window.localStorage.getItem("token");
+        await axios.delete(`/api/users/${id}`, {
+            headers: {
+                authorization: token,
+            },
+        });
+        dispatch(deleteUser(id));
     } catch (err) {
         console.error(err);
     }

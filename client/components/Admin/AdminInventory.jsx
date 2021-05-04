@@ -9,11 +9,14 @@ import Button from "@material-ui/core/Button";
 // Redux Imports
 import { connect } from "react-redux";
 import { getAllProducts } from "../../store/actionCreators/allProducts";
+import { getCategories_thunk } from "../../store/actionCreators/categories";
 import { updateProduct_adminAccess } from "../../store/actionCreators/singleProduct";
 import { adminAddProduct } from "../../store/actionCreators/singleProduct";
+import { deleteProduct_thunk } from "../../store/actionCreators/singleProduct";
 
 // Component Imports
 import ProductDialogue from "./dialogs/ProductDialogue.jsx";
+import AreYouSure from "../AreYouSure.jsx";
 
 class AdminInventory extends Component {
     constructor(props) {
@@ -21,8 +24,11 @@ class AdminInventory extends Component {
         this.state = {
             loading: true,
             products: [],
+            allCategories: [],
             dialogueOpen: [],
             newProductDialog: false,
+            deleteDialog: false,
+            productDeleteStaged: NaN,
         };
 
         this.handleOpen = this.handleOpen.bind(this);
@@ -31,11 +37,15 @@ class AdminInventory extends Component {
         this.handleOpenPost = this.handleOpenPost.bind(this);
         this.handleClosePost = this.handleClosePost.bind(this);
         this.handleSubmitPost = this.handleSubmitPost.bind(this);
+        this.openDelete = this.openDelete.bind(this);
+        this.closeDelete = this.closeDelete.bind(this);
+        this.handleDelete = this.handleDelete.bind(this);
     }
 
     async componentDidMount() {
         await this.props.loadAllProducts();
-        const { allProducts } = this.props;
+        await this.props.loadAllCategories();
+        const { allProducts, allCategories } = this.props;
 
         let dialogueOpen = [];
         for (let i = 0; i < allProducts.length; i++) {
@@ -46,6 +56,7 @@ class AdminInventory extends Component {
             ...this.state,
             loading: false,
             products: allProducts.sort((a, b) => a.id - b.id),
+            allCategories,
             dialogueOpen,
         });
     }
@@ -64,8 +75,25 @@ class AdminInventory extends Component {
         });
     }
 
-    async handleSubmitPost(id, name, description, price, year, stock, imgUrl) {
-        const { addProduct } = this.props;
+    async handleSubmitPost(
+        id,
+        name,
+        description,
+        price,
+        year,
+        stock,
+        imgUrl,
+        categories,
+    ) {
+        const { addProduct, allCategories } = this.props;
+
+        const validCats = allCategories.filter((cat) => {
+            for (const [name, val] of Object.entries(categories)) {
+                if (name === cat.name && val) {
+                    return cat;
+                }
+            }
+        });
 
         await addProduct({
             name,
@@ -74,6 +102,7 @@ class AdminInventory extends Component {
             year,
             stock,
             imgUrl,
+            categories: validCats,
         });
 
         const { allProducts } = this.props;
@@ -124,8 +153,25 @@ class AdminInventory extends Component {
         });
     }
 
-    async handleSubmit(id, name, description, price, year, stock, imgUrl) {
-        const { updateProduct } = this.props;
+    async handleSubmit(
+        id,
+        name,
+        description,
+        price,
+        year,
+        stock,
+        imgUrl,
+        categories,
+    ) {
+        const { updateProduct, allCategories } = this.props;
+
+        const validCats = allCategories.filter((cat) => {
+            for (const [name, val] of Object.entries(categories)) {
+                if (name === cat.name && val) {
+                    return cat;
+                }
+            }
+        });
 
         await updateProduct({
             id,
@@ -135,6 +181,7 @@ class AdminInventory extends Component {
             year,
             stock,
             imgUrl,
+            categories: validCats,
         });
 
         const { allProducts } = this.props;
@@ -147,12 +194,41 @@ class AdminInventory extends Component {
         this.handleClose();
     }
 
+    openDelete(id) {
+        this.setState({
+            ...this.state,
+            deleteDialog: true,
+            productDeleteStaged: id,
+        });
+    }
+    closeDelete() {
+        this.setState({
+            ...this.state,
+            deleteDialog: false,
+            productDeleteStaged: NaN,
+        });
+    }
+
+    async handleDelete() {
+        const { productDeleteStaged } = this.state;
+        await this.props.deleteProduct(productDeleteStaged);
+
+        const { allProducts } = this.props;
+        this.setState({
+            ...this.state,
+            products: allProducts.sort((a, b) => a.id - b.id),
+        });
+
+        this.closeDelete();
+    }
+
     render() {
         const {
             loading,
             products,
             dialogueOpen,
             newProductDialog,
+            deleteDialog,
         } = this.state;
 
         if (loading) {
@@ -175,6 +251,7 @@ class AdminInventory extends Component {
                         year: "",
                         stock: "",
                         imgUrl: "",
+                        categories: [],
                     }}
                     title="Create New Product"
                 />
@@ -195,6 +272,7 @@ class AdminInventory extends Component {
                             <th>Year</th>
                             <th>Stock</th>
                             <th>Edit</th>
+                            <th>Delete</th>
                         </tr>
                     </thead>
                     {products.map((product) => {
@@ -241,10 +319,26 @@ class AdminInventory extends Component {
                                             title="Edit Product Details"
                                         />
                                     </td>
+                                    <td className="img-container">
+                                        <img
+                                            className="delete-img"
+                                            src="/images/utils/delete.png"
+                                            alt=""
+                                            onClick={() =>
+                                                this.openDelete(product.id)
+                                            }
+                                        />
+                                    </td>
                                 </tr>
                             </tbody>
                         );
                     })}
+                    <AreYouSure
+                        message="Are you sure you want to delete this product?"
+                        open={deleteDialog}
+                        close={this.closeDelete}
+                        userFn={this.handleDelete}
+                    />
                 </table>
             </div>
         );
@@ -254,15 +348,18 @@ class AdminInventory extends Component {
 function mapStateToProps(state) {
     return {
         allProducts: state.allProducts,
+        allCategories: state.allCategories,
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
         loadAllProducts: () => dispatch(getAllProducts()),
+        loadAllCategories: () => dispatch(getCategories_thunk()),
         updateProduct: (product) =>
             dispatch(updateProduct_adminAccess(product)),
         addProduct: (product) => dispatch(adminAddProduct(product)),
+        deleteProduct: (id) => dispatch(deleteProduct_thunk(id)),
     };
 }
 

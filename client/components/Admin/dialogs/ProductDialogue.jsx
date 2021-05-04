@@ -1,5 +1,8 @@
 import React, { Component } from "react";
 
+// Redux Imports
+import { connect } from "react-redux";
+
 // Material UI Imports
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
@@ -8,11 +11,30 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import RadioGroup from "@material-ui/core/RadioGroup";
+import Checkbox from "@material-ui/core/Checkbox";
+
+// Component Improts
+import ProductCheckbox from "./ProductCheckbox.jsx";
 
 class ProductDialogue extends Component {
     constructor(props) {
         super(props);
+
+        const allCategories = this.props.allCategories;
+        const allCatNames = allCategories.map((cat) => cat.name);
+        const productCatNames = props.categories.length
+            ? props.categories.map((cat) => cat.name)
+            : [];
+
+        const newCatFormat = allCatNames.reduce((acc, cur) => {
+            if (productCatNames.includes(cur)) {
+                acc[cur] = true;
+            } else {
+                acc[cur] = false;
+            }
+            return acc;
+        }, {});
+
         this.state = {
             id: props.id,
             name: props.name,
@@ -21,15 +43,27 @@ class ProductDialogue extends Component {
             year: props.year,
             stock: props.stock,
             imgUrl: props.imgUrl,
+            categories: newCatFormat,
         };
         this.handleChange = this.handleChange.bind(this);
         this.reset = this.reset.bind(this);
+        this.categoryChange = this.categoryChange.bind(this);
     }
 
     handleChange(ev) {
         this.setState({
             ...this.state,
             [ev.target.name]: ev.target.value,
+        });
+    }
+
+    categoryChange(ev) {
+        this.setState({
+            ...this.state,
+            categories: {
+                ...this.state.categories,
+                [ev.target.name]: ev.target.checked,
+            },
         });
     }
 
@@ -43,6 +77,7 @@ class ProductDialogue extends Component {
             year,
             stock,
             imgUrl,
+            categories,
         } = this.props;
 
         close();
@@ -56,13 +91,13 @@ class ProductDialogue extends Component {
                 year,
                 stock,
                 imgUrl,
+                categories,
             });
         }, 100);
     }
 
     render() {
         const { submit, close, open } = this.props;
-
         const {
             id,
             name,
@@ -71,6 +106,7 @@ class ProductDialogue extends Component {
             year,
             stock,
             imgUrl,
+            categories,
         } = this.state;
 
         return (
@@ -101,7 +137,6 @@ class ProductDialogue extends Component {
                     </DialogContent>
                     <DialogContent>
                         <TextField
-                            autoFocus
                             required
                             margin="dense"
                             id="description"
@@ -116,7 +151,6 @@ class ProductDialogue extends Component {
                     </DialogContent>
                     <DialogContent>
                         <TextField
-                            autoFocus
                             required
                             margin="dense"
                             id="price"
@@ -130,11 +164,9 @@ class ProductDialogue extends Component {
                     </DialogContent>
                     <DialogContent>
                         <TextField
-                            autoFocus
                             required
                             margin="dense"
                             id="year"
-                            label="Year"
                             type="date"
                             name="year"
                             value={year}
@@ -144,7 +176,6 @@ class ProductDialogue extends Component {
                     </DialogContent>
                     <DialogContent>
                         <TextField
-                            autoFocus
                             required
                             margin="dense"
                             id="stock"
@@ -158,7 +189,6 @@ class ProductDialogue extends Component {
                     </DialogContent>
                     <DialogContent>
                         <TextField
-                            autoFocus
                             margin="dense"
                             id="imgUrl"
                             label="Image URL"
@@ -167,6 +197,12 @@ class ProductDialogue extends Component {
                             value={imgUrl}
                             fullWidth
                             onChange={this.handleChange}
+                        />
+                    </DialogContent>
+                    <DialogContent>
+                        <ProductCheckbox
+                            categories={categories}
+                            checkAction={this.categoryChange}
                         />
                     </DialogContent>
                     <DialogActions>
@@ -183,6 +219,7 @@ class ProductDialogue extends Component {
                                     year,
                                     stock,
                                     imgUrl,
+                                    categories,
                                 )
                             }
                             color="primary"
@@ -195,5 +232,9 @@ class ProductDialogue extends Component {
         );
     }
 }
-
-export default ProductDialogue;
+function mapStateToProps(state) {
+    return {
+        allCategories: state.allCategories,
+    };
+}
+export default connect(mapStateToProps)(ProductDialogue);
