@@ -5,20 +5,8 @@ import store from "../store/store";
 import axios from "axios";
 
 class TakeMoney extends React.Component {
-  //   onToken = (token, address) => {
-  //     // await axios.post("/save-stripe-token", { token });
-  //     fetch("/save-stripe-token", {
-  //       method: "POST",
-  //       body: JSON.stringify(token),
-  //     }).then((response) => {
-  //       response.json().then((data) => {
-  //         alert(`We are in business, ${data.email}`);
-  //       });
-  //     });
-  //   };
-
   async handleToken(token, addresses) {
-    const response = await axios.post("/checkout", { token });
+    const response = await axios.post("/api/checkout", { token });
     const { status } = response.data;
     if (status === "success") {
       toast("Success! Check email for details", { type: "success" });

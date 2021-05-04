@@ -1,20 +1,19 @@
 const cors = require("cors");
 const express = require("express");
+const router = express.Router();
 const stripe = require("stripe")(
   "sk_test_51ImoMPDR0fOunmqdng791kpEeP4y8orA2Hx71h1TxJKwvWtpOrSrCZdEpDLhTFO67N767ve8HUSye4lPDZP9mihx00VfEWPiK3"
 );
-const uuid = require("uuid/v4");
+const uuid = require("uuid");
 
-const app = express();
+router.use(express.json());
+router.use(cors());
 
-app.use(express.json());
-app.use(cors());
+// app.get("/", (req, res) => {
+//   res.send("Add your Stripe Secret Key to the .require('stripe') statement!");
+// });
 
-app.get("/", (req, res) => {
-  res.send("Add your Stripe Secret Key to the .require('stripe') statement!");
-});
-
-app.post("/checkout", async (req, res) => {
+router.post("/", async (req, res) => {
   console.log("Request:", req.body);
 
   let error;
@@ -60,4 +59,4 @@ app.post("/checkout", async (req, res) => {
   res.json({ error, status });
 });
 
-app.listen(3000);
+module.exports = router;

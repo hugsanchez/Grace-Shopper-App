@@ -46,6 +46,7 @@
         "redux-logger": "^3.0.6",
         "redux-thunk": "^2.3.0",
         "sequelize": "^6.6.2",
+        "stripe": "^8.145.0",
         "style-loader": "^2.0.0",
         "supertest": "^6.1.3"
     },
