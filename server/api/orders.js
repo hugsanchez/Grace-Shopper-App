@@ -87,6 +87,7 @@ router.get("/:id", async (req, res, next) => {
 // Create Order
 router.post("/", async (req, res, next) => {
   try {
+    console.log('server orders route ',req.body)
     // API {
     //     products: [ { id: #, quantity: # }, { id: another #, quantity: # }, ...],
     //     userId: #,
@@ -106,7 +107,7 @@ router.post("/", async (req, res, next) => {
 
     // Loop through products to create product orders
     for (const { id, quantity } of products) {
-      const product = await Products.findById(id);
+      const product = await Products.findByPk(id);
 
       // If no product, destroy the order and tell user why it failed
       if (!product) {

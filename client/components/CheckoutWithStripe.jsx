@@ -5,12 +5,27 @@ import { connect } from "react-redux";
 import store from "../store/store";
 import axios from "axios";
 
+    // API {
+    //     products: [ { id: #, quantity: # }, { id: another #, quantity: # }, ...],
+    //     userId: #,
+    // }
+
+
 class TakeMoney extends React.Component {
+  constructor(){
+    super()
+    this.handleToken= this.handleToken.bind(this)
+  }
   async handleToken(token, addresses) {
+    const userId = await store.getState().signedIn.user.id;
+    const products= this.props.cart[this.props.cart.length-1].map((curr)=>{
+      return {id: curr.id, quantity:curr.quantity }
+    })
+    const createOrder= {products, userId}
     const response = await axios.post("/api/checkout", { token });
     const { status } = response.data;
-    console.log(status);
     if (status === "success") {
+      await axios.post('/api/orders', createOrder)
       toast("Success! Check email for details", { type: "success" });
     } else {
       toast("Something went wrong", { type: "error" });

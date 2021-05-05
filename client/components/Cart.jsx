@@ -135,7 +135,7 @@ class Cart extends Component {
           </ul>
           <h3>Total ${this.props.total}</h3>
           {userStatus ? (
-            <TakeMoney />
+            <TakeMoney/>
           ) : (
             <a href="#/sign-in">
               <button>Proceed To Checkout</button>

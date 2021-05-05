@@ -14,7 +14,7 @@ router.use(cors());
 // });
 
 router.post("/", async (req, res) => {
-  console.log("Request:", req.body);
+  // console.log("Request:", req.body);
 
   let error;
   let status;
