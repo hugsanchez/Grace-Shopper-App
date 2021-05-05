@@ -38,7 +38,7 @@ async function main(data) {
     to: token.email, // list of receivers
     subject: "Order Received", // Subject line
     text: "Thank you for your Order", // plain text body
-    html: `<b><div><h1>Thank you for your order</h1></div><ul>${cart.map((curr)=>{return `<li>${curr.name} ${curr.price} ${curr.quantity}</li>`})}</ul></b>`, // html body
+    html: `<b><div><h1>Thank you for your order</h1><h3>Here is a summary of your order</h3></div><ul>${cart.map((curr)=>{return `<li>Product Name: ${curr.name} Product Price: ${curr.price} Quantity Purchased: ${curr.quantity}</li>`}).join('')}</ul><h3>Your Order Total is: $${total}</h3> <h3>Thanks for your business!</h3></b>`, // html body
   });
             // <div>
           //   <h1>Thank you for your Order</h1>
