@@ -98,3 +98,12 @@ input {
 #already-signed-in {
     font-size: large;
 }
+
+.oauth-img {
+    width: 100%;
+    height: auto;
+}
+
+.oauth-container {
+    margin-top: 1.7rem;
+}

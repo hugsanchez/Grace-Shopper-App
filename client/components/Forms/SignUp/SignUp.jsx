@@ -116,7 +116,6 @@ class SignUp extends Component {
         return (
             <div className="primary-screen">
                 <div className="form-container">
-                    <GoogleSignUp />
                     <h2>Sign Up</h2>
                     {isSignedIn ? (
                         <React.Fragment>
@@ -184,6 +183,7 @@ class SignUp extends Component {
                                 <button type="submit" className="submit-btn">
                                     Submit
                                 </button>
+                                <GoogleSignUp />
                             </form>
                             <p id="sign-up-prompt">
                                 Already have an account?{" "}

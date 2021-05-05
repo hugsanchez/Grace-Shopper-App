@@ -10,6 +10,7 @@ import Button from "@material-ui/core/Button";
 
 // Component Imports
 import EditUserAccount from "./Dialogues/EditUserAccount.jsx";
+import AreYouSure from "../AreYouSure.jsx";
 
 // Style Import
 import "../../../public/assets/user.css";
@@ -19,12 +20,15 @@ class Account extends Component {
         super(props);
         this.state = {
             dialogueOpen: false,
+            logoutScreen: false,
         };
 
         this.handleOpen = this.handleOpen.bind(this);
         this.handleClose = this.handleClose.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleLogout = this.handleLogout.bind(this);
+        this.openLogout = this.openLogout.bind(this);
+        this.closeLogout = this.closeLogout.bind(this);
     }
 
     handleOpen() {
@@ -38,6 +42,20 @@ class Account extends Component {
         this.setState({
             ...this.state,
             dialogueOpen: false,
+        });
+    }
+
+    openLogout() {
+        this.setState({
+            ...this.state,
+            logoutScreen: true,
+        });
+    }
+
+    closeLogout() {
+        this.setState({
+            ...this.state,
+            logoutScreen: false,
         });
     }
 
@@ -57,7 +75,7 @@ class Account extends Component {
 
     render() {
         const { user } = this.props;
-        const { dialogueOpen } = this.state;
+        const { dialogueOpen, logoutScreen } = this.state;
         const { id, firstName, lastName, email, username, userType } = user;
 
         return (
@@ -110,10 +128,16 @@ class Account extends Component {
                     <Button
                         variant="outlined"
                         color="secondary"
-                        onClick={this.handleLogout}
+                        onClick={this.openLogout}
                     >
                         Logout
                     </Button>
+                    <AreYouSure
+                        message="Are you sure you want to logout?"
+                        open={logoutScreen}
+                        close={this.closeLogout}
+                        userFn={this.handleLogout}
+                    />
                     <EditUserAccount
                         open={dialogueOpen}
                         close={this.handleClose}

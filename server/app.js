@@ -2,11 +2,11 @@ const express = require("express");
 const app = express();
 const path = require("path");
 const morgan = require("morgan");
-const passport = require('passport');
-const session = require('express-session');
+const passport = require("passport");
+const session = require("express-session");
 
 //passport config
-require('../passport')(passport)
+require("../passport")(passport);
 
 // API Imports
 const userAPI = require("./api/users");
@@ -22,8 +22,8 @@ const stripeAPI = require("./api/stripeCheckout");
 
 // Database Imports
 const {
-  syncAndSeed,
-  model: { Products, Artists, Categories, Users, Orders, Reviews },
+    syncAndSeed,
+    model: { Products, Artists, Categories, Users, Orders, Reviews },
 } = require("./db");
 
 // Serve Static Folder
@@ -37,15 +37,17 @@ app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
 
 //Session
-app.use(session({
-  secret: 'keyboard cat',
-  resave: false,
-  saveUninitialized: false,
-}))
+app.use(
+    session({
+        secret: "keyboard cat",
+        resave: false,
+        saveUninitialized: false,
+    }),
+);
 
 //Passport middleware
-app.use(passport.initialize())
-app.use(passport.session())
+app.use(passport.initialize());
+app.use(passport.session());
 
 // API Routes
 app.use("/api/users", userAPI);
@@ -60,11 +62,11 @@ app.use("/api/cart", cartAPI);
 app.use("/api/checkout", stripeAPI);
 
 app.get("/", async (req, res, next) => {
-  try {
-    res.sendFile(path.join(__dirname, "../public/index.html"));
-  } catch (err) {
-    next(err);
-  }
+    try {
+        res.sendFile(path.join(__dirname, "../public/index.html"));
+    } catch (err) {
+        next(err);
+    }
 });
 
 module.exports = app;
