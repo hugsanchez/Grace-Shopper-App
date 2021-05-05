@@ -14,6 +14,10 @@ const Reviews = require("./Reviews");
 const Categories = require("./Categories");
 
 const Users = db.define("users", {
+    googleId: {
+        type:DataTypes.STRING,
+        allowNull: true,
+    },
     firstName: {
         type: DataTypes.STRING,
         allowNull: false,

@@ -15,6 +15,7 @@ import "../../../../public/assets/signup.css";
 // Script Imports
 import resetSignUpFormStyles from "./resetSignUpFormStyles";
 import signUpValidator, { showError } from "./signUpValidator";
+import GoogleSignUp from "./GoogleSignUp.jsx";
 
 class SignUp extends Component {
     constructor(props) {
@@ -115,6 +116,7 @@ class SignUp extends Component {
         return (
             <div className="primary-screen">
                 <div className="form-container">
+                    <GoogleSignUp />
                     <h2>Sign Up</h2>
                     {isSignedIn ? (
                         <React.Fragment>
