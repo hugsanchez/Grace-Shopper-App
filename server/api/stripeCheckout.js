@@ -6,12 +6,57 @@ const stripe = require("stripe")(
 );
 //const uuid = require("uuid/v4");
 const { v4: uuidv4 } = require("uuid");
-
+const nodemailer = require("nodemailer");
 router.use(cors());
+
 
 // app.get("/", (req, res) => {
 //   res.send("Add your Stripe Secret Key to the .require('stripe') statement!");
 // });
+
+async function main(data) {
+  const {token, total, cart}= data
+  // console.log('data object',data)
+  // Generate test SMTP service account from ethereal.email
+  // Only needed if you don't have a real mail account for testing
+  let testAccount = await nodemailer.createTestAccount();
+
+  // create reusable transporter object using the default SMTP transport
+  let transporter = nodemailer.createTransport({
+    host: "smtp.ethereal.email",
+    port: 587,
+    secure: false, // true for 465, false for other ports
+    auth: {
+      user: testAccount.user, // generated ethereal user
+      pass: testAccount.pass, // generated ethereal password
+    },
+  });
+  const test= 'testing 123'
+  // send mail with defined transport object
+  let info = await transporter.sendMail({
+    from: '"Fred Foo 👻" <foo@example.com>', // sender address
+    to: token.email, // list of receivers
+    subject: "Order Received", // Subject line
+    text: "Thank you for your Order", // plain text body
+    html: `<b><div><h1>Thank you for your order</h1></div><ul>${cart.map((curr)=>{return `<li>${curr.name} ${curr.price} ${curr.quantity}</li>`})}</ul></b>`, // html body
+  });
+            // <div>
+          //   <h1>Thank you for your Order</h1>
+          //   <ul>
+          //     <li>Item 1</li>
+          //   </ul>
+          // </div>
+  
+
+  console.log("Message sent: %s", info.messageId);
+  // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
+
+  // Preview only available when sending through an Ethereal account
+  console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+  // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
+}
+
+
 
 router.post("/", async (req, res) => {
   // console.log("Request:", req.body);
@@ -52,6 +97,8 @@ router.post("/", async (req, res) => {
     );
     //console.log("Charge:", { charge });
     status = "success";
+    main(req.body.tokenToSend).catch(console.error);
+
   } catch (error) {
     //console.error("Error:", error);
     status = "failure";
