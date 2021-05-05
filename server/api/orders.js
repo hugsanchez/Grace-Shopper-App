@@ -138,7 +138,7 @@ router.post("/", async (req, res, next) => {
     );
 
     // Send the new order
-    res.status(201).send(newOrder, "hello");
+    res.status(201).send(newOrder);
   } catch (err) {
     next(err);
   }

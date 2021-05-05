@@ -1,41 +1,81 @@
 html {
-    font-family: "Raleway", "Roboto", "Lato", "Poppins", sans-serif;
-    scroll-behavior: smooth;
+  font-family: "Raleway", "Roboto", "Lato", "Poppins", sans-serif;
+  scroll-behavior: smooth;
 }
 
 body {
-    margin: 0;
-    z-index: -1;
-    width: 100%;
-    box-sizing: border-box;
-    /* color: white; */
+  margin: 0;
+  z-index: -1;
+  width: 100%;
+  box-sizing: border-box;
+  /* color: white; */
 }
 
 #app {
-    width: 100%;
+  width: 100%;
 }
 
 .list-style {
-    border: black solid 3px;
+  text-align: center;
 }
 
 #allProductsPage {
-    width: 100%;
+  width: 100%;
 }
 
 #storePage {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  width: 100%;
 }
 
 #listOfAllProducts {
-    list-style-type: none;
-    text-align: center;
-    width: 33%;
+  list-style-type: none;
+  text-align: center;
+  width: 33%;
 }
 
 #cart-summary {
-    border: black solid 3px;
+  border: 1rem double goldenrod;
+  text-align: center;
+}
+
+.cartList {
+  list-style-type: none;
+}
+
+#categories {
+  width: 20%;
+}
+
+#homepage-lander {
+  margin-top: 1rem;
+  text-align: center;
+}
+
+#homegif {
+  border: 2rem double goldenrod;
+  width: 50%;
+  height: 50%;
+}
+
+#app-header {
+  color: black;
+  margin-top: 3px;
+  height: 5rem;
+  background-color: goldenrod;
+  border-radius: 0rem 0rem 1rem 1rem;
+}
+
+#productImg {
+  border: 1rem double goldenrod;
+}
+
+#signIn {
+  border: 1rem double goldenrod;
+}
+
+#main-title > h1 {
+  border: white;
 }
