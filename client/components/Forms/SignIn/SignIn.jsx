@@ -113,8 +113,8 @@ class SignIn extends Component {
                                 <button type="submit" className="submit-btn">
                                     Submit
                                 </button>
-                                <GoogleSignUp />
                             </form>
+                            <GoogleSignUp />
                             <p id="sign-up-prompt">
                                 New here?{" "}
                                 <span>

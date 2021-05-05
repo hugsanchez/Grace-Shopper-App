@@ -183,8 +183,8 @@ class SignUp extends Component {
                                 <button type="submit" className="submit-btn">
                                     Submit
                                 </button>
-                                <GoogleSignUp />
                             </form>
+                            <GoogleSignUp />
                             <p id="sign-up-prompt">
                                 Already have an account?{" "}
                                 <span>
