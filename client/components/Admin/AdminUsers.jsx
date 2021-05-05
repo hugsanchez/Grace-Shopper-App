@@ -165,6 +165,7 @@ class AdminUsers extends Component {
             userDeleteStaged: id,
         });
     }
+
     closeDelete() {
         this.setState({
             ...this.state,

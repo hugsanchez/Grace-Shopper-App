@@ -15,6 +15,9 @@ import "../../../../public/assets/signin.css";
 import signInValidator, { showError, showSuccess } from "./signInValidator";
 import authenticate from "../authenticate";
 
+// Component Imports
+import GoogleSignUp from "../SignUp/GoogleSignUp.jsx";
+
 class SignIn extends Component {
     constructor(props) {
         super(props);
@@ -110,6 +113,7 @@ class SignIn extends Component {
                                 <button type="submit" className="submit-btn">
                                     Submit
                                 </button>
+                                <GoogleSignUp />
                             </form>
                             <p id="sign-up-prompt">
                                 New here?{" "}
