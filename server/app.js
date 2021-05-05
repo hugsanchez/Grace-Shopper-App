@@ -2,6 +2,11 @@ const express = require("express");
 const app = express();
 const path = require("path");
 const morgan = require("morgan");
+const passport = require('passport');
+const session = require('express-session');
+
+//passport config
+require('../passport')(passport)
 
 // API Imports
 const userAPI = require("./api/users");
@@ -30,6 +35,17 @@ app.use(express.urlencoded({ extended: true }));
 
 // Middleware Logging
 app.use(morgan("dev"));
+
+//Session
+app.use(session({
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: false,
+}))
+
+//Passport middleware
+app.use(passport.initialize())
+app.use(passport.session())
 
 // API Routes
 app.use("/api/users", userAPI);

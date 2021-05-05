@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const passport = require('passport');
 
 const {
     syncAndSeed,
@@ -26,5 +27,15 @@ router.get("/", async (req, res, next) => {
             next(err);
         });
 });
+
+
+//Google Auth
+router.get('/google', passport.authenticate('google', { scope: ['profile'] }));
+
+router.get('/google/callback', passport.authenticate('google', { failureRedirect: '/sign-up' }),
+  function(req, res) {
+    // Successful authentication, redirect home.
+    res.redirect('/#/store');
+  });
 
 module.exports = router;
