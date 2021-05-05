@@ -1,5 +1,6 @@
 const cors = require("cors");
 const express = require("express");
+const open = require("open");
 const router = express.Router();
 const stripe = require("stripe")(
   "sk_test_51ImoMPDR0fOunmqdng791kpEeP4y8orA2Hx71h1TxJKwvWtpOrSrCZdEpDLhTFO67N767ve8HUSye4lPDZP9mihx00VfEWPiK3"
@@ -9,13 +10,12 @@ const { v4: uuidv4 } = require("uuid");
 const nodemailer = require("nodemailer");
 router.use(cors());
 
-
 // app.get("/", (req, res) => {
 //   res.send("Add your Stripe Secret Key to the .require('stripe') statement!");
 // });
 
 async function main(data) {
-  const {token, total, cart}= data
+  const { token, total, cart } = data;
   // console.log('data object',data)
   // Generate test SMTP service account from ethereal.email
   // Only needed if you don't have a real mail account for testing
@@ -31,22 +31,21 @@ async function main(data) {
       pass: testAccount.pass, // generated ethereal password
     },
   });
-  const test= 'testing 123'
+  const test = "testing 123";
   // send mail with defined transport object
   let info = await transporter.sendMail({
     from: '"Fred Foo 👻" <foo@example.com>', // sender address
     to: token.email, // list of receivers
     subject: "Order Received", // Subject line
     text: "Thank you for your Order", // plain text body
-    html: `<b><div><h1>Thank you for your order</h1><h3>Here is a summary of your order</h3></div><ul>${cart.map((curr)=>{return `<li>Product Name: ${curr.name} Product Price: ${curr.price} Quantity Purchased: ${curr.quantity}</li>`}).join('')}</ul><h3>Your Order Total is: $${total}</h3> <h3>Thanks for your business!</h3></b>`, // html body
+    html: `<b><div><h1>Thank you for your order</h1><h3>Here is a summary of your order</h3></div><ul>${cart
+      .map((curr) => {
+        return `<li>Product Name: ${curr.name} Product Price: ${curr.price} Quantity Purchased: ${curr.quantity}</li>`;
+      })
+      .join(
+        ""
+      )}</ul><h3>Your Order Total is: $${total}</h3> <h3>Thanks for your business!</h3></b>`, // html body
   });
-            // <div>
-          //   <h1>Thank you for your Order</h1>
-          //   <ul>
-          //     <li>Item 1</li>
-          //   </ul>
-          // </div>
-  
 
   console.log("Message sent: %s", info.messageId);
   // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
@@ -54,9 +53,8 @@ async function main(data) {
   // Preview only available when sending through an Ethereal account
   console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
   // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
+  open(nodemailer.getTestMessageUrl(info));
 }
-
-
 
 router.post("/", async (req, res) => {
   // console.log("Request:", req.body);
@@ -98,7 +96,6 @@ router.post("/", async (req, res) => {
     //console.log("Charge:", { charge });
     status = "success";
     main(req.body.tokenToSend).catch(console.error);
-
   } catch (error) {
     //console.error("Error:", error);
     status = "failure";
