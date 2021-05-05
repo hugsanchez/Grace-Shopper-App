@@ -27,7 +27,7 @@ router.post("/", async (req, res) => {
     });
 
     const idempotencykey = uuidv4();
-    console.log("key", idempotencykey);
+    //console.log("key", idempotencykey);
     const charge = await stripe.charges.create(
       {
         amount: 1000,
@@ -50,10 +50,10 @@ router.post("/", async (req, res) => {
       //   idempotencykey,
       // }
     );
-    console.log("Charge:", { charge });
+    //console.log("Charge:", { charge });
     status = "success";
   } catch (error) {
-    console.error("Error:", error);
+    //console.error("Error:", error);
     status = "failure";
   }
 

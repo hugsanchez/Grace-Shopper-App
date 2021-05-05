@@ -87,7 +87,7 @@ router.get("/:id", async (req, res, next) => {
 // Create Order
 router.post("/", async (req, res, next) => {
   try {
-    console.log('server orders route ',req.body)
+    console.log("server orders route ", req.body);
     // API {
     //     products: [ { id: #, quantity: # }, { id: another #, quantity: # }, ...],
     //     userId: #,
@@ -106,7 +106,7 @@ router.post("/", async (req, res, next) => {
     let productOrders = [];
 
     // Loop through products to create product orders
-    for (const { id, quantity } of products) {
+    for (const { id, price, quantity } of products) {
       const product = await Products.findByPk(id);
 
       // If no product, destroy the order and tell user why it failed
@@ -125,6 +125,7 @@ router.post("/", async (req, res, next) => {
       productOrders.push({
         productId: id,
         orderId: newOrder.id,
+        price: price,
         quantity,
       });
     }
@@ -137,7 +138,7 @@ router.post("/", async (req, res, next) => {
     );
 
     // Send the new order
-    res.status(201).send(newOrder);
+    res.status(201).send(newOrder, "hello");
   } catch (err) {
     next(err);
   }
