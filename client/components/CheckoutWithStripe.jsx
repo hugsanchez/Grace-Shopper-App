@@ -16,7 +16,8 @@ class TakeMoney extends React.Component {
     this.handleToken = this.handleToken.bind(this);
   }
   async handleToken(token, addresses) {
-    const tokenToSend = { token, total: this.props.total };
+    console.log('check for cart',this.props.cart)
+    const tokenToSend = { token, total: this.props.total, cart: this.props.cart[this.props.cart.length-1] };
     console.log(tokenToSend);
     // const userId = await store.getState().signedIn.user.id;
     // const products = this.props.cart[this.props.cart.length - 1].map((curr) => {
