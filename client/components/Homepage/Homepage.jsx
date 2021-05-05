@@ -17,7 +17,7 @@ class Homepage extends Component {
       <div id="homepage-lander">
         <img
           id="homegif"
-          src="https://media.giphy.com/media/M52wyuahvQfJK/giphy.gif"
+          src="https://static.boredpanda.com/blog/wp-content/uploads/2017/01/i-Tried-to-Make-Van-Gogh-Paintings-full-of-life-and-these-are-the-results-5875759f1a199__605.gif"
           alt="art gif"
           //   width="500"
           //   height="600"
