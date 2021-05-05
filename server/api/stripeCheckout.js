@@ -19,7 +19,7 @@ router.post("/", async (req, res) => {
   let error;
   let status;
   try {
-    const { token } = req.body;
+    const { token } = req.body.tokenToSend;
 
     const customer = await stripe.customers.create({
       email: token.email,
@@ -30,7 +30,7 @@ router.post("/", async (req, res) => {
     //console.log("key", idempotencykey);
     const charge = await stripe.charges.create(
       {
-        amount: 1000,
+        amount: req.body.tokenToSend.total,
         currency: "usd",
         customer: customer.id,
         receipt_email: token.email,

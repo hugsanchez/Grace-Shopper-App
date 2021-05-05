@@ -19,51 +19,51 @@ import authenticate from "../authenticate";
 import GoogleSignUp from "../SignUp/GoogleSignUp.jsx";
 
 class SignIn extends Component {
-    constructor(props) {
-        super(props);
-        this.state = { username: "", password: "" };
-        this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleChange = this.handleChange.bind(this);
-    }
+  constructor(props) {
+    super(props);
+    this.state = { username: "", password: "" };
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+  }
 
-    // Handles sign in submission/error checking
-    async handleSubmit(ev) {
-        ev.preventDefault();
+  // Handles sign in submission/error checking
+  async handleSubmit(ev) {
+    ev.preventDefault();
 
-        // Determines if our input is valid, modifies DOM
-        const allValid = signInValidator();
+    // Determines if our input is valid, modifies DOM
+    const allValid = signInValidator();
 
-        // This will send the data to a thunk to authorize the sign in
-        if (allValid) {
-            const { username, password } = this.state;
+    // This will send the data to a thunk to authorize the sign in
+    if (allValid) {
+      const { username, password } = this.state;
 
-            // References to our inputs for DOM manipulation
-            const usernameLabel = document.getElementById("username-input");
-            const passwordLabel = document.getElementById("password-input");
+      // References to our inputs for DOM manipulation
+      const usernameLabel = document.getElementById("username-input");
+      const passwordLabel = document.getElementById("password-input");
 
-            // Create a JWT token from username and password
-            await authenticate({ username, password })
-                .then(async () => this.props.attemptLogin())
-                .then(() => {
-                    this.setState({
-                        username: "",
-                        password: "",
-                    });
-                })
-                .catch((err) => {
-                    // If bad login credentials, give user feedback and reset password
-                    showError(usernameLabel, "Incorrect email/password");
-                    showError(passwordLabel, "Incorrect email/password");
-                });
-        }
-    }
-
-    // Modifies the state to reflect current text in input fields
-    handleChange(ev) {
-        this.setState({
-            [ev.target.name]: ev.target.value,
+      // Create a JWT token from username and password
+      await authenticate({ username, password })
+        .then(async () => this.props.attemptLogin())
+        .then(() => {
+          this.setState({
+            username: "",
+            password: "",
+          });
+        })
+        .catch((err) => {
+          // If bad login credentials, give user feedback and reset password
+          showError(usernameLabel, "Incorrect email/password");
+          showError(passwordLabel, "Incorrect email/password");
         });
     }
+  }
+
+  // Modifies the state to reflect current text in input fields
+  handleChange(ev) {
+    this.setState({
+      [ev.target.name]: ev.target.value,
+    });
+  }
 
     render() {
         const { username, password } = this.state;
@@ -71,7 +71,7 @@ class SignIn extends Component {
 
         return (
             <div className="primary-screen">
-                <div className="form-container">
+                <div id="signIn" className="form-container">
                     <h2>Sign In</h2>
                     {isSignedIn ? (
                         <React.Fragment>
@@ -123,22 +123,22 @@ class SignIn extends Component {
                             </p>
                         </React.Fragment>
                     )}
-                </div>
-            </div>
-        );
-    }
+        </div>
+      </div>
+    );
+  }
 }
 
 function mapStateToProps(state) {
-    return {
-        loginStatus: state.signedIn,
-    };
+  return {
+    loginStatus: state.signedIn,
+  };
 }
 
 function mapDispatchToProps(dispatch) {
-    return {
-        attemptLogin: () => dispatch(attemptTokenLogin()),
-    };
+  return {
+    attemptLogin: () => dispatch(attemptTokenLogin()),
+  };
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignIn);

@@ -1,4 +1,5 @@
 import React, { Component, useState } from "react";
+import Select from "react-select";
 
 // React-Redux Imports
 import { connect } from "react-redux";
@@ -20,6 +21,15 @@ import { Link } from "react-router-dom";
 // Style Imports
 import "../../public/assets/style.css";
 
+const Categories = [
+  { label: "Classical", value: "Classical" },
+  { label: "Post-Impressionism", value: "Post-Impressionism" },
+  { label: "Neo-Impressionism", value: "Neo-Impressionism" },
+  { label: "Divisionism", value: "Divisionism" },
+  { label: "Cubism", value: "Cubism" },
+  { label: "Expressionism", value: "Expressionism" },
+];
+
 class AllProducts extends Component {
   constructor(props) {
     super(props);
@@ -28,11 +38,13 @@ class AllProducts extends Component {
       cart: [],
       totalPrice: 0,
       productsInCart: [],
+      category: "",
     };
     this.addToCart = this.addToCart.bind(this);
     this.deleteFromCart = this.deleteFromCart.bind(this);
     this.incrementQuantity = this.incrementQuantity.bind(this);
     this.decrementQuantity = this.decrementQuantity.bind(this);
+    this.setCategory = this.setCategory.bind(this);
   }
 
   async componentDidMount() {
@@ -91,9 +103,14 @@ class AllProducts extends Component {
     });
   }
 
+  async setCategory(category) {
+    this.setState({ category: category });
+  }
+
   render() {
     const userStatus = store.getState().signedIn.isSignedIn;
     const allProducts = this.state.allProducts;
+    const categories = this.state.category;
     let displayCart = this.state.productsInCart[
       this.state.productsInCart.length - 1
     ];
@@ -102,37 +119,91 @@ class AllProducts extends Component {
 
     return (
       <div>
-        <div id="allProductsPage">
-          <ul className="list-style" id="storePage">
-            {filterProducts.map((product) => {
-              return (
-                <li key={product.id} id="listOfAllProducts">
-                  <img src={product.imgUrl} width="150" height="150" />
-                  <br />
-                  Name:{" "}
-                  <Link to={`/product/${product.id}`}>{product.name}</Link>
-                  <br />
-                  Price: {product.price}
-                  <br />
-                  <button
-                    onClick={() => {
-                      this.addToCart(product);
-                    }}
-                  >
-                    Add to Cart
-                  </button>
-                </li>
-              );
-            })}
-          </ul>
+        <div id="categories">
+          <Select
+            options={Categories}
+            onChange={(options) => {
+              this.setCategory(options.value);
+            }}
+          />
         </div>
+        {categories === "" ? (
+          <div id="allProductsPage">
+            <p className="list-style" id="storePage">
+              {filterProducts.map((product) => {
+                return (
+                  <li key={product.id} id="listOfAllProducts">
+                    <img
+                      src={product.imgUrl}
+                      width="150"
+                      height="150"
+                      id="productImg"
+                    />
+                    <br />
+                    Name:{" "}
+                    <Link to={`/product/${product.id}`}>{product.name}</Link>
+                    <br />
+                    Price: {product.price}
+                    <br />
+                    <button
+                      onClick={() => {
+                        this.addToCart(product);
+                      }}
+                    >
+                      Add to Cart
+                    </button>
+                  </li>
+                );
+              })}
+            </p>
+          </div>
+        ) : (
+          <div id="allProductsPage">
+            <ul className="list-style" id="storePage">
+              {filterProducts.map((product) => {
+                return product.categories.map((category) => {
+                  if (category.name === categories) {
+                    return (
+                      <li key={product.id} id="listOfAllProducts">
+                        <img
+                          src={product.imgUrl}
+                          width="150"
+                          height="150"
+                          id="productImg"
+                        />
+                        <br />
+                        Name:{" "}
+                        <Link to={`/product/${product.id}`}>
+                          {product.name}
+                        </Link>
+                        <br />
+                        Price: {product.price}
+                        <br />
+                        <button
+                          onClick={() => {
+                            this.addToCart(product);
+                          }}
+                        >
+                          Add to Cart
+                        </button>
+                      </li>
+                    );
+                  }
+                });
+              })}
+            </ul>
+          </div>
+        )}
         <div id="cart-summary">
-          <h2>Cart Summary</h2>
+          <h2 class="cartTitle">
+            <strong>Cart Summary</strong>
+          </h2>
           <ul>
             {displayCart ? (
               displayCart.map((product, idx) => (
-                <li key={idx}>
-                  Name: {product.name} Quantity: {product.quantity}{" "}
+                <li key={idx} class="cartList">
+                  <strong>Name:</strong> {product.name}{" "}
+                  <strong>Quantity:</strong> {product.quantity}{" "}
                   <button
                     onClick={() => {
                       this.incrementQuantity(product);
@@ -161,15 +232,9 @@ class AllProducts extends Component {
             )}
           </ul>
           <h3>Total ${this.props.total}</h3>
-          {userStatus ? (
-            <a href="#/cart">
-              <button>Proceed To Checkout</button>
-            </a>
-          ) : (
-            <a href="#/sign-in">
-              <button>Proceed To Checkout</button>
-            </a>
-          )}
+          <a href="#/cart">
+            <button>Proceed To Checkout</button>
+          </a>
         </div>
       </div>
     );

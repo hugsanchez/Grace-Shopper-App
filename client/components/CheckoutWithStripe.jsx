@@ -16,20 +16,21 @@ class TakeMoney extends React.Component {
     this.handleToken = this.handleToken.bind(this);
   }
   async handleToken(token, addresses) {
-    const userId = await store.getState().signedIn.user.id;
-    const products = this.props.cart[this.props.cart.length - 1].map((curr) => {
-      return {
-        id: curr.id,
-        price: curr.price,
-        quantity: curr.quantity,
-      };
-    });
-    const createOrder = { products, userId };
-    const response = await axios.post("/api/checkout", { token });
+    const tokenToSend = { token, total: this.props.total };
+    console.log(tokenToSend);
+    // const userId = await store.getState().signedIn.user.id;
+    // const products = this.props.cart[this.props.cart.length - 1].map((curr) => {
+    //   return {
+    //     id: curr.id,
+    //     price: curr.price,
+    //     quantity: curr.quantity,
+    //   };
+    // });
+    // const createOrder = { products, userId };
+    const response = await axios.post("/api/checkout", { tokenToSend });
     const { status } = response.data;
     if (status === "success") {
-      const newOrder = await axios.post("/api/orders", createOrder);
-      console.log("neworder", newOrder);
+      //const newOrder = await axios.post("/api/orders", createOrder);
       toast("Success! Check email for details", { type: "success" });
     } else {
       toast("Something went wrong", { type: "error" });

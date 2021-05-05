@@ -100,12 +100,15 @@ class Cart extends Component {
     return (
       <div>
         <div id="cart-summary">
-          <h2>Cart Summary</h2>
+          <h2 class="cartTitle">
+            <strong>Cart Summary</strong>
+          </h2>
           <ul>
             {displayCart ? (
               displayCart.map((product, idx) => (
-                <li key={idx}>
-                  Name: {product.name} Quantity: {product.quantity}{" "}
+                <li key={idx} class="cartList">
+                  <strong>Name:</strong> {product.name}{" "}
+                  <strong>Quantity:</strong> {product.quantity}{" "}
                   <button
                     onClick={() => {
                       this.incrementQuantity(product);
@@ -134,13 +137,7 @@ class Cart extends Component {
             )}
           </ul>
           <h3>Total ${this.props.total}</h3>
-          {userStatus ? (
-            <TakeMoney/>
-          ) : (
-            <a href="#/sign-in">
-              <button>Proceed To Checkout</button>
-            </a>
-          )}
+          <TakeMoney />
         </div>
       </div>
     );
