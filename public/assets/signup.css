@@ -102,6 +102,11 @@ input {
 .oauth-img {
     width: 100%;
     height: auto;
+    border-radius: 0.2rem;
+}
+
+.oauth-img:hover {
+    filter: brightness(96%);
 }
 
 .oauth-container {
