@@ -27,7 +27,7 @@ class Header extends Component {
                         id="main-header-link"
                     >
                         {/* <img src="/images/utils/brush.png" alt="" id="main-logo" /> */}
-                        <h1 id="main-title">Art Black Market</h1>
+                        <h1 id="main-title">Mercado Negro Arte</h1>
                     </NavLink>
                 </div>
                 <div className="header-group">
