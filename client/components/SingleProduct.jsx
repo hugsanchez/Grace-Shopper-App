@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 
 // Redux Imports
 import { getSingleProduct } from "../store/actionCreators/singleProduct";
+import { getAllProducts } from "../store/actionCreators/allProducts";
 import EditProduct from "./EditProduct.jsx";
 import store from "../store/store";
 import ReviewForm from "./Review/FormReview.jsx";
@@ -79,28 +80,36 @@ class SingleProduct extends Component {
     }
 
     async incrementQuantity(event) {
-        let userId;
-        (await store.getState().signedIn.isSignedIn) === false
-            ? (userId = 0)
-            : (userId = await store.getState().signedIn.user.id);
-        await this.props.incrementQuantity(event, userId);
-        await this.setState({
-            ...this.state,
-            productsInCart: this.props.cart,
-        });
+    let currStock = 0;
+    this.state.allProducts.map((product) => {
+      if (product.name === event.name) {
+        currStock = product.stock;
+      }
+    });
+    let userId;
+    (await store.getState().signedIn.isSignedIn) === false
+      ? (userId = 0)
+      : (userId = await store.getState().signedIn.user.id);
+    if (event.quantity < currStock) {
+      await this.props.incrementQuantity(event, userId);
+      await this.setState({
+        ...this.state,
+        productsInCart: this.props.cart,
+      });
     }
+  }
 
-    async decrementQuantity(event) {
-        let userId;
-        (await store.getState().signedIn.isSignedIn) === false
-            ? (userId = 0)
-            : (userId = await store.getState().signedIn.user.id);
-        await this.props.decrementQuantity(event, userId);
-        await this.setState({
-            ...this.state,
-            productsInCart: this.props.cart,
-        });
-    }
+  async decrementQuantity(event) {
+    let userId;
+    (await store.getState().signedIn.isSignedIn) === false
+      ? (userId = 0)
+      : (userId = await store.getState().signedIn.user.id);
+    await this.props.decrementQuantity(event, userId);
+    await this.setState({
+      ...this.state,
+      productsInCart: this.props.cart,
+    });
+  }
 
     render() {
         const { loading, editToggle } = this.state;

@@ -8,10 +8,10 @@ import { connect } from "react-redux";
 import { getAllProducts } from "../store/actionCreators/allProducts";
 import { getCategories_thunk } from "../store/actionCreators/categories";
 import {
-    addItemToCart,
-    removeFromCart,
-    increaseQuantity,
-    decreaseQuantity,
+  addItemToCart,
+  removeFromCart,
+  increaseQuantity,
+  decreaseQuantity,
 } from "../store/actionCreators/shoppingCart";
 
 import store from "../store/store";
@@ -22,14 +22,6 @@ import { Link } from "react-router-dom";
 // Style Imports
 import "../../public/assets/style.css";
 
-const Categories = [
-    { label: "Classical", value: "Classical" },
-    { label: "Post-Impressionism", value: "Post-Impressionism" },
-    { label: "Neo-Impressionism", value: "Neo-Impressionism" },
-    { label: "Divisionism", value: "Divisionism" },
-    { label: "Cubism", value: "Cubism" },
-    { label: "Expressionism", value: "Expressionism" },
-];
 
 class AllProducts extends Component {
     constructor(props) {
@@ -72,61 +64,69 @@ class AllProducts extends Component {
         });
     }
 
-    async addToCart(event) {
-        let userId;
-        (await store.getState().signedIn.isSignedIn) === false
-            ? (userId = 0)
-            : (userId = await store.getState().signedIn.user.id);
-        await this.props.addItemToCart(event, userId);
-        await this.setState({ ...this.state, productsInCart: this.props.cart });
-    }
+  async addToCart(event) {
+    let userId;
+    (await store.getState().signedIn.isSignedIn) === false
+      ? (userId = 0)
+      : (userId = await store.getState().signedIn.user.id);
+    await this.props.addItemToCart(event, userId);
+    await this.setState({ ...this.state, productsInCart: this.props.cart });
+  }
 
-    async deleteFromCart(event) {
-        let userId;
-        (await store.getState().signedIn.isSignedIn) === false
-            ? (userId = 0)
-            : (userId = await store.getState().signedIn.user.id);
-        await this.props.deleteFromCart(event, userId);
-        await this.setState({ ...this.state, productsInCart: this.props.cart });
-    }
+  async deleteFromCart(event) {
+    let userId;
+    (await store.getState().signedIn.isSignedIn) === false
+      ? (userId = 0)
+      : (userId = await store.getState().signedIn.user.id);
+    await this.props.deleteFromCart(event, userId);
+    await this.setState({ ...this.state, productsInCart: this.props.cart });
+  }
 
-    async incrementQuantity(event) {
-        let userId;
-        (await store.getState().signedIn.isSignedIn) === false
-            ? (userId = 0)
-            : (userId = await store.getState().signedIn.user.id);
-        await this.props.incrementQuantity(event, userId);
-        await this.setState({
-            ...this.state,
-            productsInCart: this.props.cart,
-        });
+  async incrementQuantity(event) {
+    let currStock = 0;
+    this.state.allProducts.map((product) => {
+      if (product.name === event.name) {
+        currStock = product.stock;
+      }
+    });
+    let userId;
+    (await store.getState().signedIn.isSignedIn) === false
+      ? (userId = 0)
+      : (userId = await store.getState().signedIn.user.id);
+    if (event.quantity < currStock) {
+      await this.props.incrementQuantity(event, userId);
+      await this.setState({
+        ...this.state,
+        productsInCart: this.props.cart,
+      });
     }
+  }
 
-    async decrementQuantity(event) {
-        let userId;
-        (await store.getState().signedIn.isSignedIn) === false
-            ? (userId = 0)
-            : (userId = await store.getState().signedIn.user.id);
-        await this.props.decrementQuantity(event, userId);
-        await this.setState({
-            ...this.state,
-            productsInCart: this.props.cart,
-        });
-    }
+  async decrementQuantity(event) {
+    let userId;
+    (await store.getState().signedIn.isSignedIn) === false
+      ? (userId = 0)
+      : (userId = await store.getState().signedIn.user.id);
+    await this.props.decrementQuantity(event, userId);
+    await this.setState({
+      ...this.state,
+      productsInCart: this.props.cart,
+    });
+  }
 
-    async setCategory(category) {
-        this.setState({ category: category });
-    }
+  async setCategory(category) {
+    this.setState({ category: category });
+  }
 
-    render() {
-        const userStatus = store.getState().signedIn.isSignedIn;
-        const allProducts = this.state.allProducts;
-        const categories = this.state.category;
-        let displayCart = this.state.productsInCart[
-            this.state.productsInCart.length - 1
-        ];
-        const totalPrice = this.state.totalPrice;
-        const { filterProducts } = this.props;
+  render() {
+    const userStatus = store.getState().signedIn.isSignedIn;
+    const allProducts = this.state.allProducts;
+    const categories = this.state.category;
+    let displayCart = this.state.productsInCart[
+      this.state.productsInCart.length - 1
+    ];
+    const totalPrice = this.state.totalPrice;
+    const { filterProducts } = this.props;
 
         return (
             <div id="store-main-page">
