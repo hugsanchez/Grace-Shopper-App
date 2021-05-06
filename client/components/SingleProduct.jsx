@@ -5,11 +5,12 @@ import { connect } from "react-redux";
 
 // Redux Imports
 import { getSingleProduct } from "../store/actionCreators/singleProduct";
+import { getAllProducts } from "../store/actionCreators/allProducts";
 import EditProduct from "./EditProduct.jsx";
 import store from "../store/store";
 import ReviewForm from "./Review/FormReview.jsx";
-import ReviewsPerProduct from './Review/ReviewsProduct.jsx';
-import {Link} from 'react-router-dom';
+import ReviewsPerProduct from "./Review/ReviewsProduct.jsx";
+import { Link } from "react-router-dom";
 
 import {
   addItemToCart,
@@ -22,6 +23,7 @@ class SingleProduct extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      allProducts: [],
       loading: true,
       editToggle: false,
       cart: [],
@@ -37,6 +39,7 @@ class SingleProduct extends Component {
   async componentDidMount() {
     const id = this.props.match.params.id * 1;
     await this.props.getSingleProduct(id);
+    await this.props.getAllProducts();
     //await this.props.getReviewForProduct(id);
     await this.setState({ loading: false });
     //  await this.setState({reviews: store.getState().reviews})
@@ -60,7 +63,6 @@ class SingleProduct extends Component {
     }
   }
 
-
   async addToCart(event) {
     let userId;
     (await store.getState().signedIn.isSignedIn) === false
@@ -80,15 +82,23 @@ class SingleProduct extends Component {
   }
 
   async incrementQuantity(event) {
+    let currStock = 0;
+    this.state.allProducts.map((product) => {
+      if (product.name === event.name) {
+        currStock = product.stock;
+      }
+    });
     let userId;
     (await store.getState().signedIn.isSignedIn) === false
       ? (userId = 0)
       : (userId = await store.getState().signedIn.user.id);
-    await this.props.incrementQuantity(event, userId);
-    await this.setState({
-      ...this.state,
-      productsInCart: this.props.cart,
-    });
+    if (event.quantity < currStock) {
+      await this.props.incrementQuantity(event, userId);
+      await this.setState({
+        ...this.state,
+        productsInCart: this.props.cart,
+      });
+    }
   }
 
   async decrementQuantity(event) {
@@ -103,13 +113,12 @@ class SingleProduct extends Component {
     });
   }
 
-
   render() {
     const { loading, editToggle } = this.state;
     if (loading) return "loading";
     const { singleProduct } = this.props;
-    const {isSignedIn} = this.props.signedIn;
-    const {user} = this.props.signedIn;
+    const { isSignedIn } = this.props.signedIn;
+    const { user } = this.props.signedIn;
 
     let displayCart = this.state.productsInCart[
       this.state.productsInCart.length - 1
@@ -118,46 +127,54 @@ class SingleProduct extends Component {
     return (
       <div>
         <div>
-            <button onClick={this.handleEditToggle}>Edit</button>
-            {editToggle === false ? null : <EditProduct props={singleProduct} />}
-            <h1>{singleProduct.name}</h1>
-            <img src={singleProduct.imgUrl} width="450px" height="450px" />
-            <h3>Acquired On: {singleProduct.year}</h3>
-            <h3>Quantity Avaliable: {singleProduct.stock}</h3>
-            <h3>Price: ${singleProduct.price}</h3>
-            <p>Description: {singleProduct.description}</p>
-            <h4>Categories: {singleProduct.categories.map((currCat) => {
+          {/* <button onClick={this.handleEditToggle}>Edit</button>
+          {editToggle === false ? null : <EditProduct props={singleProduct} />} */}
+          <h1>{singleProduct.name}</h1>
+          <img src={singleProduct.imgUrl} width="450px" height="450px" />
+          <h3>Acquired On: {singleProduct.year}</h3>
+          <h3>Quantity Avaliable: {singleProduct.stock}</h3>
+          <h3>Price: ${singleProduct.price}</h3>
+          <p>Description: {singleProduct.description}</p>
+          <h4>
+            Categories:{" "}
+            {singleProduct.categories.map((currCat) => {
               return (
-                <div key ={currCat.id}>
-                  <h2 >{currCat.name}</h2>
+                <div key={currCat.id}>
+                  <h2>{currCat.name}</h2>
                 </div>
-              )
-            })}</h4>
-            <button
-                    onClick={() => {
-                      this.addToCart(singleProduct);
-                    }}
-                  >
-                    Add to Cart
-                  </button>
+              );
+            })}
+          </h4>
+          <button
+            onClick={() => {
+              this.addToCart(singleProduct);
+            }}
+          >
+            Add to Cart
+          </button>
         </div>
-            {
-              isSignedIn ?  <ReviewForm singleProductId = {singleProduct.id} userId = {user.id} /> : 
-                        <h3>Wanna leave a <Link to='/sign-up'>Review?</Link></h3>
-
-            }
+        {isSignedIn ? (
+          <ReviewForm singleProductId={singleProduct.id} userId={user.id} />
+        ) : (
+          <h3>
+            Wanna leave a <Link to="/sign-up">Review?</Link>
+          </h3>
+        )}
         <div>
-            <h1>Reviews:</h1>
-            <ReviewsPerProduct singleProductId = {singleProduct.id} />
+          <h1>Reviews:</h1>
+          <ReviewsPerProduct singleProductId={singleProduct.id} />
         </div>
 
         <div id="cart-summary">
-          <h2>Cart Summary</h2>
+          <h2 className="cartTitle">
+            <strong>Cart Summary</strong>
+          </h2>
           <ul>
             {displayCart ? (
               displayCart.map((product, idx) => (
-                <li key={idx}>
-                  Name: {product.name} Quantity: {product.quantity}{" "}
+                <li key={idx} className="cartList">
+                  <strong>Name:</strong> {product.name}{" "}
+                  <strong>Quantity:</strong> {product.quantity}{" "}
                   <button
                     onClick={() => {
                       this.incrementQuantity(product);
@@ -165,13 +182,17 @@ class SingleProduct extends Component {
                   >
                     +
                   </button>
-                  <button
-                    onClick={() => {
-                      this.decrementQuantity(product);
-                    }}
-                  >
-                    -
-                  </button>
+                  {product.quantity > 0 ? (
+                    <button
+                      onClick={() => {
+                        this.decrementQuantity(product);
+                      }}
+                    >
+                      -
+                    </button>
+                  ) : (
+                    <button>-</button>
+                  )}
                   <button
                     onClick={() => {
                       this.deleteFromCart(product);
@@ -186,7 +207,9 @@ class SingleProduct extends Component {
             )}
           </ul>
           <h3>Total ${this.props.total}</h3>
-          <button>Proceed to Checkout</button>
+          <a href="#/cart">
+            <button>Proceed To Checkout</button>
+          </a>
         </div>
       </div>
     );

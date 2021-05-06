@@ -11,6 +11,7 @@ import {
   decreaseQuantity,
 } from "../store/actionCreators/shoppingCart";
 import TakeMoney from "./CheckoutWithStripe.jsx";
+import { getAllProducts } from "../store/actionCreators/allProducts";
 
 import store from "../store/store";
 
@@ -36,6 +37,7 @@ class Cart extends Component {
 
   async componentDidMount() {
     let userId;
+    await this.props.getAllProducts();
     (await store.getState().signedIn.isSignedIn) === false
       ? (userId = 0)
       : (userId = await store.getState().signedIn.user.id);
@@ -66,15 +68,23 @@ class Cart extends Component {
   }
 
   async incrementQuantity(event) {
+    let currStock = 0;
+    this.state.allProducts.map((product) => {
+      if (product.name === event.name) {
+        currStock = product.stock;
+      }
+    });
     let userId;
     (await store.getState().signedIn.isSignedIn) === false
       ? (userId = 0)
       : (userId = await store.getState().signedIn.user.id);
-    await this.props.incrementQuantity(event, userId);
-    await this.setState({
-      ...this.state,
-      productsInCart: this.props.cart,
-    });
+    if (event.quantity < currStock) {
+      await this.props.incrementQuantity(event, userId);
+      await this.setState({
+        ...this.state,
+        productsInCart: this.props.cart,
+      });
+    }
   }
 
   async decrementQuantity(event) {
@@ -100,13 +110,13 @@ class Cart extends Component {
     return (
       <div>
         <div id="cart-summary">
-          <h2 class="cartTitle">
+          <h2 className="cartTitle">
             <strong>Cart Summary</strong>
           </h2>
           <ul>
             {displayCart ? (
               displayCart.map((product, idx) => (
-                <li key={idx} class="cartList">
+                <li key={idx} className="cartList">
                   <strong>Name:</strong> {product.name}{" "}
                   <strong>Quantity:</strong> {product.quantity}{" "}
                   <button
@@ -116,13 +126,17 @@ class Cart extends Component {
                   >
                     +
                   </button>
-                  <button
-                    onClick={() => {
-                      this.decrementQuantity(product);
-                    }}
-                  >
-                    -
-                  </button>
+                  {product.quantity > 0 ? (
+                    <button
+                      onClick={() => {
+                        this.decrementQuantity(product);
+                      }}
+                    >
+                      -
+                    </button>
+                  ) : (
+                    <button>-</button>
+                  )}
                   <button
                     onClick={() => {
                       this.deleteFromCart(product);
