@@ -164,7 +164,7 @@ const syncAndSeed = async () => {
             {
                 name: "Painting with Troika",
                 description:
-                    "Vasily Kandinsky, along with Franz Marc, Gabriele Münter, and Alexei Jawlensky, were members of the Blue Rider, a loose alliance of artists based in Munich. Although these artists did not have a common style, they did share a belief in the symbolic and spiritual importance of forms and colors and their effect on emotions and memories. In this picture, the troika, a horse-drawn sled from Kandinsky’s native Russia, and the hand-painted frame, which he made especially for this work, speak to the powerful impact of these sources on the artist.",
+                    "Wassily Kandinsky, along with Franz Marc, Gabriele Münter, and Alexei Jawlensky, were members of the Blue Rider, a loose alliance of artists based in Munich. Although these artists did not have a common style, they did share a belief in the symbolic and spiritual importance of forms and colors and their effect on emotions and memories. In this picture, the troika, a horse-drawn sled from Kandinsky’s native Russia, and the hand-painted frame, which he made especially for this work, speak to the powerful impact of these sources on the artist.",
                 artistName: "Wassily Kandinsky",
                 nationality: "Russian",
                 price: 8505,
@@ -206,7 +206,7 @@ const syncAndSeed = async () => {
                     "https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Cezanne_-_View_of_the_Domaine_Saint-Joseph.jpg/1920px-Cezanne_-_View_of_the_Domaine_Saint-Joseph.jpg",
             },
             {
-                name: "Kanagawa-oki Nami Ura",
+                name: "The Great Wave off Kanagawa",
                 description:
                     "Kanagawa-oki Nami Ura is a woodblock print by the Japanese ukiyo-e artist Hokusai. It was published sometime between 1829 and 1833 in the late Edo period as the first print in Hokusai's series Thirty-six Views of Mount Fuji. The image depicts an enormous wave threatening three boats off the coast in the Sagami Bay (Kanagawa Prefecture) while Mount Fuji rises in the background. Sometimes assumed to be a tsunami, the wave is more likely to be a large rogue wave.",
                 artistName: "Katsushika Hokusai",
