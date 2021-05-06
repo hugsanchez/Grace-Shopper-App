@@ -5,6 +5,13 @@
     width: 100%;
 }
 
+.order-icon {
+    filter: invert(31%) sepia(60%) saturate(2764%) hue-rotate(129deg)
+        brightness(93%) contrast(102%);
+    width: 1rem;
+    height: auto;
+}
+
 .edit-img {
     filter: invert(68%) sepia(67%) saturate(938%) hue-rotate(171deg)
         brightness(94%) contrast(90%);
@@ -31,7 +38,7 @@
         brightness(102%) contrast(94%);
 }
 
-.img-container {
+.img-container-admin-orders {
     text-align: center;
     padding: 0rem 0.3rem;
 }

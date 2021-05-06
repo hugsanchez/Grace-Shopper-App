@@ -3,7 +3,7 @@ import React, { Component } from "react";
 // React Router Imports
 import { Link } from "react-router-dom";
 
-class OrderItem extends Component {
+class AdminOrderItem extends Component {
     constructor(props) {
         super(props);
         this.state = {};
@@ -85,4 +85,4 @@ class OrderItem extends Component {
     }
 }
 
-export default OrderItem;
+export default AdminOrderItem;

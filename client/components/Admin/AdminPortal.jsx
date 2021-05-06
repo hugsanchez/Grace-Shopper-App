@@ -11,6 +11,7 @@ import { NavLink } from "react-router-dom";
 import AdminUsers from "./AdminUsers.jsx";
 import AdminInventory from "./AdminInventory.jsx";
 import AdminCategories from "./AdminCategories.jsx";
+import AdminOrders from "./AdminOrders.jsx";
 
 // Style Imports
 import "../../../public/assets/admin.css";
@@ -79,6 +80,13 @@ class AdminPortal extends Component {
                             exact
                             path={`/admin/users`}
                             component={AdminUsers}
+                        />
+                    </Switch>
+                    <Switch>
+                        <Route
+                            exact
+                            path={`/admin/users/:id/orders`}
+                            component={AdminOrders}
                         />
                     </Switch>
                     <Switch>
