@@ -34,13 +34,13 @@ class AdminPortal extends Component {
         }
 
         // COMMENTED FOR TESTING
-        // if (user.userType !== "ADMIN") {
-        //     return (
-        //         <div className="primary-screen">
-        //             You do not have permission to view this screen
-        //         </div>
-        //     )
-        // }
+        if (user.userType !== "ADMIN") {
+            return (
+                <div className="primary-screen">
+                    You do not have permission to view this screen
+                </div>
+            );
+        }
 
         return (
             <div className="primary-screen">

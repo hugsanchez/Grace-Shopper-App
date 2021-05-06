@@ -128,6 +128,18 @@ const syncAndSeed = async () => {
                     "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/A_Sunday_on_La_Grande_Jatte%2C_Georges_Seurat%2C_1884.jpg/2560px-A_Sunday_on_La_Grande_Jatte%2C_Georges_Seurat%2C_1884.jpg",
             },
             {
+                name: "Mona Lisa",
+                description:
+                    "The Mona Lisa is a half-length portrait painting by Italian artist Leonardo da Vinci. Considered an archetypal masterpiece of the Italian Renaissance, it has been described as 'the best known, the most visited, the most written about, the most sung about, the most parodied work of art in the world'. The painting's novel qualities include the subject's enigmatic expression, the monumentality of the composition, the subtle modelling of forms, and the atmospheric illusionism.",
+
+                artistName: "Leonardo da Vinci",
+                nationality: "Italian",
+                price: 1000000,
+                year: "1506-12-31",
+                imgUrl:
+                    "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg/1024px-Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg",
+            },
+            {
                 name: "Houses of Parliament, London",
                 description:
                     "Claude Monet painted a series of impressionist oil paintings of the Palace of Westminster, home of the British Parliament, in the autumn of 1899 and the early months of 1900 and 1901 during stays in London. All of the series' paintings share the same viewpoint from Monet's window or a terrace at St Thomas' Hospital overlooking the Thames and the approximate canvas size of 81 cm × 92 cm (32 in × 36 3/8 in). They are, however, painted during different times of the day and weather conditions.",
@@ -244,36 +256,6 @@ const syncAndSeed = async () => {
                 Products.create(product);
             }),
         );
-
-        // Generate Fake Products and Artists from the Met API
-        // let fakeArt = Array(20).fill(" ");
-
-        // const promise = async (fakeArt) => {
-        //   let productPromise = [];
-        //   let randId = 437165;
-
-        //   for (let i = 0; i < fakeArt.length; i++) {
-        //     const { data: productMet } = await axios.get(
-        //       `https://collectionapi.metmuseum.org/public/collection/v1/objects/${randId}`
-        //     );
-        //     randId++;
-        //     productPromise.push(
-        //       new Products({
-        //         name: productMet.title,
-        //         description: faker.commerce.productDescription(),
-        //         price: Math.floor(Math.random() * 10000),
-        //         year: productMet.objectEndDate,
-        //         stock: Math.floor(Math.random() * 10),
-        //         imgUrl:
-        //           productMet.primaryImage ||
-        //           "https://ualr.edu/elearning/files/2020/10/No-Photo-Available.jpg",
-        //         categoryId: Math.floor(Math.random() * 6) + 1,
-        //       }).save()
-        //     );
-        //     // productPromise.push(art);
-        //   }
-        //   return productPromise;
-        // };
 
         const artists = await Promise.all([
             Artists.create({
