@@ -227,7 +227,7 @@ const syncAndSeed = async () => {
                     "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/Wheat-Field-with-Cypresses-%281889%29-Vincent-van-Gogh-Met.jpg/1920px-Wheat-Field-with-Cypresses-%281889%29-Vincent-van-Gogh-Met.jpg",
             },
             {
-                name: "Prof",
+                name: "PROF!!!!!",
                 description:
                     "A brilliant teacher, wearer of white garb, expert of Node",
                 artistName: "Eric P. Katz",
