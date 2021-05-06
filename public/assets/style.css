@@ -8,11 +8,30 @@ body {
     z-index: -1;
     width: 100%;
     box-sizing: border-box;
+    background-color: rgb(250, 250, 250);
     /* color: white; */
+}
+
+.store-banner-img {
+    width: 100%;
+    height: auto;
 }
 
 #app {
     width: 100%;
+}
+
+#total-items {
+    z-index: 10;
+    color: black;
+    text-align: center;
+    position: relative;
+    top: -0.3px;
+    padding: 0.2rem;
+    width: 20px;
+    margin-left: 1rem;
+    background-color: rgb(243, 243, 243);
+    border-radius: 0.2rem;
 }
 
 .list-style {
@@ -31,7 +50,8 @@ body {
     flex-direction: row;
     margin: 4rem;
     width: 70%;
-    height: 30px;
+    height: 3vh;
+    min-height: 30px;
 }
 
 #search-function > input {
@@ -61,24 +81,40 @@ body {
 
 #categories {
     width: 20%;
+    min-height: 30px;
+    height: 3vh;
     z-index: 5;
 }
 
 #homepage-lander {
-    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    padding: 2rem;
     text-align: center;
+    background-color: black;
+    height: 81.5vh;
 }
 
 #homegif {
-    border: 2rem double goldenrod;
-    width: 50%;
-    height: 50%;
+    width: 110vh;
+    height: 68vh;
+    border-radius: 1rem;
+    border: 1px solid rgb(253, 253, 253);
+    box-shadow: inset 0px 5px 14px -4px #fff;
+    filter: brightness(105%);
+    transition: all 0.3s ease-in-out;
+}
+
+#homegif:hover {
+    filter: brightness(125%) hue-rotate(20deg);
+    transition: all 0.3 ease-in-out;
 }
 
 #app-header {
     color: black;
     height: 5rem;
     background-color: black;
+    box-shadow: 0px 10px 13px -13px #000000;
 }
 
 #main-title > h1 {
@@ -94,18 +130,27 @@ body {
     flex-direction: column;
     width: 24%;
     height: 200px;
-    margin: 10% 10%;
+    margin: 15vh 15vh;
     text-align: center;
     align-items: center;
+}
+
+@media (max-width: 1000px) {
+    .product-item {
+        width: 50%;
+        margin: 8rem 5rem;
+    }
 }
 
 .product-image {
     z-index: 3;
     width: auto;
-    height: 300px;
+    height: 30vh;
     min-height: 300px;
     filter: brightness(100%);
+    box-shadow: 0px 10px 11px -11px #000000;
     transition: all 0.2s ease-in-out;
+    border-radius: 0.2rem;
 }
 
 .product-image:hover {
@@ -124,16 +169,214 @@ body {
 }
 
 .product-text {
-    margin: 0.3rem;
+    margin: 0.2rem;
     color: black;
     text-decoration: none;
 }
 
 .product-title {
-    font-size: larger;
+    margin-top: 0.5rem;
+    font-size: 2.5vh;
     font-style: italic;
+    font-weight: 400;
 }
 
 .product-artist {
-    font-size: 103%;
+    font-size: 1.9vh;
+}
+
+@media (max-height: 700px) {
+    .product-artist {
+        font-size: 14px;
+    }
+
+    .product-title {
+        font-size: 18px;
+    }
+}
+
+#product-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#single-product-img-container {
+    padding: 9.7vh 0vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #f3f3f3;
+    box-shadow: inset 0px 0px 15px -5px #000000;
+}
+
+.single-product-image {
+    height: 70vh;
+    width: auto;
+}
+
+#single-product-info {
+    display: flex;
+    flex-direction: row;
+}
+
+#product-reviews {
+    flex-grow: 2;
+    min-width: 45vh;
+    margin: 2vh 0vh;
+    padding: 0rem 3rem;
+}
+
+#product-direct-information {
+    margin: 2vh 0vh;
+    flex-grow: 3;
+    display: flex;
+    flex-direction: column;
+    padding: 0rem 3rem;
+}
+
+#product-title-container {
+    align-self: center;
+    width: 70%;
+}
+
+#single-product-title,
+#review-form-title {
+    margin: 1vh 0 1vh 0;
+    font-size: 5vh;
+    font-family: garamond;
+    text-align: center;
+}
+
+#single-product-year {
+    font-size: 2.5vh;
+    font-family: garamond;
+    font-weight: 300;
+    color: grey;
+}
+
+#artist-info,
+#artist-name,
+#artist-nationality {
+    font-size: 2.5vh;
+    font-family: garamond;
+    font-weight: 300;
+    color: grey;
+}
+
+#artist-name,
+#artist-nationality {
+    margin: 0.5rem 0 0.5rem 0;
+}
+
+#item-description {
+    font-family: garamond;
+    font-size: 2.5vh;
+}
+
+#purchase-information {
+    display: flex;
+}
+
+#quantity-info,
+#price-info {
+    font-weight: 300;
+    font-family: garamond;
+
+    font-size: 2.5vh;
+}
+
+#add-to-cart-btn {
+    text-align: center;
+    padding: 1rem;
+    margin: 2rem;
+    height: 20%;
+    width: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    outline: none;
+    border: none;
+    border-radius: 0.5rem;
+    background-color: rgb(238, 186, 186);
+    transition: background-color 0.2s ease-in-out;
+}
+
+#add-to-cart-btn:hover {
+    cursor: pointer;
+    background-color: rgb(209, 164, 164);
+    transition: background-color 0.2s ease-in-out;
+}
+
+#add-to-cart-btn:active {
+    background-color: rgb(180, 141, 141);
+    transition: background-color 0s;
+}
+
+#categorie-cont {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.category-single-product {
+    margin: 0.5rem;
+    background-color: rgb(240, 233, 233);
+    border-radius: 0.3rem;
+    padding: 0.1rem 0.5rem;
+}
+
+#tag-info {
+    font-size: 2.5vh;
+    font-family: garamond;
+    font-weight: 400;
+    margin-bottom: 0.5rem;
+}
+
+#review-form-actual {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: space-evenly;
+}
+
+#review-form-title {
+    align-self: center;
+}
+
+#review-form-title-container {
+    margin: 0;
+}
+
+#submit-review {
+    padding: 0.5rem;
+    margin-left: 0.9rem;
+    outline: none;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    background-color: rgb(230, 217, 217);
+    transition: background-color 0.2s ease-in-out;
+}
+
+#submit-review:hover {
+    cursor: pointer;
+    background-color: rgb(202, 191, 191);
+    transition: background-color 0.2s ease-in-out;
+}
+
+#submit-review:active {
+    background-color: rgb(170, 154, 154);
+    transition: background-color 0s;
+}
+
+#review-input,
+#review-post {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin: 0.5rem;
 }

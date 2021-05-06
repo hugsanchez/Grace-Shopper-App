@@ -17,6 +17,13 @@ class Header extends Component {
     }
     render() {
         const { user, isSignedIn } = this.props.loginStatus;
+        const { cart } = this.props.cart;
+        const totalItemsInCart = cart.length
+            ? cart[cart.length - 1].reduce((acc, cur) => {
+                  acc += cur.quantity;
+                  return acc;
+              }, 0)
+            : 0;
 
         return (
             <header id="app-header">
@@ -50,9 +57,7 @@ class Header extends Component {
                         </React.Fragment>
                     ) : (
                         <React.Fragment>
-                            <NavLink to={"#"} className="header-link">
-                                <h2>Guest</h2>
-                            </NavLink>
+                            <h2 className="guest">Guest</h2>
                             <NavLink to="/sign-in" className="header-link">
                                 <h2>Sign In</h2>
                             </NavLink>
@@ -65,6 +70,11 @@ class Header extends Component {
                             id="cart-img"
                         />
                         <h2>&nbsp; Cart</h2>
+                        {totalItemsInCart ? (
+                            <div id="total-items">{totalItemsInCart}</div>
+                        ) : (
+                            ""
+                        )}
                     </NavLink>
                 </div>
             </header>
@@ -75,6 +85,7 @@ class Header extends Component {
 function mapStateToProps(state) {
     return {
         loginStatus: state.signedIn,
+        cart: state.cart,
     };
 }
 

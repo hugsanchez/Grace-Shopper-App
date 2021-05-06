@@ -14,13 +14,17 @@ const SearchBar = (products) => {
     return (
         <React.Fragment>
             <div id="store-banner">
-                <img src="/images/artwork/banner.jpeg" alt="" />
+                <img
+                    className="store-banner-img"
+                    src="/images/artwork/banner.jpeg"
+                    alt=""
+                />
             </div>
             <div id="search-bar">
                 <div id="search-function">
                     <input
                         type="text"
-                        placeholder="Search for a painting"
+                        placeholder="Search for a painting..."
                         value={search}
                         onChange={(evt) => setSearch(evt.target.value)}
                     />
