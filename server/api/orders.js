@@ -137,6 +137,14 @@ router.post("/", async (req, res, next) => {
       })
     );
 
+    products.map((product) => {
+      console.log("PRODUCT", product);
+      Products.decrement("stock", {
+        by: product.quantity,
+        where: { id: product.productId },
+      });
+    });
+
     // Send the new order
     res.status(201).send(newOrder);
   } catch (err) {
