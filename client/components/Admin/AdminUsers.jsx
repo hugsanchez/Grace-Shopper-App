@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
 // React Router Imports
-import { NavLink } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 
 // Material UI Imports
 import Button from "@material-ui/core/Button";
@@ -237,6 +237,7 @@ class AdminUsers extends Component {
                             <th>Email</th>
                             <th>Username</th>
                             <th>Type</th>
+                            <th>Orders</th>
                             <th>Edit</th>
                             <th>Delete</th>
                         </tr>
@@ -254,7 +255,19 @@ class AdminUsers extends Component {
                                     <td>{user.email}</td>
                                     <td>{user.username}</td>
                                     <td>{user.userType}</td>
-                                    <td className="img-container">
+                                    <td className="img-container-admin-orders">
+                                        <Link
+                                            to={`/admin/users/${user.id}/orders`}
+                                            className="img-container-admin-orders"
+                                        >
+                                            <img
+                                                className="order-icon"
+                                                src="/images/utils/orders.png"
+                                                alt=""
+                                            />
+                                        </Link>
+                                    </td>
+                                    <td className="img-container-admin-orders">
                                         <img
                                             className="edit-img"
                                             src="/images/utils/editUser.png"
@@ -271,7 +284,7 @@ class AdminUsers extends Component {
                                             title="Edit User Profile"
                                         />
                                     </td>
-                                    <td className="img-container">
+                                    <td className="img-container-admin-orders">
                                         <img
                                             className="delete-img"
                                             src="/images/utils/delete.png"

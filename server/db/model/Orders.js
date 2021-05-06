@@ -4,6 +4,18 @@ const { Sequelize, DataTypes } = require("sequelize");
 const db = require("../db");
 const Users = require("./Users");
 
-const Orders = db.define("orders", {});
+const Orders = db.define("orders", {
+    total: {
+        type: DataTypes.INTEGER,
+    },
+    status: {
+        type: DataTypes.STRING,
+        defaultValue: "Created",
+        allowNull: false,
+        validate: {
+            isIn: [["Created", "Processing", "Cancelled", "Completed"]],
+        },
+    },
+});
 
 module.exports = Orders;
