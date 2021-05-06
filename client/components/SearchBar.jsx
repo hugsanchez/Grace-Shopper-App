@@ -20,7 +20,7 @@ const SearchBar = (products) => {
                 <div id="search-function">
                     <input
                         type="text"
-                        placeholder="Search"
+                        placeholder="Search for a painting"
                         value={search}
                         onChange={(evt) => setSearch(evt.target.value)}
                     />

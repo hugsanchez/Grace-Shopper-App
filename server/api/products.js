@@ -78,15 +78,27 @@ router.post("/", async (req, res, next) => {
             stock,
             imgUrl,
             categories,
+            artistName,
+            nationality,
         } = req.body;
 
-        const props = [name, description, price, year, stock];
+        console.log(req.body);
+
+        const props = [
+            name,
+            artistName,
+            nationality,
+            description,
+            price,
+            year,
+            stock,
+        ];
 
         // Error handling for correct request body syntax
         for (let prop of props) {
             if (!prop)
                 throw badSyntax(
-                    "New products must have all of the following properties: Name, Description, Price, Year, and Stock",
+                    "New products must have all of the following properties: Name, Description, Price, Year, ArtistName, Nationality, and Stock",
                 );
         }
 
@@ -103,6 +115,8 @@ router.post("/", async (req, res, next) => {
 
         const newProduct = await Products.create({
             name,
+            artistName,
+            nationality,
             description,
             price,
             year,
@@ -142,6 +156,8 @@ router.put("/:id", async (req, res, next) => {
             stock,
             imgUrl,
             categories,
+            artistName,
+            nationality,
         } = req.body;
 
         // Finds user who made request
@@ -167,6 +183,8 @@ router.put("/:id", async (req, res, next) => {
         if (year) product.year = year;
         if (stock) product.stock = stock;
         if (imgUrl) product.imgUrl = imgUrl;
+        if (artistName) product.artistName = artistName;
+        if (nationality) product.nationality = nationality;
 
         // Destroy all category associations, we will rebuild
         await ProductsCategories.destroy({

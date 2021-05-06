@@ -123,7 +123,7 @@ const syncAndSeed = async () => {
                 artistName: "Georges Seurat",
                 nationality: "French",
                 price: 7000,
-                year: 1886,
+                year: "1886-12-31",
                 imgUrl:
                     "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/A_Sunday_on_La_Grande_Jatte%2C_Georges_Seurat%2C_1884.jpg/2560px-A_Sunday_on_La_Grande_Jatte%2C_Georges_Seurat%2C_1884.jpg",
             },
@@ -134,7 +134,7 @@ const syncAndSeed = async () => {
                 artistName: "Claude Monet",
                 nationality: "French",
                 price: 8000,
-                year: 1901,
+                year: "1901-12-31",
                 imgUrl:
                     "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Claude_Monet%2C_Houses_of_Parliament%2C_London%2C_1900-1903%2C_1933.1164%2C_Art_Institute_of_Chicago.jpg/1920px-Claude_Monet%2C_Houses_of_Parliament%2C_London%2C_1900-1903%2C_1933.1164%2C_Art_Institute_of_Chicago.jpg",
             },
@@ -145,7 +145,7 @@ const syncAndSeed = async () => {
                 artistName: "Vincent Van Gogh",
                 nationality: "Dutch",
                 price: 40000,
-                year: 1890,
+                year: "1890-12-31",
                 imgUrl:
                     "https://upload.wikimedia.org/wikipedia/commons/9/9b/Vincent_van_Gogh_-_Irises_%281890%29.jpg",
             },
@@ -156,7 +156,7 @@ const syncAndSeed = async () => {
                 artistName: "Wassily Kandinsky",
                 nationality: "Russian",
                 price: 8505,
-                year: 1911,
+                year: "1911-12-31",
                 imgUrl:
                     "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Vasily_Kandinsky_-_Painting_with_Troika_-_1931.509_-_Art_Institute_of_Chicago.jpg/1600px-Vasily_Kandinsky_-_Painting_with_Troika_-_1931.509_-_Art_Institute_of_Chicago.jpg",
             },
@@ -167,7 +167,7 @@ const syncAndSeed = async () => {
                 artistName: "Piet Mondrian",
                 nationality: "Dutch",
                 price: 10020,
-                year: 1935,
+                year: "1935-12-31",
                 imgUrl:
                     "https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Mondrian_-_Composition_%28No._1%29_Gray-Red%2C_1935.jpg/1920px-Mondrian_-_Composition_%28No._1%29_Gray-Red%2C_1935.jpg",
             },
@@ -178,7 +178,7 @@ const syncAndSeed = async () => {
                 artistName: "Gustav Klimt",
                 nationality: "Austrian",
                 price: 60500,
-                year: 1912,
+                year: "1912-12-31",
                 imgUrl:
                     "https://upload.wikimedia.org/wikipedia/commons/a/a3/M%C3%A4da_Primavesi_%281903%E2%80%932000%29_MET_DP243354.jpg",
             },
@@ -189,7 +189,7 @@ const syncAndSeed = async () => {
                 artistName: "Paul Cézanne",
                 nationality: "French",
                 price: 10000,
-                year: 1887,
+                year: "1887-12-31",
                 imgUrl:
                     "https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Cezanne_-_View_of_the_Domaine_Saint-Joseph.jpg/1920px-Cezanne_-_View_of_the_Domaine_Saint-Joseph.jpg",
             },
@@ -200,7 +200,7 @@ const syncAndSeed = async () => {
                 artistName: "Katsushika Hokusai",
                 nationality: "Japanese",
                 price: 102004,
-                year: 1831,
+                year: "1831-12-31",
                 imgUrl:
                     "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Tsunami_by_hokusai_19th_century.jpg/2560px-Tsunami_by_hokusai_19th_century.jpg",
             },
@@ -211,7 +211,7 @@ const syncAndSeed = async () => {
                 artistName: "Jean-Michel Basquiat",
                 nationality: "American",
                 price: 40020,
-                year: 1981,
+                year: "1981-12-31",
                 imgUrl:
                     "https://www.thebroad.org/sites/default/files/art/basquiat_untitled.jpg",
             },
@@ -222,7 +222,7 @@ const syncAndSeed = async () => {
                 artistName: "Vincent van Gogh",
                 nationality: "Dutch",
                 price: 7000,
-                year: 1889,
+                year: "1889-12-31",
                 imgUrl:
                     "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/Wheat-Field-with-Cypresses-%281889%29-Vincent-van-Gogh-Met.jpg/1920px-Wheat-Field-with-Cypresses-%281889%29-Vincent-van-Gogh-Met.jpg",
             },
@@ -233,9 +233,9 @@ const syncAndSeed = async () => {
                 artistName: "Eric P. Katz",
                 nationality: "American",
                 price: 100,
-                year: 2021,
+                year: "2021-12-31",
                 imgUrl:
-                    "https://ualr.edu/elearning/files/2020/10/No-Photo-Available.jpg",
+                    "https://media-exp1.licdn.com/dms/image/C4E03AQEXIPzS6uix5w/profile-displayphoto-shrink_400_400/0/1516270923758?e=1625702400&v=beta&t=FGBICg7ESPCBvb4mgbS-Nun8QCACSk8Snx9Rkeglszs",
             },
         ];
 

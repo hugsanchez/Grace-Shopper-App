@@ -23,14 +23,15 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 100%;
 }
 
 #search-function {
     display: flex;
     flex-direction: row;
-    margin: 2rem;
-    width: 239.8px;
-    height: 22px;
+    margin: 4rem;
+    width: 70%;
+    height: 30px;
 }
 
 #search-function > input {
@@ -38,7 +39,12 @@ body {
     width: 100%;
 }
 
-#search-function > input::placeholder #store-main-page {
+#search-function > input::placeholder {
+    font-family: "Raleway", "Roboto", "Lato", "Poppins", sans-serif;
+    font-size: large;
+}
+
+#store-main-page {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -55,6 +61,7 @@ body {
 
 #categories {
     width: 20%;
+    z-index: 5;
 }
 
 #homepage-lander {
@@ -93,8 +100,17 @@ body {
 }
 
 .product-image {
+    z-index: 3;
     width: auto;
     height: 300px;
+    min-height: 300px;
+    filter: brightness(100%);
+    transition: all 0.2s ease-in-out;
+}
+
+.product-image:hover {
+    filter: brightness(80%);
+    transition: all 0.2s ease-in-out;
 }
 
 #all-products-container {
@@ -103,6 +119,8 @@ body {
     justify-content: center;
     align-items: space-evenly;
     flex-wrap: wrap;
+    position: relative;
+    top: -50px;
 }
 
 .product-text {

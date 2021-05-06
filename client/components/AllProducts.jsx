@@ -121,7 +121,6 @@ class AllProducts extends Component {
             <div id="store-main-page">
                 <div id="categories">
                     <Select
-                        placeholder="Select category"
                         options={Categories}
                         onChange={(options) => {
                             this.setCategory(options.value);
@@ -133,10 +132,12 @@ class AllProducts extends Component {
                         {filterProducts.map((product) => {
                             return (
                                 <div key={product.id} className="product-item">
-                                    <img
-                                        src={product.imgUrl}
-                                        className="product-image"
-                                    />
+                                    <Link to={`/product/${product.id}`}>
+                                        <img
+                                            src={product.imgUrl}
+                                            className="product-image"
+                                        />
+                                    </Link>
                                     <Link
                                         to={`/product/${product.id}`}
                                         className="product-link"
@@ -169,22 +170,30 @@ class AllProducts extends Component {
                                             key={product.id}
                                             className="product-item"
                                         >
-                                            <img
-                                                src={product.imgUrl}
-                                                className="product-image"
-                                            />
                                             <Link to={`/product/${product.id}`}>
-                                                {product.name}
+                                                <img
+                                                    src={product.imgUrl}
+                                                    className="product-image"
+                                                />
                                             </Link>
-                                            <p>{product.artistName}</p>
-                                            <p>{product.nationality}</p>
+                                            <Link
+                                                to={`/product/${product.id}`}
+                                                className="product-link"
+                                            ></Link>
+                                            <p className="product-text product-title">
+                                                {product.name}
+                                            </p>
+                                            <p className="product-text product-artist">
+                                                {product.artistName} |{" "}
+                                                {product.nationality}
+                                            </p>
                                             {/* <button
-                                                    onClick={() => {
-                                                        this.addToCart(product);
-                                                    }}
-                                                >
-                                                    Add to Cart
-                                                </button> */}
+                                              onClick={() => {
+                                                  this.addToCart(product);
+                                              }}
+                                          >
+                                              Add to Cart
+                                          </button> */}
                                         </div>
                                     );
                                 }

@@ -84,6 +84,8 @@ class AdminInventory extends Component {
         stock,
         imgUrl,
         categories,
+        nationality,
+        artistName,
     ) {
         const { addProduct, allCategories } = this.props;
 
@@ -103,6 +105,8 @@ class AdminInventory extends Component {
             stock,
             imgUrl,
             categories: validCats,
+            artistName,
+            nationality,
         });
 
         const { allProducts } = this.props;
@@ -162,6 +166,8 @@ class AdminInventory extends Component {
         stock,
         imgUrl,
         categories,
+        nationality,
+        artistName,
     ) {
         const { updateProduct, allCategories } = this.props;
 
@@ -182,6 +188,8 @@ class AdminInventory extends Component {
             stock,
             imgUrl,
             categories: validCats,
+            artistName,
+            nationality,
         });
 
         const { allProducts } = this.props;
@@ -252,6 +260,8 @@ class AdminInventory extends Component {
                         stock: "",
                         imgUrl: "",
                         categories: [],
+                        nationality: "",
+                        artistName: "",
                     }}
                     title="Create New Product"
                 />
