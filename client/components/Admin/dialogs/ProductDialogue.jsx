@@ -44,6 +44,8 @@ class ProductDialogue extends Component {
             stock: props.stock,
             imgUrl: props.imgUrl,
             categories: newCatFormat,
+            nationality: props.nationality,
+            artistName: props.artistName,
         };
         this.handleChange = this.handleChange.bind(this);
         this.reset = this.reset.bind(this);
@@ -107,6 +109,8 @@ class ProductDialogue extends Component {
             stock,
             imgUrl,
             categories,
+            artistName,
+            nationality,
         } = this.state;
 
         return (
@@ -117,6 +121,7 @@ class ProductDialogue extends Component {
                     aria-labelledby="form-dialog-title"
                     fullWidth
                     maxWidth="sm"
+                    style={{ padding: "5px" }}
                 >
                     <DialogTitle id="form-dialog-title">
                         Edit Product Details
@@ -131,6 +136,32 @@ class ProductDialogue extends Component {
                             type="name"
                             name="name"
                             value={name}
+                            fullWidth
+                            onChange={this.handleChange}
+                        />
+                    </DialogContent>
+                    <DialogContent>
+                        <TextField
+                            required
+                            margin="dense"
+                            id="artistName"
+                            label="Artist Name"
+                            type="name"
+                            name="artistName"
+                            value={artistName}
+                            fullWidth
+                            onChange={this.handleChange}
+                        />
+                    </DialogContent>
+                    <DialogContent>
+                        <TextField
+                            required
+                            margin="dense"
+                            id="nationality"
+                            label="Nationality of Artist"
+                            type="name"
+                            name="nationality"
+                            value={nationality}
                             fullWidth
                             onChange={this.handleChange}
                         />
@@ -220,6 +251,8 @@ class ProductDialogue extends Component {
                                     stock,
                                     imgUrl,
                                     categories,
+                                    nationality,
+                                    artistName,
                                 )
                             }
                             color="primary"

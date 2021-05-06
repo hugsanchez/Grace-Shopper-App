@@ -5,7 +5,7 @@ const Users = require("./Users");
 const Orders = require("./Orders");
 const Reviews = require("./Reviews");
 const ProductsOrders = require("./ProductsOrders");
-const Cart= require("./Cart");
+const Cart = require("./Cart");
 const ProductsCategories = require("./ProductsCategories");
 
 // ------ Associations ------
@@ -54,6 +54,6 @@ module.exports = {
         Reviews,
         ProductsOrders,
         ProductsCategories,
-        Cart
+        Cart,
     },
 };
