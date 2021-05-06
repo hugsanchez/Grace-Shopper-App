@@ -50,9 +50,7 @@ class Header extends Component {
                         </React.Fragment>
                     ) : (
                         <React.Fragment>
-                            <NavLink to={"#"} className="header-link">
-                                <h2>Guest</h2>
-                            </NavLink>
+                            <h2 className="guest">Guest</h2>
                             <NavLink to="/sign-in" className="header-link">
                                 <h2>Sign In</h2>
                             </NavLink>

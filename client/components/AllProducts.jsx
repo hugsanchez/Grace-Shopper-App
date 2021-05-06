@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 
 // Redux Imports
 import { getAllProducts } from "../store/actionCreators/allProducts";
+import { getCategories_thunk } from "../store/actionCreators/categories";
 import {
     addItemToCart,
     removeFromCart,
@@ -38,6 +39,7 @@ class AllProducts extends Component {
             cart: [],
             totalPrice: 0,
             productsInCart: [],
+            categories: [],
             category: "",
         };
         this.addToCart = this.addToCart.bind(this);
@@ -49,6 +51,14 @@ class AllProducts extends Component {
 
     async componentDidMount() {
         let userId;
+        await this.props.loadCategories();
+        const cats = this.props.categories.map((cat) => {
+            return {
+                label: cat.name,
+                value: cat.name,
+            };
+        });
+
         (await store.getState().signedIn.isSignedIn) === false
             ? (userId = 0)
             : (userId = await store.getState().signedIn.user.id);
@@ -58,6 +68,7 @@ class AllProducts extends Component {
             ...this.state,
             allProducts: store.getState().allProducts,
             productsInCart: this.props.cart,
+            categories: [{ label: "All", value: "" }, ...cats],
         });
     }
 
@@ -121,7 +132,7 @@ class AllProducts extends Component {
             <div id="store-main-page">
                 <div id="categories">
                     <Select
-                        options={Categories}
+                        options={this.state.categories}
                         onChange={(options) => {
                             this.setCategory(options.value);
                         }}
@@ -202,13 +213,13 @@ class AllProducts extends Component {
                     </div>
                 )}
                 <div id="cart-summary">
-                    <h2 class="cartTitle">
+                    <h2 className="cartTitle">
                         <strong>Cart Summary</strong>
                     </h2>
                     <ul>
                         {displayCart ? (
                             displayCart.map((product, idx) => (
-                                <li key={idx} class="cartList">
+                                <li key={idx} className="cartList">
                                     <strong>Name:</strong> {product.name}{" "}
                                     <strong>Quantity:</strong>{" "}
                                     {product.quantity}{" "}
@@ -260,6 +271,7 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(increaseQuantity(currProduct, userId)),
         decrementQuantity: (currProduct, userId) =>
             dispatch(decreaseQuantity(currProduct, userId)),
+        loadCategories: () => dispatch(getCategories_thunk()),
     };
 };
 
@@ -267,6 +279,7 @@ const mapStateToProps = (state) => {
     return {
         cart: state.cart.cart,
         total: state.cart.total,
+        categories: state.allCategories,
     };
 };
 

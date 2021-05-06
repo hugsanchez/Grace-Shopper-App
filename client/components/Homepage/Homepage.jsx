@@ -3,6 +3,9 @@ import React, { Component } from "react";
 // React Router Imports
 import { Link } from "react-router-dom";
 
+// Redux Improts
+import { connect } from "react-redux";
+
 // Style Import
 import "../../../public/assets/homepage.css";
 
@@ -16,6 +19,9 @@ class Homepage extends Component {
     }
 
     render() {
+        const { user, isSignedIn } = this.props.signedInUser;
+
+        console.log(user);
         return (
             <div id="homepage-lander">
                 <Link to="/store">
@@ -27,14 +33,15 @@ class Homepage extends Component {
                         //   height="600"
                     />
                 </Link>
-                {/* <div id="slideshow-container">
-                    {CAROUSEL_DATA.map((article) => (
-                        <CarouselImage {...article} key={article.src} />
-                    ))}
-                </div> */}
             </div>
         );
     }
 }
 
-export default Homepage;
+function mapStateToProps(state) {
+    return {
+        signedInUser: state.signedIn,
+    };
+}
+
+export default connect(mapStateToProps)(Homepage);
