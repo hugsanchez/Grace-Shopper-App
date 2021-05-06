@@ -146,6 +146,13 @@ router.post("/", async (req, res, next) => {
                 ProductsOrders.create({ ...productOrder });
             }),
         );
+      
+        products.map((product) => {
+            Products.decrement("stock", {
+                by: product.quantity,
+                where: { id: product.productId },
+            });
+        });
 
         const newPostedOrder = await Orders.findOne({
             where: { id: newOrder.id },
