@@ -105,4 +105,16 @@ router.put("/productsInCart/decrease/:id", async (req, res, next) => {
   }
 });
 
+router.delete("/emptyCart", async (req, res, next) => {
+  try {
+    await Cart.destroy({
+      where: {},
+      truncate: true,
+    });
+    res.sendStatus(200);
+  } catch (err) {
+    next(err);
+  }
+});
+
 module.exports = router;

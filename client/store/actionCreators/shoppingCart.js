@@ -4,12 +4,12 @@ export const ADD_TO_CART = "ADD_TO_CART";
 export const REMOVE_FROM_CART = "REMOVE_FROM_CART";
 export const INCREASE_QUANTITY = "INCREASE_QUANTITY";
 export const DECREASE_QUANTITY = "DECREASE_QUANTITY";
+export const EMPTY_CART = "EMPTY_CART";
 
 // API {
 //     products: [ { id: #, quantity: # }, { id: another #, quantity: # }, ...],
 //     userId: #,
 // }
-
 
 export const addItemToCart = (product, userId) => {
   return async (dispatch) => {
@@ -64,5 +64,12 @@ export const decreaseQuantity = (product, userId) => {
     ).data;
 
     dispatch({ type: DECREASE_QUANTITY, payload: response });
+  };
+};
+
+export const emptyCart = () => {
+  return async (dispatch) => {
+    await axios.delete("/api/cart/emptyCart");
+    dispatch({ type: EMPTY_CART, payload: [] });
   };
 };

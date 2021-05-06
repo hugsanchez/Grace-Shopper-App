@@ -2,6 +2,7 @@ import { ADD_TO_CART } from "../actionCreators/shoppingCart";
 import { REMOVE_FROM_CART } from "../actionCreators/shoppingCart";
 import { INCREASE_QUANTITY } from "../actionCreators/shoppingCart";
 import { DECREASE_QUANTITY } from "../actionCreators/shoppingCart";
+import { EMPTY_CART } from "../actionCreators/shoppingCart";
 
 // const initialCart = {
 //     item: null,
@@ -32,7 +33,7 @@ export const cartReducer = (state = initialCart, action) => {
     });
     return {
       ...state,
-      cart: [...state.cart,action.payload],
+      cart: [...state.cart, action.payload],
       total: tempTotal,
     };
   } else if (action.type === INCREASE_QUANTITY) {
@@ -54,6 +55,12 @@ export const cartReducer = (state = initialCart, action) => {
       ...state,
       cart: [...state.cart, action.payload],
       total: tempTotal,
+    };
+  } else if (action.type === EMPTY_CART) {
+    return {
+      ...state,
+      cart: action.payload,
+      total: 0,
     };
   }
   return state;
