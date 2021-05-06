@@ -20,7 +20,15 @@ class AdminOrderItem extends Component {
     }
 
     render() {
-        const { id, createdAt, products, updatedAt } = this.props;
+        const {
+            id,
+            createdAt,
+            products,
+            total,
+            status,
+            updatedAt,
+        } = this.props;
+
         const date = new Date(Date.parse(createdAt.substring(0, 10)));
         const formattedDate = this.formatDate(date, "mm/dd/yyyy");
 
@@ -39,13 +47,35 @@ class AdminOrderItem extends Component {
                     </div>
                     <div id="order-total" className="order-detail">
                         <p className="detail-title">TOTAL</p>
-                        <p>{"$placeholder"}</p>
+                        <p>{formatter.format(total)}</p>
+                    </div>
+                    <div id="status-order" className="order-detail">
+                        <p className="detail-title">STATUS</p>
+                        <p>{status}</p>
+                    </div>
+                    <div id="status-order" className="order-detail">
+                        <p className="detail-title">Modify</p>
+                        <img
+                            className="edit-img"
+                            src="/images/utils/editUser.png"
+                            alt=""
+                            onClick={() => this.props.handleOpen(id)}
+                        />
+                    </div>
+                    <div id="status-order" className="order-detail">
+                        <p className="detail-title">Delete</p>
+                        <img
+                            className="delete-img"
+                            src="/images/utils/delete.png"
+                            alt=""
+                            onClick={() => this.props.openDelete(id)}
+                        />
                     </div>
                 </div>
                 <div className="order-product-container">
                     {products.map((product) => (
                         <div className="order-product" key={product.id}>
-                            <div className="order-product-center">
+                            <div className="order-product-center order-product-item">
                                 <Link to={`/product/${product.id}`}>
                                     <img
                                         className="order-img"
@@ -59,7 +89,10 @@ class AdminOrderItem extends Component {
                                     Quantity: {product.productsOrders.quantity}
                                 </p>
                             </div>
-                            <div className="order-product-item">
+                            <div
+                                className="order-product-item"
+                                id="product-price"
+                            >
                                 <p className="order-item-quantity">
                                     Price: {formatter.format(product.price)}
                                 </p>

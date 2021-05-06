@@ -13,7 +13,9 @@ const Orders = db.define("orders", {
         defaultValue: "Created",
         allowNull: false,
         validate: {
-            isIn: [["Created", "Processing", "Cancelled", "Completed"]],
+            isIn: [
+                ["Created", "Processing", "Cancelled", "Shipped", "Completed"],
+            ],
         },
     },
 });
