@@ -20,7 +20,14 @@ class OrderItem extends Component {
     }
 
     render() {
-        const { id, createdAt, products, updatedAt } = this.props;
+        const {
+            id,
+            createdAt,
+            products,
+            total,
+            status,
+            updatedAt,
+        } = this.props;
         const date = new Date(Date.parse(createdAt.substring(0, 10)));
         const formattedDate = this.formatDate(date, "mm/dd/yyyy");
 
@@ -39,13 +46,17 @@ class OrderItem extends Component {
                     </div>
                     <div id="order-total" className="order-detail">
                         <p className="detail-title">TOTAL</p>
-                        <p>{"$placeholder"}</p>
+                        <p>{formatter.format(total)}</p>
+                    </div>
+                    <div id="status-order" className="order-detail">
+                        <p className="detail-title">STATUS</p>
+                        <p>{status}</p>
                     </div>
                 </div>
                 <div className="order-product-container">
                     {products.map((product) => (
                         <div className="order-product" key={product.id}>
-                            <div className="order-product-center">
+                            <div className="order-product-center order-product-item">
                                 <Link to={`/product/${product.id}`}>
                                     <img
                                         className="order-img"
@@ -59,7 +70,10 @@ class OrderItem extends Component {
                                     Quantity: {product.productsOrders.quantity}
                                 </p>
                             </div>
-                            <div className="order-product-item">
+                            <div
+                                className="order-product-item"
+                                id="product-price"
+                            >
                                 <p className="order-item-quantity">
                                     Price: {formatter.format(product.price)}
                                 </p>
