@@ -10,7 +10,7 @@
     "build:dev": "npm run build -- --watch --mode=development",
     "build:pro": "npm run build -- --watch --mode=production",
     "start:dev": "npm run build:dev & nodemon server/server.js --ignore dist/ --ignore client/",
-    "start": "npm run build:dev & nodemon server/server.js --ignore dist/ --ignore client/"
+    "start": "npm run build:pro & node server/server.js --ignore dist/ --ignore client/"
   },
   "repository": {
     "type": "git",
