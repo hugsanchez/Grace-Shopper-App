@@ -128,6 +128,7 @@ class Cart extends Component {
         };
         const response = await axios.post("/api/checkout", { tokenToSend });
         const { status } = response.data;
+
         if (status === "success") {
             await axios.post("/api/orders", createOrder);
             await this.props.emptyCart();
@@ -145,9 +146,13 @@ class Cart extends Component {
         }
 
         const userStatus = store.getState().signedIn.isSignedIn;
-        let displayCart = this.state.productsInCart[
-            this.state.productsInCart.length - 1
-        ].sort((a, b) => a.id - b.id);
+
+        let displayCart;
+        if (this.state.productsInCart.length) {
+            displayCart = this.state.productsInCart[
+                this.state.productsInCart.length - 1
+            ].sort((a, b) => a.id - b.id);
+        }
 
         const totalPrice = this.state.totalPrice;
         const { filterProducts } = this.props;

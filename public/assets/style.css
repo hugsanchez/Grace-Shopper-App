@@ -462,6 +462,10 @@ body {
     margin: 0.4rem;
 }
 
+.product-title-cart:hover {
+    text-decoration: underline;
+}
+
 #cart-item-container {
     display: flex;
     flex-direction: column;
