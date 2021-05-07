@@ -270,7 +270,7 @@ class Cart extends Component {
                         </ul>
                         <div id="checkout-container">
                             <h3 id="total-cart">
-                                Total {formatter.format(this.props.total)}
+                                Total: {formatter.format(this.props.total)}
                             </h3>
                             <div id="stripe-container">
                                 <StripeCheckout
