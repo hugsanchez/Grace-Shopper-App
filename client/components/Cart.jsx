@@ -33,6 +33,7 @@ class Cart extends Component {
       totalPrice: 0,
       productsInCart: [],
       loading: true,
+      orders: [],
     };
     this.addToCart = this.addToCart.bind(this);
     this.deleteFromCart = this.deleteFromCart.bind(this);
@@ -133,6 +134,11 @@ class Cart extends Component {
       await axios.post("/api/orders", createOrder);
       await this.props.emptyCart();
       await this.setState({ ...this.state, productsInCart: [] });
+      const orders = await (await axios.get("/api/orders")).data;
+      await this.setState({
+        ...this.state,
+        orders: orders[orders.length - 1].products,
+      });
       toast("Success! Check email for details", { type: "success" });
     } else {
       toast("Something went wrong", { type: "error" });
@@ -140,7 +146,7 @@ class Cart extends Component {
   }
 
   render() {
-    const { loading } = this.state;
+    const { loading, orders } = this.state;
     if (loading) {
       return "loading...";
     }
@@ -276,14 +282,35 @@ class Cart extends Component {
           </div>
         ) : (
           <div id="card-container-layer">
-            <h2 className="cartTitle">
-              <strong>Order Complete</strong>
-            </h2>
-            <ul>
-              {this.props.cart.map((product) => {
-                <li>{product.name}</li>;
-              })}
-            </ul>
+            <div id="orderComplete">
+              <h2 className="cartTitle">
+                <strong>Order Complete</strong>
+              </h2>
+              <h3>Thank you for your puchase!</h3>
+              <h4>You bought the below items: </h4>
+              {/* <br /> */}
+              <ul>
+                {console.log("ORDERS", orders)}
+                {orders.length >= 1 ? (
+                  orders.map((order, idx) => {
+                    return (
+                      <li key={idx} id="purchased">
+                        <strong>Product Name: </strong>
+                        {order.name}
+                        <br />
+                        <strong>Quantity: </strong>
+                        {order.productsOrders.quantity}
+                        <br />
+                        <strong>Price: </strong>
+                        {order.price}
+                      </li>
+                    );
+                  })
+                ) : (
+                  <p>Order Failed</p>
+                )}
+              </ul>
+            </div>
           </div>
         )}
       </div>
