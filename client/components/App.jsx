@@ -4,6 +4,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { attemptTokenLogin } from "../store/actionCreators/singleUser";
 import { getAllProducts } from "../store/actionCreators/allProducts";
+import { addItemToCart } from "../store/actionCreators/shoppingCart";
 
 // React Router Imports
 import { HashRouter as Router, Route, Link, Switch } from "react-router-dom";
@@ -31,6 +32,13 @@ class App extends Component {
         await this.props.attemptLogin();
         await this.props.allProducts();
         await this.props.loadReviews();
+
+        const { signedInUser } = this.props;
+
+        // Populates the cart if you had one mid-session last time
+        if (signedInUser.isSignedIn) {
+            await this.props.addItemToCart(null, signedInUser.user.id);
+        }
     }
 
     render() {
@@ -60,12 +68,20 @@ class App extends Component {
     }
 }
 
+function mapStateToProps(state) {
+    return {
+        signedInUser: state.signedIn,
+    };
+}
+
 function mapDispatchToProps(dispatch) {
     return {
         attemptLogin: () => dispatch(attemptTokenLogin()),
         allProducts: () => dispatch(getAllProducts()),
         loadReviews: () => dispatch(thunkLoadReviews()),
+        addItemToCart: (currProduct, userId) =>
+            dispatch(addItemToCart(currProduct, userId)),
     };
 }
 
-export default connect(null, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);

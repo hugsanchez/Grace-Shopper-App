@@ -59,7 +59,11 @@ class ReviewForm extends Component {
                             value={rating}
                             onStarClick={this.onStarClick.bind(this)}
                         />
-                        <button id="submit-review" type="submit">
+                        <button
+                            className="button -regular button-size-sm"
+                            id="submit-review"
+                            type="submit"
+                        >
                             Post Review
                         </button>
                     </div>
