@@ -297,6 +297,7 @@ body {
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
+    font-family: garamond;
 }
 
 .review-author {
@@ -435,6 +436,10 @@ body {
     justify-content: center;
     align-items: center;
     margin: 0.5rem;
+}
+
+#review-input > label {
+    font-family: garamond;
 }
 
 #cart-container {
