@@ -380,3 +380,122 @@ body {
     align-items: center;
     margin: 0.5rem;
 }
+
+#cart-container {
+    margin: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#card-container-layer {
+    width: 500px;
+}
+
+#cart-title {
+    color: white;
+    margin: 0;
+    padding: 1rem 5rem 1rem 5rem;
+    background-color: black;
+    text-align: center;
+}
+
+.product-title-cart {
+    font-style: italic;
+}
+
+#cart-item-container {
+    display: flex;
+    flex-direction: column;
+    list-style-type: none;
+    padding: none;
+}
+
+.cart-item {
+    display: flex;
+    flex-direction: row;
+    margin: 0.5rem 0;
+    padding-left: 40px;
+}
+
+.cart-item-img {
+    width: 7rem;
+    height: auto;
+    border-radius: 0.5rem;
+}
+
+.product-info-cart {
+    display: flex;
+    flex-direction: column;
+    /* align-items: center; */
+    justify-content: center;
+    max-width: calc(100%);
+    flex-direction: column;
+    text-overflow: ellipsis;
+    margin: 0rem 1rem;
+}
+
+.product-info-cart > * {
+    min-width: 0;
+    margin: 0.4rem;
+}
+
+.product-small-btn-cart {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0.2rem;
+}
+
+.product-edit-cart,
+.product-delete-cart {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.product-delete-cart {
+    padding-right: 2rem;
+}
+
+.product-small-cart {
+    font: 6px;
+    color: #0645ad;
+    margin-left: 0.4rem;
+}
+
+.product-small-cart:hover {
+    color: #053d96;
+    cursor: pointer;
+}
+
+.product-btns {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.product-btns:last-of-type {
+    margin-left: auto;
+}
+
+.bold {
+    font-weight: 600;
+}
+
+.no-items {
+    align-self: center;
+}
+
+ul {
+    margin-block-start: 0;
+    margin-block-end: 0;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    padding-inline-start: 0px;
+}
