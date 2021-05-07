@@ -32,6 +32,7 @@ class Cart extends Component {
             cart: [],
             totalPrice: 0,
             productsInCart: [],
+            loading: true,
         };
         this.addToCart = this.addToCart.bind(this);
         this.deleteFromCart = this.deleteFromCart.bind(this);
@@ -51,6 +52,7 @@ class Cart extends Component {
             ...this.state,
             allProducts: store.getState().allProducts,
             productsInCart: this.props.cart,
+            loading: false,
         });
     }
 
@@ -137,10 +139,16 @@ class Cart extends Component {
     }
 
     render() {
+        const { loading } = this.state;
+        if (loading) {
+            return "loading...";
+        }
+
         const userStatus = store.getState().signedIn.isSignedIn;
         let displayCart = this.state.productsInCart[
             this.state.productsInCart.length - 1
-        ];
+        ].sort((a, b) => a.id - b.id);
+
         const totalPrice = this.state.totalPrice;
         const { filterProducts } = this.props;
         const productsInCart = this.state.productsInCart;
