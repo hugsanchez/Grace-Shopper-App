@@ -205,7 +205,7 @@ class SingleProduct extends Component {
           </div>
         </div>
 
-        <div id="cart-summary">
+        {/* <div id="cart-summary">
           <h2 className="cartTitle">
             <strong>Cart Summary</strong>
           </h2>
@@ -250,7 +250,7 @@ class SingleProduct extends Component {
           <a href="#/cart">
             <button>Proceed To Checkout</button>
           </a>
-        </div>
+        </div> */}
       </div>
     );
   }
