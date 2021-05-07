@@ -44,7 +44,7 @@ class Cart extends Component {
     let userId;
     await this.props.getAllProducts();
     (await store.getState().signedIn.isSignedIn) === false
-      ? (userId = 0)
+      ? (userId = 1)
       : (userId = await store.getState().signedIn.user.id);
     const cartOnMount = await this.props.addItemToCart(null, userId);
     await this.setState({
@@ -57,7 +57,7 @@ class Cart extends Component {
   async addToCart(event) {
     let userId;
     (await store.getState().signedIn.isSignedIn) === false
-      ? (userId = 0)
+      ? (userId = 1)
       : (userId = await store.getState().signedIn.user.id);
     await this.props.addItemToCart(event, userId);
     await this.setState({ ...this.state, productsInCart: this.props.cart });
@@ -66,7 +66,7 @@ class Cart extends Component {
   async deleteFromCart(event) {
     let userId;
     (await store.getState().signedIn.isSignedIn) === false
-      ? (userId = 0)
+      ? (userId = 1)
       : (userId = await store.getState().signedIn.user.id);
     await this.props.deleteFromCart(event, userId);
     await this.setState({ ...this.state, productsInCart: this.props.cart });
@@ -81,7 +81,7 @@ class Cart extends Component {
     });
     let userId;
     (await store.getState().signedIn.isSignedIn) === false
-      ? (userId = 0)
+      ? (userId = 1)
       : (userId = await store.getState().signedIn.user.id);
     if (event.quantity < currStock) {
       await this.props.incrementQuantity(event, userId);
@@ -95,7 +95,7 @@ class Cart extends Component {
   async decrementQuantity(event) {
     let userId;
     (await store.getState().signedIn.isSignedIn) === false
-      ? (userId = 0)
+      ? (userId = 1)
       : (userId = await store.getState().signedIn.user.id);
     await this.props.decrementQuantity(event, userId);
     await this.setState({
@@ -112,7 +112,7 @@ class Cart extends Component {
   async handleToken(token, addresses) {
     let userId;
     (await store.getState().signedIn.isSignedIn) === false
-      ? (userId = 0)
+      ? (userId = 1)
       : (userId = await store.getState().signedIn.user.id);
     const tokenToSend = {
       token,
