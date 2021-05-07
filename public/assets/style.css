@@ -402,6 +402,7 @@ body {
 
 .product-title-cart {
     font-style: italic;
+    margin: 0.4rem;
 }
 
 #cart-item-container {
@@ -498,4 +499,26 @@ ul {
     margin-inline-start: 0px;
     margin-inline-end: 0px;
     padding-inline-start: 0px;
+}
+
+.cart-link {
+    height: 0%;
+    align-self: center;
+}
+
+.product-cart-title-link {
+    margin: 0;
+    padding: 0;
+    color: black;
+    text-decoration: none;
+}
+
+#checkout-container {
+    border-top: 2px solid black;
+    color: black;
+    margin: 0;
+    padding: 1rem 5rem 1rem 5rem;
+    text-align: center;
+    flex-direction: row;
+    justify-content: center;
 }

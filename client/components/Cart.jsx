@@ -171,19 +171,30 @@ class Cart extends Component {
                                     const {
                                         imgUrl,
                                         price,
+                                        id,
                                     } = allProducts.filter(
                                         (p) => p.name === product.name,
                                     )[0];
                                     return (
                                         <li key={idx} className="cart-item">
-                                            <img
-                                                className="cart-item-img"
-                                                src={imgUrl}
-                                            />
+                                            <a
+                                                href={`/#/product/${id}`}
+                                                className="cart-link"
+                                            >
+                                                <img
+                                                    className="cart-item-img"
+                                                    src={imgUrl}
+                                                />
+                                            </a>
                                             <div className="product-info-cart">
-                                                <p className="product-title-cart">
-                                                    {product.name}
-                                                </p>
+                                                <Link
+                                                    to={`/product/${id}`}
+                                                    className="product-cart-title-link"
+                                                >
+                                                    <p className="product-title-cart">
+                                                        {product.name}
+                                                    </p>
+                                                </Link>
                                                 <p className="product-quantity-cart">
                                                     <span className="bold">
                                                         Quantity:
@@ -257,14 +268,20 @@ class Cart extends Component {
                                 </li>
                             )}
                         </ul>
-                        <h3>Total ${this.props.total}</h3>
-                        <StripeCheckout
-                            token={this.handleToken}
-                            stripeKey="pk_test_51ImoMPDR0fOunmqd1floGlmv6CuKmfeOFFy9IXUUAijzk9ESftuvY0s0WPVH14WLmUoAFepbwOIHGf8P1GZhX7cg00E3K13wPG"
-                            billingAddress
-                            shippingAddress
-                            amount={totalPrice * 100}
-                        />
+                        <div id="checkout-container">
+                            <h3 id="total-cart">
+                                Total {formatter.format(this.props.total)}
+                            </h3>
+                            <div id="stripe-container">
+                                <StripeCheckout
+                                    token={this.handleToken}
+                                    stripeKey="pk_test_51ImoMPDR0fOunmqd1floGlmv6CuKmfeOFFy9IXUUAijzk9ESftuvY0s0WPVH14WLmUoAFepbwOIHGf8P1GZhX7cg00E3K13wPG"
+                                    billingAddress
+                                    shippingAddress
+                                    amount={totalPrice * 100}
+                                />
+                            </div>
+                        </div>
                     </div>
                 ) : (
                     <div id="card-container-layer">
