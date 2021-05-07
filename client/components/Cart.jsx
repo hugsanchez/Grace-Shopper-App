@@ -172,6 +172,7 @@ class Cart extends Component {
                                         imgUrl,
                                         price,
                                         id,
+                                        stock,
                                     } = allProducts.filter(
                                         (p) => p.name === product.name,
                                     )[0];
@@ -211,16 +212,32 @@ class Cart extends Component {
                                             </div>
                                             <div className="product-btns">
                                                 <div className="product-edit-cart">
-                                                    <button
-                                                        className="product-small-btn-cart"
-                                                        onClick={() => {
-                                                            this.incrementQuantity(
-                                                                product,
-                                                            );
-                                                        }}
-                                                    >
-                                                        ▲
-                                                    </button>
+                                                    {product.quantity <
+                                                    stock ? (
+                                                        <button
+                                                            className="product-small-btn-cart"
+                                                            onClick={() => {
+                                                                this.incrementQuantity(
+                                                                    product,
+                                                                );
+                                                            }}
+                                                        >
+                                                            ▲
+                                                        </button>
+                                                    ) : (
+                                                        <button
+                                                            disabled
+                                                            className="product-small-btn-cart"
+                                                            onClick={() => {
+                                                                this.incrementQuantity(
+                                                                    product,
+                                                                );
+                                                            }}
+                                                        >
+                                                            ▲
+                                                        </button>
+                                                    )}
+
                                                     {product.quantity > 0 ? (
                                                         <button
                                                             className="product-small-btn-cart"

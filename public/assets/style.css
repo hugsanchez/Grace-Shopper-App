@@ -452,7 +452,7 @@ body {
     margin: 0;
     font-size: 32px;
     padding: 1rem 5rem 1rem 5rem;
-    border-bottom: 1px solid black;
+    border-bottom: 2px solid black;
     text-align: center;
 }
 
@@ -505,6 +505,17 @@ body {
     align-items: center;
     justify-content: center;
     margin: 0.2rem;
+    border: 0.5px solid rgb(159, 154, 154);
+    border-radius: 0.3rem;
+    background-color: #d2cece;
+}
+
+.product-small-btn-cart:hover {
+    cursor: pointer;
+}
+
+.product-small-btn-cart:active {
+    background-color: #b6b2b2;
 }
 
 .product-edit-cart,
@@ -601,7 +612,7 @@ button {
     overflow: hidden;
     cursor: pointer;
     user-select: none;
-    transition: all 150ms linear;
+    transition: all 100ms ease-in-out;
     text-align: center;
     white-space: nowrap;
     text-decoration: none !important;
@@ -619,11 +630,11 @@ button {
     box-shadow: 2px 5px 10px #e4e4e4;
 }
 .button:hover {
-    transition: all 150ms linear;
+    transition: all 50ms ease-in-out;
     opacity: 0.85;
 }
 .button:active {
-    transition: all 150ms linear;
+    transition: all 50ms ease-in-out;
     opacity: 0.75;
 }
 
@@ -646,7 +657,7 @@ button {
 }
 
 .button.-mid {
-    color: #000000;
+    color: #2e2c2c;
     background: #d0c1c1;
 }
 
@@ -673,4 +684,5 @@ button {
 .nudge {
     margin-top: 0.2rem;
     font-size: 12px;
+    font-family: "Poppins";
 }
