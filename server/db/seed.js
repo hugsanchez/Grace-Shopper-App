@@ -62,6 +62,7 @@ const syncAndSeed = async () => {
         email: "cf@gmail.com",
         username: "cferreira",
         password: "12345678",
+        userType: "ADMIN",
       }).save(),
       new Users({
         firstName: "Anthony",
@@ -85,7 +86,7 @@ const syncAndSeed = async () => {
         email: "hugsan@gmail.com",
         username: "hugsan",
         password: "12345678",
-        userType: "GUEST",
+        userType: "ADMIN",
       }).save(),
     ]);
 

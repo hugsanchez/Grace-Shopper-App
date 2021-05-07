@@ -198,7 +198,7 @@ class AllProducts extends Component {
             })}
           </div>
         )}
-        <div id="cart-summary">
+        {/* <div id="cart-summary">
           <h2 className="cartTitle">
             <strong>Cart Summary</strong>
           </h2>
@@ -243,7 +243,7 @@ class AllProducts extends Component {
           <a href="#/cart">
             <button>Proceed To Checkout</button>
           </a>
-        </div>
+        </div> */}
       </div>
     );
   }
