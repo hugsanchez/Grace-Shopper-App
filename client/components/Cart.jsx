@@ -170,12 +170,14 @@ class Cart extends Component {
     const userStatus = store.getState().signedIn.isSignedIn;
 
     let displayCart = [];
-    if (
-      this.state.productsInCart[this.state.productsInCart.length - 1].length
-    ) {
-      displayCart = this.state.productsInCart[
-        this.state.productsInCart.length - 1
-      ].sort((a, b) => a.id - b.id);
+    if (this.state.productsInCart.length) {
+      if (
+        this.state.productsInCart[this.state.productsInCart.length - 1].length
+      ) {
+        displayCart = this.state.productsInCart[
+          this.state.productsInCart.length - 1
+        ].sort((a, b) => a.id - b.id);
+      }
     }
 
     const totalPrice = this.state.totalPrice;
