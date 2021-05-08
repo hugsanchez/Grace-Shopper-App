@@ -22,8 +22,8 @@ const stripeAPI = require("./api/stripeCheckout");
 
 // Database Imports
 const {
-    syncAndSeed,
-    model: { Products, Artists, Categories, Users, Orders, Reviews },
+  syncAndSeed,
+  model: { Products, Artists, Categories, Users, Orders, Reviews },
 } = require("./db");
 
 // Serve Static Folder
@@ -38,11 +38,11 @@ app.use(morgan("dev"));
 
 //Session
 app.use(
-    session({
-        secret: "keyboard cat",
-        resave: false,
-        saveUninitialized: false,
-    }),
+  session({
+    secret: "keyboard cat",
+    resave: false,
+    saveUninitialized: false,
+  })
 );
 
 //Passport middleware
@@ -62,11 +62,11 @@ app.use("/api/cart", cartAPI);
 app.use("/api/checkout", stripeAPI);
 
 app.get("/", async (req, res, next) => {
-    try {
-        res.sendFile(path.join(__dirname, "../public/index.html"));
-    } catch (err) {
-        next(err);
-    }
+  try {
+    res.sendFile(path.join(__dirname, "../public/index.html"));
+  } catch (err) {
+    next(err);
+  }
 });
 
 module.exports = app;
