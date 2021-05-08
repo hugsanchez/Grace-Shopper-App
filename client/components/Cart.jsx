@@ -43,18 +43,27 @@ class Cart extends Component {
   }
 
   async componentDidMount() {
+    console.log("CART ON MOUNT", this.props.cart);
     let userId;
     await this.props.getAllProducts();
     (await store.getState().signedIn.isSignedIn) === false
       ? (userId = 1)
       : (userId = await store.getState().signedIn.user.id);
     const cartOnMount = await this.props.addItemToCart(null, userId);
-    await this.setState({
-      ...this.state,
-      allProducts: store.getState().allProducts,
-      productsInCart: this.props.cart,
-      loading: false,
-    });
+    await this.setState(
+      {
+        ...this.state,
+        allProducts: store.getState().allProducts,
+        productsInCart: this.props.cart,
+        loading: false,
+      },
+      () => {
+        console.log(
+          "ProductsInCart",
+          this.state.productsInCart[this.state.productsInCart.length - 1]
+        );
+      }
+    );
   }
 
   async addToCart(event) {
@@ -133,11 +142,13 @@ class Cart extends Component {
     if (status === "success") {
       await axios.post("/api/orders", createOrder);
       await this.props.emptyCart();
-      await this.setState({ ...this.state, productsInCart: [] });
-      const orders = await (await axios.get("/api/orders")).data;
-      await this.setState({
-        ...this.state,
-        orders: orders[orders.length - 1].products,
+      await this.setState({ ...this.state, productsInCart: [] }, async () => {
+        const orders = await (await axios.get("/api/orders")).data;
+        console.log("orders", orders);
+        await this.setState({
+          ...this.state,
+          orders: orders[orders.length - 1].products,
+        });
       });
       toast("Success! Check email for details", { type: "success" });
     } else {
@@ -146,6 +157,11 @@ class Cart extends Component {
   }
 
   render() {
+    console.log("CART CART", this.props.cart[this.props.cart.length - 1]);
+    console.log(
+      "PRODUCTS IN CART",
+      this.state.productsInCart[this.state.productsInCart.length - 1]
+    );
     const { loading, orders } = this.state;
     if (loading) {
       return "loading...";
@@ -153,8 +169,10 @@ class Cart extends Component {
 
     const userStatus = store.getState().signedIn.isSignedIn;
 
-    let displayCart;
-    if (this.state.productsInCart.length) {
+    let displayCart = [];
+    if (
+      this.state.productsInCart[this.state.productsInCart.length - 1].length
+    ) {
       displayCart = this.state.productsInCart[
         this.state.productsInCart.length - 1
       ].sort((a, b) => a.id - b.id);
@@ -290,7 +308,6 @@ class Cart extends Component {
               <h4>You bought the below items: </h4>
               {/* <br /> */}
               <ul>
-                {console.log("ORDERS", orders)}
                 {orders.length >= 1 ? (
                   orders.map((order, idx) => {
                     return (
@@ -338,6 +355,7 @@ const mapStateToProps = (state) => {
     cart: state.cart.cart,
     total: state.cart.total,
     allProducts: state.allProducts,
+    signedInUser: state.signedIn,
   };
 };
 
