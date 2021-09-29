@@ -21,7 +21,6 @@ class Homepage extends Component {
     render() {
         const { user, isSignedIn } = this.props.signedInUser;
 
-        console.log(user);
         return (
             <div id="homepage-lander">
                 <Link to="/store">
