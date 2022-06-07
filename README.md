@@ -2,22 +2,4 @@
 
 Grace Shopper app for Fullstack Academy -- Team 7
 
-Places to read include:
-
-app.js
-
-- a lot of app.use
-- passport session/ express session
-
-passport.js
-
-- the google oauth strategy
-- serialize and deserialize
-
-User.js
-
-- the google oauth gives me a google id which is stored in the db user model
-
-api routes folder
-
-- All of them go in with the error handling look at them for future use
+A fun e-commerce website designed to allow users to make purchases on fake merchandise, with user friendly implementations such as viewing details on a product or leaving a review.
