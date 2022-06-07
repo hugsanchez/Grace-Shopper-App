@@ -13,10 +13,15 @@ export const addUser = (user) => ({
     payload: user,
 });
 
+const token = window.localStorage.getItem('token');
 // GET request for all users
 export const getAllUsers = () => async (dispatch) => {
     try {
-        const { data: allUsers } = await axios.get("/api/users");
+        const { data: allUsers } = await axios.get("/api/users", {
+            headers:{
+                authorization: token
+            }
+        });
         dispatch(getUsers(allUsers));
     } catch (err) {
         console.error(err);

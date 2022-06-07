@@ -26,8 +26,6 @@ const ReviewsPerProduct = ({ specificReviews }) => {
 
 const mapStateToProps = (state, otherProps) => {
     return {
-        state,
-        otherProps,
         specificReviews: state.reviews.filter(
             (review) => review.productId === otherProps.singleProductId,
         ),

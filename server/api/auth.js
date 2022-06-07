@@ -30,15 +30,19 @@ router.get("/", async (req, res, next) => {
 });
 
 //Google Auth
-router.get("/google", passport.authenticate("google", { scope: ["profile"] }));
+router.get("/google", passport.authenticate("google", { scope: ['email',"profile"] }));
+//What variable we are allowed to pull from the authentication
 
 // Google Auth Callback
 router.get(
     "/google/callback",
     passport.authenticate("google", { failureRedirect: "/#/sign-up" }),
+    //if it fails redirect to this link in the object
+
     async (req, res) => {
         res.oAuthUser = req.user;
         const token = jwt.sign({ id: req.user.id }, process.env.JWT);
+
 
         // Successful authentication, redirect to store.
         res.send(`

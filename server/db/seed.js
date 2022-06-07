@@ -19,9 +19,22 @@ const ProductsCategories = require("./model/ProductsCategories");
 const syncAndSeed = async () => {
   try {
     await db.authenticate();
+    //Checks if you are connected to the database
     console.log("Database Connected");
 
     await db.sync({ force: true });
+    /*If you've defined any tables by default sequelize is NOT just gonna create that table,
+        Telling sequelize hey we're gonna need you to prepare the SQL query to build this sort
+          of table but it doesn't do it yet, NOT committed to building table yet
+        Will only build table when we explicitly tell SQL to do so by
+
+      Sync needs to think about if table already exists or what if its changed from the last time 
+        you wanted the table 
+
+      Sequelize deals with it by NOT messing with tables that already exists, I'll leave them be UNLESS
+        you tell me you want me to get rid of any preview table and build the new table the way you defined
+      
+    */
 
     // Custom Categories
     const categories = await Promise.all([
@@ -247,17 +260,6 @@ const syncAndSeed = async () => {
         year: "1889-12-31",
         imgUrl:
           "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/Wheat-Field-with-Cypresses-%281889%29-Vincent-van-Gogh-Met.jpg/1920px-Wheat-Field-with-Cypresses-%281889%29-Vincent-van-Gogh-Met.jpg",
-      },
-      {
-        name: "PROF!!!!!",
-        description:
-          "A brilliant teacher, wearer of white garb, expert of Node. In European academic traditions, fine art is art developed primarily for aesthetics or beauty, distinguishing it from decorative art or applied art, which also has to serve some practical function, such as pottery or most metalwork. In the aesthetic theories developed in the Italian Renaissance, the highest art was that which allowed the full expression and display of the artist's imagination, unrestricted by any of the practical considerations involved in, say, making and decorating a teapot. It was also considered important that making the artwork did not involve dividing the work between different individuals with specialized skills, as might be necessary with a piece of furniture, for example. Even within the fine arts, there was a hierarchy of genres based on the amount of creative imagination required, with history painting placed higher than still life.",
-        artistName: "Eric P. Katz",
-        nationality: "American",
-        price: 89000000,
-        year: "2021-12-31",
-        imgUrl:
-          "https://media-exp1.licdn.com/dms/image/C4E03AQEXIPzS6uix5w/profile-displayphoto-shrink_400_400/0/1516270923758?e=1625702400&v=beta&t=FGBICg7ESPCBvb4mgbS-Nun8QCACSk8Snx9Rkeglszs",
       },
     ];
 

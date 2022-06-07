@@ -8,7 +8,7 @@ const SearchBar = (products) => {
 
     function searchFunc(products) {
         return products.filter(
-            (currPro) => currPro.name.toLowerCase().indexOf(search) > -1,
+            (currPro) => currPro.name.toLowerCase().indexOf(search.toLowerCase()) > -1,
         );
     }
     return (

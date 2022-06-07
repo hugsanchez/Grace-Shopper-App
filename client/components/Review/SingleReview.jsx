@@ -4,16 +4,16 @@ import { connect } from "react-redux";
 import StarRatingComponent from "react-star-rating-component";
 
 const SingleReview = ({ currReview }) => {
-    const [user, setUsers] = useState([]);
+    const [user, setUser] = useState([]);
 
     useEffect(() => {
-        const getUsers = async () => {
+        const getUser = async () => {
             const { data: user } = await axios.get(
                 `/api/users/${currReview.userId}`,
             );
-            setUsers(user);
+            setUser(user);
         };
-        getUsers();
+        getUser();
     }, []);
 
     return (
@@ -31,11 +31,5 @@ const SingleReview = ({ currReview }) => {
     );
 };
 
-const mapStateToProps = (state, otherProps) => {
-    return {
-        state,
-        otherProps,
-    };
-};
 
-export default connect(mapStateToProps)(SingleReview);
+export default connect(null)(SingleReview);

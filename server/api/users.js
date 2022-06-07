@@ -3,6 +3,8 @@ const router = express.Router();
 
 // Errors
 const { notFound, badSyntax, conflict, unauthorized } = require("./errors");
+//the error functions have the messages in the parameters to be later thrown 
+//from what we wrote in the errors folder 
 
 const {
     syncAndSeed,
