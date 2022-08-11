@@ -38,7 +38,7 @@ class SignIn extends Component {
       const { username, password } = this.state;
 
       // References to our inputs for DOM manipulation
-      const usernameLabel = document.getElementById("username-input");
+      const usernameLabel = document.getElementById("username-input")
       const passwordLabel = document.getElementById("password-input");
 
       // Create a JWT token from username and password

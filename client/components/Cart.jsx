@@ -43,13 +43,13 @@ class Cart extends Component {
   }
 
   async componentDidMount() {
-    console.log("CART ON MOUNT", this.props.cart);
     let userId;
     await this.props.getAllProducts();
     (await store.getState().signedIn.isSignedIn) === false
       ? (userId = 1)
       : (userId = await store.getState().signedIn.user.id);
-    const cartOnMount = await this.props.addItemToCart(null, userId);
+    // const cartOnMount = await this.props.addItemToCart(null, userId);
+    // console.log(cartOnMount,'WTF ARE YOU')
     await this.setState(
       {
         ...this.state,
@@ -57,13 +57,8 @@ class Cart extends Component {
         productsInCart: this.props.cart,
         loading: false,
       },
-      () => {
-        console.log(
-          "ProductsInCart",
-          this.state.productsInCart[this.state.productsInCart.length - 1]
-        );
-      }
     );
+
   }
 
   async addToCart(event) {

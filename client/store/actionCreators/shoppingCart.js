@@ -47,7 +47,6 @@ export const increaseQuantity = (product, userId) => {
         }
       )
     ).data;
-    console.log("response in reducer", response);
     dispatch({ type: INCREASE_QUANTITY, payload: response });
   };
 };
